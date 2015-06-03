@@ -1,0 +1,89 @@
+@(teamName: String, teams : java.util.List[Team], tasks : java.util.List[Task], unreadNum : Integer)
+
+@main(teamName) {
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/style.css")" type="text/css">
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-responsive.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-icons.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-ui-light.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/datepicker.css")">
+        <script src="@routes.Assets.at("javascripts/modernizr-2.6.2.min.js")"></script>
+        <div class="navbar">
+        <div class="navbar-inner">
+             
+             <div class="row-fluid">
+             
+                 <div class="span6">
+                    <a class="brand" href="#">Distration Blocker</a>
+                     <ul class="nav">
+                        <li><a href="/landing">Home</a></li>
+                        <li class="active"><a href="#">Main Page</a></li>
+                    </ul>
+                 </div>
+                 <div class="span6" align="right">
+                     <div class="btn-group">
+                        @helper.form(routes.Application.landing()) {
+                            <button class="btn">Logout</button> 
+                        }
+                        @helper.form(routes.Application.unreadPage()) {
+                            <button class="btn">@unreadNum unread</button>
+                        }
+                        @helper.form(routes.Application.createEventPage()) {
+                            <button type="submit">Create an Event</button><br>
+                        }
+                        
+                     </div>
+                </div>
+             </div>
+             
+          </div>
+       </div>
+    </head>
+
+
+
+<h1>@teamName</h1>
+<ul>
+    @for(team <- teams) {
+
+    <li>Email Address: @team.memberEmail
+        @helper.form(routes.Application.deleteUserFromTeam(team.memberEmail)) {
+        <button type="submit">Delete</button>
+        }
+    </li>
+    }
+    @helper.form(routes.Application.addUserToTeam(teamName)) {
+    <input name="email" placeholder="email address"><br>
+    <button type="submit">Add</button><br>
+    }
+</ul>
+
+@for(task <- tasks) {
+
+<li><h2>Task Name: @task.taskName </h2>
+    <h2> Description: @task.content </h2>
+    <h2> Status: @task.status </h2>
+    @helper.form(routes.Application.taskPage(task.taskName)) {
+       <button type="submit">Details</button>
+    }
+</li>
+}
+<h1>                     </h1>
+
+
+@helper.form(routes.Application.taskCreationPage()) {
+<button type="submit">Create a new task</button><br>
+}
+
+
+@helper.form(routes.Application.mainPage()) {
+<button type="submit">Main Page</button><br>
+}
+@helper.form(routes.Application.landing()) {
+<button type="submit">Log out</button><br>
+}
+
+}

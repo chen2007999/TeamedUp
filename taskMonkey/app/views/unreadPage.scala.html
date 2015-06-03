@@ -1,0 +1,33 @@
+@(comments: java.util.List[Comment], tasks: java.util.List[Task])
+
+@main("Unread") {
+
+<h1>Unread</h1>
+<ul>
+    @for(comment <- comments) {
+    <li>
+        @helper.form(routes.Application.redirectUnreadComment(comment.id)) {
+        <button type="submit"> <h3> <strong>@comment.ownerName:</strong>  @comment.content</h3></button><br>
+        }
+    </li>
+    }
+</ul>
+
+
+
+<ul>
+    @for(task <- tasks) {
+    <li>
+        @helper.form(routes.Application.redirectUnreadTask(task.taskId)) {
+        <button type="submit"><h3> A new task @task.taskName is created</h3></button><br>
+        }
+    </li>
+    }
+</ul>
+
+@helper.form(routes.Application.mainPage()) {
+<button type="submit">Go back</button><br>
+}
+
+
+}

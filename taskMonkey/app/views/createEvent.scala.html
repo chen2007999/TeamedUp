@@ -1,0 +1,77 @@
+@(unreadNum : Integer)
+
+@main("Event") {
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/style.css")" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro.css")">
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-responsive.css")">
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-icons.css")">
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-ui-light.css")">
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/datepicker.css")">
+    <script src="@routes.Assets.at("javascripts/modernizr-2.6.2.min.js")"></script>
+        <div class="navbar">
+        <div class="navbar-inner">
+
+             <div class="row-fluid">
+
+                 <div class="span6">
+                    <a class="brand" href="#">Distration Blocker</a>
+                     <ul class="nav">
+                        <li><a href="/landing">Home</a></li>
+                        <li class="active"><a href="#">Main Page</a></li>
+                    </ul>
+                 </div>
+                 <div class="span6" align="right">
+                     <div class="btn-group">
+                        @helper.form(routes.Application.landing()) {
+                            <button class="btn">Logout</button>
+                        }
+                        @helper.form(routes.Application.unreadPage()) {
+                            <button class="btn">@unreadNum unread</button>
+                        }
+
+                     </div>
+                </div>
+             </div>
+
+          </div>
+       </div>
+    </head>
+
+
+
+<h1>Create a new event</h1>
+<ul>
+   @helper.form(routes.Application.createEvent()) {
+                       <input name="eventName" placeholder="event name"><br>
+                       <input name="startTime" placeholder="start time"><br>
+                       <input name="endTime" placeholder="end time"><br>
+                       <input name="location" placeholder="location"><br>
+                       <textarea name="content" cols="40" rows="5" placeholder="description"></textarea>
+                       <h4>add all users before creating</h4>
+                       @helper.form(routes.Application.addUserToEvent()) {
+                           <input name="involvedEmail" placeholder="email address"><br>
+                           <button type="submit">Add</button><br>
+                       }
+                       <button class="icon-key-2" type="submit"> Create</button><br>
+   }
+
+
+
+
+
+</ul>
+
+
+
+<h1>                     </h1>
+@helper.form(routes.Application.mainPage()) {
+<button type="submit">Main Page</button><br>
+}
+@helper.form(routes.Application.landing()) {
+<button type="submit">Log out</button><br>
+}
+
+}

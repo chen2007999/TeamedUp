@@ -1,0 +1,64 @@
+@(users: java.util.List[models.User])
+<!DOCTYPE html>
+
+@main("Create an account") {
+
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/style.css")" type="text/css">
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-responsive.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-icons.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-ui-light.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/datepicker.css")">
+        <script src="@routes.Assets.at("javascripts/modernizr-2.6.2.min.js")"></script>
+        <div class="navbar">
+        <div class="navbar-inner">
+             <a class="brand" href="#">Distration Blocker</a>
+             <ul class="nav">
+                <li><a href="/landing">Home</a></li>
+                <li class="active"><a href="#">Register</a></li>
+             </ul>
+          </div>
+       </div>
+    </head>
+
+<body>
+    <div class="container">
+        <h1 align="center">Create a new account</h1>
+        <div class="well row">
+            <div class="well well-small span4 offset4" align="center">
+               
+                
+                
+                   @helper.form(routes.Application.createUser()) {
+                       <input name="email" placeholder="email address"><br>
+                       <input name="password" placeholder="password"><br>
+                       <input name="password2" placeholder="comfirm password"><br>
+                       <input name="name" placeholder="name"><br>
+                       <button class="icon-key-2" type="submit"> Create</button><br>
+                   }
+                
+                   @helper.form(routes.Application.landing()) {
+                       <button type="submit">Go back</button><br>
+                   }
+               </div>
+           </div>
+           <div class="row metro">
+                @for(user <- users) {
+                    @helper.form(routes.Application.deleteUserFromDB(user.email)) {
+                        <button class="tile square text" type="submit">
+                            <div class="text">@user.email</div>
+                            <div class="text">@user.name</div>
+                            <div class="text">@user.password</div>
+                        </button>
+                    }
+                }
+               
+           </div>
+    </div>
+</body>
+}
+
+</html>

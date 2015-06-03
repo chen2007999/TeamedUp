@@ -1,0 +1,69 @@
+@(teams: java.util.List[models.Team], unreadNum : Integer)
+@import helper.twitterBootstrap._
+<!DOCTYPE html>
+@main("Team") {
+
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/style.css")" type="text/css">
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-responsive.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-icons.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-ui-light.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/datepicker.css")">
+        <script src="@routes.Assets.at("javascripts/modernizr-2.6.2.min.js")"></script>
+        <div class="navbar">
+        <div class="navbar-inner">
+             
+             <div class="row-fluid">
+             
+                 <div class="span6">
+                    <a class="brand" href="#">Distration Blocker</a>
+                     <ul class="nav">
+                        <li><a href="/landing">Home</a></li>
+                        <li class="active"><a href="#">Main Page</a></li>
+                    </ul>
+                 </div>
+                 <div class="span6" align="right">
+                     <div class="btn-group">
+                        @helper.form(routes.Application.landing()) {
+                            <button class="btn">Logout</button> 
+                        }
+                        @helper.form(routes.Application.unreadPage()) {
+                            <button class="btn">@unreadNum unread</button>
+                        }
+                        
+                     </div>
+                </div>
+             </div>
+             
+          </div>
+       </div>
+    </head>
+
+<div class="row-fluid">
+    <div class="span4 offset4" align="center">
+        @helper.form(routes.Application.createTeam()) {
+            <input name="teamName" placeholder="team name"><br>
+            <button type="submit">Create a new team</button><br>
+        }
+    </div>
+</div>
+
+<div class="metro">
+    @for(team <- teams) {
+        <a class="tile square text tilesquareblock" href="/teamPage/@team.teamName">
+            <div class="text-big">@team.teamName</div>
+        </a>
+    }
+</div>
+
+
+
+
+
+
+
+}
+</html>

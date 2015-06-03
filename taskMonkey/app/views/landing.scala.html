@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+@import helper.twitterBootstrap._
+@main("Distraction Blocker") {
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/style.css")" type="text/css">
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-responsive.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-icons.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-ui-light.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/datepicker.css")">
+        <script src="@routes.Assets.at("javascripts/modernizr-2.6.2.min.js")"></script>
+        <div class="navbar">
+        <div class="navbar-inner">
+             <a class="brand" href="#">Distration Blocker</a>
+             <ul class="nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="test">Test page</a></li>
+                <li><a href="#">Link 2</a></li>
+             </ul>
+          </div>
+       </div>
+    </head>
+    
+<body>
+    <div class="container">
+        <h1 align="center">Welcome to Distraction Blocker</h1>
+        
+        <div class="well row"> 
+            <div class="well well-small span4 offset4" align="center">
+            @helper.form(routes.Application.logIn()) {
+               <input name="email" placeholder="Email Address"> <br>
+               <input name="password" placeholder="Password">  <br>
+               <button class="icon-checkmark" type="submit"> Log in</button>
+            }
+            @helper.form(routes.Application.register()) {
+               <button class="icon-cog-2" type="submit"> Register</button>
+            }
+            </div>
+        
+            
+        </div>
+    </div>
+</body>
+}
+</html>

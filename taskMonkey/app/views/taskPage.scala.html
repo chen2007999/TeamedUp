@@ -1,0 +1,48 @@
+@(task : Task, comments : java.util.List[Comment], teamName : String, unreadNum :Integer)
+
+@main(task.taskName) {
+@helper.form(routes.Application.unreadPage()) {
+<button type="submit">@unreadNum unread</button><br>
+}
+
+
+    <h2>Task Name: @task.taskName </h2>
+    <h2> Description: @task.content </h2>
+    <h2> Status: @task.status </h2>
+
+
+if(task.status.equals("Doing")) {
+@helper.form(routes.Application.markTaskAsDone()) {
+<button type="submit">Turn status to Done</button><br>
+}
+} else {
+@helper.form(routes.Application.markTaskAsDoing()) {
+<button type="submit">Turn status to Doing</button><br>
+}
+
+}
+
+
+<ul>
+    @for(comment <- comments) {
+
+
+    <h3> <strong>@comment.ownerName:</strong>  @comment.content</h3>
+
+    }
+</ul>
+
+    @helper.form(routes.Application.createComment(task.taskId)) {
+    <textarea name="content" cols="40" rows="5" placeholder=""></textarea>
+    <button type="submit">Comment</button><br>
+    }
+
+@helper.form(routes.Application.teamPage(teamName)) {
+<button type="submit">Go back</button><br>
+}
+
+
+
+
+
+}
