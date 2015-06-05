@@ -27,7 +27,7 @@
     <div class="container">
         <h1 align="center">Welcome to Distraction Blocker</h1>
         
-        <div class="well row"> 
+        <div class="row-fluid" id="login-div"> 
             <div class="well well-small span4 offset4" align="center">
             @helper.form(routes.Application.logIn()) {
                <input name="email" placeholder="Email Address"> <br>
@@ -38,8 +38,6 @@
                <button class="icon-cog-2" type="submit"> Register</button>
             }
             </div>
-        
-            
         </div>
     </div>
 </body>

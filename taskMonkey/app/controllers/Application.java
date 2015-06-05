@@ -4,6 +4,8 @@ import models.*;
 import play.data.*;
 
 import play.mvc.*;
+
+import java.sql.Timestamp;
 import java.util.*;
 import play.mvc.Result;
 import play.mvc.Results;
@@ -16,6 +18,9 @@ public class Application extends Controller {
     private static User currentUser;
     private static Team currentTeam;
     private static Task currentTask;
+    private static Post currentPost;
+    private static Event currentEvent;
+
 
     // index to landing page by default
     public static Result index() {
@@ -93,7 +98,8 @@ public class Application extends Controller {
         currentTeam = teams.get(0);
         currentTask = null;
         List<Task> tasks = Task.getTasksWithTeamName(teamName);
-        return ok(teamPage.render(teamName, teams, tasks, getUnreadNum()));
+        List<Post> posts = Post.getPostsWithTeamName(teamName);
+        return ok(teamPage.render(teamName, teams, tasks, posts, getUnreadNum()));
     }
 
     public static Result createTeam() {
@@ -135,11 +141,28 @@ public class Application extends Controller {
         return redirect(routes.Application.teamPage(currentTeam.getTeamName()));
     }
 
+    public static Result createPost() {
+        play.data.Form<Post> postForm = play.data.Form.form(Post.class);
+        Post post = postForm.bindFromRequest().get();
+        if(!Post.emptyPost(post)) {
+            Post.createPost(post, currentTeam, currentUser);
+        }
+        //Unread.createUnreadTask(task, currentTeam, currentUser);
+        return redirect(routes.Application.teamPage(currentTeam.getTeamName()));
+    }
+
     public static Result taskPage(String taskName) {
         List<Task> tasks = Task.getTasksWithTaskName(taskName);
         currentTask = tasks.get(0);
         List<Comment> comments = Comment.findComments(taskName);
         return ok(taskPage.render(currentTask, comments, currentTeam.getTeamName(), getUnreadNum()));
+    }
+    
+    public static Result postPage(String postName) {
+        List<Post> posts = Post.getPostsWithPostName(postName);
+        currentPost = posts.get(0);
+        List<Comment> comments = Comment.findComments(postName);
+        return ok(postPage.render(currentPost, comments, currentTeam.getTeamName(), getUnreadNum()));
     }
 
         public static Result markTaskAsDone() {
@@ -169,6 +192,10 @@ public class Application extends Controller {
 
     public static Result unreadPage() {
         return ok(unreadPage.render(getUnreadComments(), getUnreadTasks()));
+    }
+    
+    public static Result test() {
+        return ok(test.render());
     }
 
     public static List<Comment> getUnreadComments() {
@@ -202,13 +229,51 @@ public class Application extends Controller {
     }
 
     public static Result createEvent() {
-        return ok("to do");
+        play.data.Form<Event> eventForm = play.data.Form.form(Event.class);
+        Event event = eventForm.bindFromRequest().get();
+
+        if (!Event.emptyEvent(event)) {
+            if (event.checkTime(event.getStartTimeString(), event.getEndTimeString())) {
+                Event.createEvent(event, currentUser);
+                currentEvent = event;
+                return redirect(routes.Application.eventPage(event.getId()));
+            }
+        }
+        return redirect(routes.Application.createEventPage());
+    }
+
+    public static Result eventPage(Long id) {
+        return ok(eventPage.render(Event.getEventWithId(id), Event.findEvents(currentEvent.getEventName())));
     }
 
     public static Result addUserToEvent() {
-        return ok("to do");
+        User user = getUser();
+        if(User.checkUserEmail(user)) {
+            if(User.userEmailExists(user) && User.userNotInTheEvent(user, currentEvent)) {
+                Event.addUser(user, currentEvent);
+            }
+        }
+        return redirect(routes.Application.eventPage(currentEvent.getId()));
     }
 
+
+
+
+    
+    public static Result profile() {
+        User user = getUser();
+        if(User.validate(user)) {
+            currentUser = User.findUser(user);
+        }
+        return ok(profile.render(currentUser));
+    }
+
+    public static Result deleteUserFromEvent(String involvedEmail) {
+        /*@helper.form(routes.Application.deleteUserFromEvent(event.involvedEmail)) {
+            <button class="delete">x</button>
+        }*/
+        return ok("To DO");
+    }
 
 
 }

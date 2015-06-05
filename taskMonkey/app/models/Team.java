@@ -60,7 +60,6 @@ public class Team extends Model{
 
     public static List<Team> findTeams(String teamName) {
         return find.where().eq("teamName", teamName).findList();
-
     }
 
     public static boolean teamNameEmpty(Team team) {

@@ -1,0 +1,26 @@
+@(event: Event, events : java.util.List[Event])
+
+<div class="container well" align="center">
+    <h2>Event Name: @event.eventName </h2>
+    <h2> Description: @event.content </h2>
+    <h2> Start Time: @event.startTimeString</h2>
+    <h2> End Time: @event.endTimeString</h2>
+    <h2> Created by @event.ownerName</h2>
+</div>
+
+@for(event <- events) {
+
+<li class="list-group-item">
+    <button class="list-button" type="submit">
+        @event.involvedEmail
+    </button>
+
+</li>
+
+}
+
+
+@helper.form(routes.Application.addUserToEvent()) {
+<input name="email" placeholder="email address"><br>
+<button type="submit">Add</button><br>
+}

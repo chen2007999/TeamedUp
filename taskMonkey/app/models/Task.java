@@ -85,7 +85,7 @@ public class Task extends Model{
     public static void createTask(Task task, Team team, User user) {
         task.setTeamName(team.getTeamName());
         task.setInvolvedEmail(user.getEmail());
-        task.setStatus("Doing");
+        task.setStatus("In Progress");
         task.save();
     }
 

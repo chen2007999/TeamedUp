@@ -27,7 +27,7 @@
 <body>
     <div class="container">
         <h1 align="center">Create a new account</h1>
-        <div class="well row">
+        <div class="row-fluid" id="login-div">
             <div class="well well-small span4 offset4" align="center">
                
                 
@@ -37,11 +37,10 @@
                        <input name="password" placeholder="password"><br>
                        <input name="password2" placeholder="comfirm password"><br>
                        <input name="name" placeholder="name"><br>
-                       <button class="icon-key-2" type="submit"> Create</button><br>
+                       <button class="icon-key-2" type="submit"> Create</button>
                    }
-                
                    @helper.form(routes.Application.landing()) {
-                       <button type="submit">Go back</button><br>
+                       <button class="icon-back" type="submit"> Go back</button>
                    }
                </div>
            </div>

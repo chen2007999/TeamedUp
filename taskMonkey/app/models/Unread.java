@@ -3,6 +3,7 @@ package models;
 import com.avaje.ebean.bean.EntityBeanIntercept;
 import play.db.ebean.Model;
 
+import java.lang.Deprecated;
 import java.lang.Long;
 import java.util.*;
 import javax.persistence.*;
@@ -26,6 +27,9 @@ public class Unread extends Model{
 
     @Column(name = "taskId")
     public Long taskId;
+
+    @Column(name = "eventId")
+    public Long eventId;
 
     public void setCommentID(Long commentID) {
         this.commentID = commentID;
@@ -117,6 +121,10 @@ public class Unread extends Model{
     public static void updateUnreadTask(Long taskId) {
         Unread unread = find.where().eq("taskId", taskId).findList().get(0);
         unread.delete();
+    }
+
+    public static void createUnreadEvent(Event event, User user) {
+
     }
 
 }

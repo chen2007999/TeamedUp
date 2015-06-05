@@ -1,7 +1,8 @@
-@(user: models.User)
+@(post : Post, comments : java.util.List[Comment], teamName : String, unreadNum :Integer)
 
-<!DOCTYPE html>
-        <head>
+@main(post.postName) {
+
+    <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="@routes.Assets.at("stylesheets/style.css")" type="text/css">
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
@@ -15,6 +16,7 @@
         <div class="navbar-inner">
              
              <div class="row-fluid">
+             
                  <div class="span6">
                     <a class="brand" href="#">Distration Blocker</a>
                      <ul class="nav">
@@ -24,11 +26,17 @@
                  </div>
                  <div class="span6" align="right">
                      <div class="btn-group">
-                        <button class="btn active" href="#">Profile</button>
-                        <form action="/landing">
-                            <button class="btn" href="/landing">Logout</button> 
+                        <form action="/profile">
+                            <button class="btn" href="/profile">Profile</button>
                         </form>
-
+                        @helper.form(routes.Application.unreadPage()) {
+                            <button class="btn">@unreadNum unread</button>
+                        }
+                        @helper.form(routes.Application.landing()) {
+                            <button class="btn">Logout</button> 
+                        }
+                        
+                        
                      </div>
                 </div>
              </div>
@@ -36,31 +44,21 @@
           </div>
        </div>
     </head>
-    
-    <body class="fill">
-    <div class="container">
-        <div class="row-fluid" id="fill">
-            <br>
-            <div class="span4 offset4 well well-small">
-                <h1>Name: @user.name </h1>
-                <h2>E-mail: @user.email</h2>
-                <form action="" enctype="multipart/form-data" method="post">
-                    <p>
-                        Please upload a file:<br>
-                        <input type="file" name="datafile" size="40">
-                    </p>
-                    <div>
-                        <input type="submit" value="Send">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-        
-        <script type="text/javascript" src="@routes.Assets.at("javascripts/bootstrap.min.js")"></script>  
-        <script type="text/javascript" src="@routes.Assets.at("javascripts/bootmetro-panorama.js")"></script> 
-        <script type="text/javascript" src="@routes.Assets.at("javascripts/bootmetro-pivot.js")"></script> 
-        <script type="text/javascript" src="@routes.Assets.at("javascripts/bootmetro-charms.js")"></script> 
 
-    </body>
-</html>
+<div class="container well" align="center">
+    <h2>Post Name: @post.postName </h2>
+    @post.content
+</div>
+
+
+<div class="container well well-small">
+
+@helper.form(routes.Application.teamPage(teamName)) {
+<button type="submit">Go back</button><br>
+}
+</div>
+
+
+
+
+}

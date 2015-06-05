@@ -2,10 +2,14 @@ package models;
 
 import com.avaje.ebean.bean.EntityBeanIntercept;
 import play.db.ebean.Model;
+
+import java.awt.*;
 import java.util.*;
 import javax.persistence.*;
 import javax.persistence.Column;
 import java.lang.String;
+import java.util.EventListener;
+import java.util.List;
 import java.util.Queue;
 
 @Entity
@@ -111,9 +115,19 @@ public class User extends Model{
         return Team.find.where().eq("memberEmail", user.getEmail()).findList();
 
     }
-
     public static User findUser(User user) {
         return find.byId(user.getEmail());
     }
+
+    public static boolean userNotInTheEvent(User user, Event event) {
+        List<Event> events = Event.findEvents(event.getEventName());
+        for(Event eventMember : events) {
+            if(eventMember.getInvolvedEmail().equals(user.getEmail())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
 }

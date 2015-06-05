@@ -9,7 +9,10 @@
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-icons.css")">
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-ui-light.css")">
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/datepicker.css")">
-        <script src="@routes.Assets.at("javascripts/modernizr-2.6.2.min.js")"></script>
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootstrap/simple-sidebar.css")">
+        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.js")"></script>
+        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.min.js")"></script>
+        <script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
         <div id="nav-bar" class="navig" bgcolor="silver">
             <div class="row">
                 <div class="span9">
@@ -26,56 +29,59 @@
     </head>
     
     <body>
-        <div class="container">
-            <h1>Main header</h1>
-            <h2>Secondary headerk</h2>
-            <div class="row">
-                <div class="span4">
-                    <h3>Task 1</h3>
-                    <p>A little bit of text</p>
-                </div>
-                <div class="span4">
-                    <h3>Task 2</h3>
-                    <p>Even more dummy text</p>
-                </div>
-                <div class="span4">
-                    <h3>Task 3</h3>
-                    <p>Once more, some text</p>
-                </div>
-                <div class="span4">
-                    <h3>Task 4</h3>
-                    <p>Text text text text text text text text text text text text text text text text text text text</p>
-                </div>
-                 <div class="span4">
-                    <h3>Task 5</h3>
-                    <p>so muuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuch text here</p>
-                </div>
+        <div id="wrapper">
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav">
+                    <li class="sidebar-brand">
+                        <a href="#">
+                            Start Bootstrap
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="#">Shortcuts</a>
+                    </li>
+                    <li>
+                        <a href="#">Overview</a>
+                    </li>
+                    <li>
+                        <a href="#">Events</a>
+                    </li>
+                    <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
             </div>
+            <div id="page-content-wrapper">
+                <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+            </div>
+    
         </div>
-        <div class="metro">
-            <h1>Metro style DIV</h1>
-            <a class="tile squarepeek bg-color-green" href="http://google.com">
-                <img src="http://icons.iconarchive.com/icons/graphics-vibe/simple-rounded-social/256/google-icon.png">
-                <div class = "text-inner">
-                    <div class="text-header">Google.com</div>
-                    <div class="text4">This will take you to google</div>
-                </div>    
-            </a>
-            <a class="tile square text" href="http://facebook.com">
-                
-                    <div class="text-header">FB</div>
-                    <div class="text4">This will take you to facebook</div>
-               
-            </a>
-             <a class="tile wide text" href="#">
-                <div class="text-header">Wide tile</div>
-                <div class="text">Line 1</div>
-                <div class="text">Line 2</div>
-                <div class="text">Line 3</div>
-                <div class="text">Line 4</div>
-            </a>
-  
-        </div>
+        
+            <!-- jQuery -->
+        <script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
+    
+        <!-- Bootstrap Core JavaScript -->
+        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.min.js")"></script>
+    
+        <!-- Menu Toggle Script -->
+        <script>
+        $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+        </script>
+        
+    
+
         <script type="text/javascript" src="@routes.Assets.at("javascripts/bootstrap.min.js")"></script>  
         <script type="text/javascript" src="@routes.Assets.at("javascripts/bootmetro-panorama.js")"></script> 
         <script type="text/javascript" src="@routes.Assets.at("javascripts/bootmetro-pivot.js")"></script> 

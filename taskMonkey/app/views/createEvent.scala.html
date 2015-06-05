@@ -46,20 +46,18 @@
 <ul>
    @helper.form(routes.Application.createEvent()) {
                        <input name="eventName" placeholder="event name"><br>
-                       <input name="startTime" placeholder="start time"><br>
-                       <input name="endTime" placeholder="end time"><br>
+                       <h4>enter time in the format of yyyy-mm-dd hh:mm</h4>
+
+                       <input name="startTimeString" placeholder="start time"><br>
+
+                       <input name="endTimeString" placeholder="end time"><br>
+
                        <input name="location" placeholder="location"><br>
                        <textarea name="content" cols="40" rows="5" placeholder="description"></textarea>
-                       <h4>add all users before creating</h4>
-                       @helper.form(routes.Application.addUserToEvent()) {
-                           <input name="involvedEmail" placeholder="email address"><br>
-                           <button type="submit">Add</button><br>
-                       }
+
+
                        <button class="icon-key-2" type="submit"> Create</button><br>
    }
-
-
-
 
 
 </ul>

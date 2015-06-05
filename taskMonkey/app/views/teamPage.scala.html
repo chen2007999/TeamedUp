@@ -1,4 +1,4 @@
-@(teamName: String, teams : java.util.List[Team], tasks : java.util.List[Task], unreadNum : Integer)
+@(teamName: String, teams : java.util.List[Team], tasks : java.util.List[Task], posts : java.util.List[Post], unreadNum : Integer)
 
 @main(teamName) {
     <head>
@@ -11,28 +11,30 @@
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-ui-light.css")">
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/datepicker.css")">
         <script src="@routes.Assets.at("javascripts/modernizr-2.6.2.min.js")"></script>
-        <div class="navbar">
+        <div class="navbar navbar-static-top">
         <div class="navbar-inner">
              
              <div class="row-fluid">
              
                  <div class="span6">
-                    <a class="brand" href="#">Distration Blocker</a>
+                    <a class="brand" href="/landing">Distration Blocker</a>
                      <ul class="nav">
                         <li><a href="/landing">Home</a></li>
-                        <li class="active"><a href="#">Main Page</a></li>
+                        <li><a href="/mainPage">Main Page</a></li>
+                        <li class="active"><a href="#">@teamName</a></li>
                     </ul>
                  </div>
                  <div class="span6" align="right">
                      <div class="btn-group">
-                        @helper.form(routes.Application.landing()) {
-                            <button class="btn">Logout</button> 
-                        }
+                        <form action="/profile">
+                            <button class="btn" href="/profile">Profile</button>
+                        </form>
                         @helper.form(routes.Application.unreadPage()) {
                             <button class="btn">@unreadNum unread</button>
                         }
-                        @helper.form(routes.Application.createEventPage()) {
-                            <button type="submit">Create an Event</button><br>
+
+                        @helper.form(routes.Application.landing()) {
+                            <button class="btn">Logout</button> 
                         }
                         
                      </div>
@@ -42,48 +44,110 @@
           </div>
        </div>
     </head>
+    
+<body>
+<div class="container" id="fill">
+<h1 align="center">Team: @teamName</h1>
 
-
-
-<h1>@teamName</h1>
-<ul>
-    @for(team <- teams) {
-
-    <li>Email Address: @team.memberEmail
-        @helper.form(routes.Application.deleteUserFromTeam(team.memberEmail)) {
-        <button type="submit">Delete</button>
-        }
-    </li>
-    }
-    @helper.form(routes.Application.addUserToTeam(teamName)) {
-    <input name="email" placeholder="email address"><br>
-    <button type="submit">Add</button><br>
-    }
-</ul>
-
-@for(task <- tasks) {
-
-<li><h2>Task Name: @task.taskName </h2>
-    <h2> Description: @task.content </h2>
-    <h2> Status: @task.status </h2>
-    @helper.form(routes.Application.taskPage(task.taskName)) {
-       <button type="submit">Details</button>
-    }
-</li>
+@helper.form(routes.Application.createEventPage()) {
+<button type="submit">Create a new event</button><br>
 }
-<h1>                     </h1>
-
 
 @helper.form(routes.Application.taskCreationPage()) {
 <button type="submit">Create a new task</button><br>
 }
 
 
-@helper.form(routes.Application.mainPage()) {
-<button type="submit">Main Page</button><br>
-}
-@helper.form(routes.Application.landing()) {
-<button type="submit">Log out</button><br>
-}
+<div class="row-fluid" id="fill">
+    <div class="span4 well well-small div-list" style="overflow-y: scroll;" id="fill">
+        <ul class="list-group">
+            <li class="list-group-item"><h2>Team members:</h2></li>
+        @for(team <- teams) {
+            
+            <li class="list-group-item">
+                <button class="list-button" type="submit">
+                    @team.memberEmail
+                </button>
+                @helper.form(routes.Application.deleteUserFromTeam(team.memberEmail)) {
+                <button class="delete">x</button>
+                }
+            </li>
+           
+        }
+        @helper.form(routes.Application.addUserToTeam(teamName)) {
+            <input name="email" placeholder="email address"><br>
+            <button type="submit">Add a member</button><br>
+        }
+        </ul>
 
+    </div>
+    <div class="span8 metro well well-small" style="overflow-y: scroll;" id="fill">
+    
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Create a new team</h4>
+          </div>
+          <div class="modal-body">
+              <div class="row-fluid">
+                    <div class="span4 offset4" align="center">
+                        @helper.form(routes.Application.createTask()) {
+                            <input name="taskName" placeholder="task name" id="text-inmodal"><br>
+                            <textarea name="content" cols="40" rows="5" placeholder="description" id="text-inmodal"></textarea> <br>
+                            <button type="submit">Create</button><br>
+                        }
+                        @helper.form(routes.Application.createPost()) {
+                            <input name="postName" placeholder="post name" id="text-inmodal"><br>
+                            <textarea name="content" cols="40" rows="5" placeholder="description" id="text-inmodal"></textarea> <br>
+                            <button type="submit">Create</button><br>
+                        }
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <button class="win-command orange add-team" type="button" data-toggle="modal" data-target="#myModal" rel="tooltip" title="Add a new team">
+        <span class="win-commandimage win-commandring"><img src="@routes.Assets.at("images/plus.png")"></span>
+    </button>    
+    
+    
+    
+    
+        @for(task <- tasks) {
+            <a class="tile square text tilesquareblock" href="/taskPage/@task.taskName">
+                <div class="text">@task.taskName</div>
+                <div class="text">@task.content</div>
+                <div class="text">Status: @task.status</div>
+            </a>
+        }
+        
+        @for(post <- posts) {
+            <a class="tile square text tilesquareblock" href="/postPage/@post.postName">
+                <div class="text">@post.postName</div>
+                <div class="text">@post.content</div>
+            </a>
+        }
+    </div>
+</div>
+</body>
+   
+
+            <!-- jQuery -->
+        <script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
+    
+        <!-- Bootstrap Core JavaScript -->
+        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.min.js")"></script>
+    
+
+
+</div>
 }

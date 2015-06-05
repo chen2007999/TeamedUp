@@ -1,15 +1,21 @@
 @(team: models.Team, unreadNum: Integer)
 
 @main("Create a new Task") {
-
-@helper.form(routes.Application.unreadPage()) {
-<button type="submit">@unreadNum unread</button><br>
-}
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/style.css")" type="text/css">
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-responsive.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-icons.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-ui-light.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/datepicker.css")">
+        <script src="@routes.Assets.at("javascripts/modernizr-2.6.2.min.js")"></script>
+    </head>
 
 @helper.form(routes.Application.createTask()) {
-<input name="taskName" placeholder="task name"><br>
-
-<textarea name="content" cols="40" rows="5" placeholder="description"></textarea>
+<input type="text" name="taskName" placeholder="task name"><br>
+<textarea name="content" cols="40" rows="5" placeholder="description"></textarea> <br>
 <button type="submit">Create</button><br>
 }
 

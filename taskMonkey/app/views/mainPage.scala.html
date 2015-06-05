@@ -13,11 +13,13 @@
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-ui-light.css")">
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/datepicker.css")">
         <script src="@routes.Assets.at("javascripts/modernizr-2.6.2.min.js")"></script>
+        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.js")"></script>
+        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.min.js")"></script>
+        <script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
         <div class="navbar">
         <div class="navbar-inner">
              
              <div class="row-fluid">
-             
                  <div class="span6">
                     <a class="brand" href="#">Distration Blocker</a>
                      <ul class="nav">
@@ -27,13 +29,16 @@
                  </div>
                  <div class="span6" align="right">
                      <div class="btn-group">
-                        @helper.form(routes.Application.landing()) {
-                            <button class="btn">Logout</button> 
-                        }
-                        @helper.form(routes.Application.unreadPage()) {
-                            <button class="btn">@unreadNum unread</button>
-                        }
-                        
+                        <form action="/profile">
+                            <button class="btn" href="/profile">Profile</button>
+                        </form>
+                        <form action="/unreadPage">
+                            <button class="btn" href="/unreadPage">@unreadNum unread</button>
+                        </form>
+                        <form action="/landing">
+                            <button class="btn" href="/landing">Logout</button> 
+                        </form>
+
                      </div>
                 </div>
              </div>
@@ -42,24 +47,55 @@
        </div>
     </head>
 
-<div class="row-fluid">
-    <div class="span4 offset4" align="center">
-        @helper.form(routes.Application.createTeam()) {
-            <input name="teamName" placeholder="team name"><br>
-            <button type="submit">Create a new team</button><br>
-        }
-    </div>
-</div>
 
-<div class="metro">
+
+<div class="metro well well-small teams" id="fill">
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Create a new team</h4>
+      </div>
+      <div class="modal-body">
+          <div class="row-fluid">
+                <div class="span4 offset4" align="center">
+                    @helper.form(routes.Application.createTeam()) {
+                        <input type="text" name="teamName" placeholder="team name"><br>
+                        <button type="submit">Create</button><br>
+                    }
+                </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    <button class="win-command orange add-team" type="button" data-toggle="modal" data-target="#myModal" rel="tooltip" title="Add a new team">
+        <span class="win-commandimage win-commandring"><img src="@routes.Assets.at("images/plus.png")"></span>
+    </button>
     @for(team <- teams) {
-        <a class="tile square text tilesquareblock" href="/teamPage/@team.teamName">
-            <div class="text-big">@team.teamName</div>
+        <a class="tile wide text" href="/teamPage/@team.teamName">
+        
+                <div class="text-header">
+                    @team.teamName
+                </div>
+            
         </a>
     }
 </div>
 
-
+            <!-- jQuery -->
+        <script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
+    
+        <!-- Bootstrap Core JavaScript -->
+        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.min.js")"></script>
+    
 
 
 
