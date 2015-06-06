@@ -13,6 +13,7 @@ import views.html.*;
 
 import java.lang.String;
 
+
 public class Application extends Controller {
 
     private static User currentUser;
@@ -20,7 +21,10 @@ public class Application extends Controller {
     private static Task currentTask;
     private static Post currentPost;
     private static Event currentEvent;
-
+    private static List<User> eventUserList = new ArrayList<User>();
+    
+    
+    
 
     // index to landing page by default
     public static Result index() {
@@ -40,9 +44,16 @@ public class Application extends Controller {
 
     // methods deal with user account
     public static  Result createUser() {
+        
         User user = getUser();
-        if(User.checkNull(user) || User.checkEmpty(user) || !User.checkPasswordConsistency(user)) {
-            return redirect(routes.Application.register());
+        if(User.checkNull(user) || User.checkEmpty(user)){
+            return redirect(routes.Application.register("Empty details"));
+        } else if(!user.emailFormat()){
+            return redirect(routes.Application.register("Wrong email format"));
+        } else if(!User.checkPasswordConsistency(user)){
+            return redirect(routes.Application.register("Passwords do not match"));
+        } else if(User.userEmailExists(user)){
+            return redirect(routes.Application.register("User with email " + user.email + " already exists"));
         }
         User.createUser(user);
         return redirect(routes.Application.displayAllUsersFromDB());
@@ -54,7 +65,7 @@ public class Application extends Controller {
     }
 
     public static  Result displayAllUsersFromDB() {
-        return ok(registration.render(User.find.findList()));
+        return ok(registration.render(User.find.findList(), ""));
     }
 
     public static Result logIn() {
@@ -66,8 +77,8 @@ public class Application extends Controller {
         return ok(landing.render());
     }
 
-    public  static Result register() {
-        return ok(registration.render(User.find.findList()));
+    public  static Result register(String error) {
+        return ok(registration.render(User.find.findList(), error));
     }
 
     public static Result resetPassword() {
@@ -91,6 +102,8 @@ public class Application extends Controller {
     }
 
     public static Result teamPage(String teamName) {
+        eventUserList.clear();
+        eventUserList.add(currentUser);
         List<Team> teams = Team.findTeams(teamName);
         if(teams.size() == 0) {
             return redirect(routes.Application.mainPage());
@@ -109,6 +122,16 @@ public class Application extends Controller {
             Team.createTeam(team, currentUser);
         }
         return redirect(routes.Application.mainPage());
+    }
+    
+    public static Result updateImage(){
+        play.data.Form<String> userForm = play.data.Form.form(String.class);
+        String newimg = userForm.bindFromRequest().get();
+        if(newimg == null){
+            newimg = "http://www.filecluster.com/howto/wp-content/uploads/2014/07/User-Default.jpg";
+        }
+        currentUser.setImage(newimg);
+        return redirect(routes.Application.profile());
     }
 
     public static Result addUserToTeam(String teamName) {
@@ -166,12 +189,12 @@ public class Application extends Controller {
     }
 
         public static Result markTaskAsDone() {
-            Task.updateStatus(currentTask, "Done");
+            Task.updateStatus(currentTask, "Complete");
             return redirect(routes.Application.teamPage(currentTeam.getTeamName()));
         }
 
         public static Result markTaskAsDoing() {
-            Task.updateStatus(currentTask, "Doing");
+            Task.updateStatus(currentTask, "In Progress");
             return redirect(routes.Application.taskPage(currentTask.getTaskName()));
         }
 
@@ -225,39 +248,66 @@ public class Application extends Controller {
     }
 
     public static Result createEventPage() {
-        return ok(createEvent.render(getUnreadNum()));
+        return ok("");
+        //return ok(createEvent.render(getUnreadNum()));
     }
 
-    public static Result createEvent() {
+    public static Result createEvent(String startTime, String availableHours) {
         play.data.Form<Event> eventForm = play.data.Form.form(Event.class);
         Event event = eventForm.bindFromRequest().get();
-
-        if (!Event.emptyEvent(event)) {
-            if (event.checkTime(event.getStartTimeString(), event.getEndTimeString())) {
-                Event.createEvent(event, currentUser);
-                currentEvent = event;
-                return redirect(routes.Application.eventPage(event.getId()));
-            }
+        Timestamp start = Timestamp.valueOf(startTime + ":00.0");
+        event.setStartTime(start);
+        if (!Event.emptyEvent(event) && !Event.nullEvent(event)) {
+            //if (event.checkTime(event.getStartTimeString(), event.getEndTimeString())) {
+                Event.createEvent(event, currentUser, eventUserList);
+                //currentEvent = event;
+            eventUserList.clear();
+            eventUserList.add(currentUser);
+                return ok(popUp.render(currentTeam.getTeamName()));
+            //}
         }
-        return redirect(routes.Application.createEventPage());
+        return ok(createEvent.render(getUnreadNum(), startTime, availableHours));
+       // return ok("todo");
     }
 
-    public static Result eventPage(Long id) {
-        return ok(eventPage.render(Event.getEventWithId(id), Event.findEvents(currentEvent.getEventName())));
+    public static Result eventPage() {
+        return ok(eventPage.render(eventUserList, currentTeam.getTeamName()));
+    }
+
+    private static boolean userNotInTheEventList(User user) {
+        String email = user.getEmail();
+        for(User u : eventUserList) {
+            if(u.getEmail().equals(email)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static Result addUserToEvent() {
         User user = getUser();
         if(User.checkUserEmail(user)) {
-            if(User.userEmailExists(user) && User.userNotInTheEvent(user, currentEvent)) {
-                Event.addUser(user, currentEvent);
+            if(User.userEmailExists(user) && userNotInTheEventList(user)) {
+                eventUserList.add(user);
             }
         }
-        return redirect(routes.Application.eventPage(currentEvent.getId()));
+        return redirect(routes.Application.eventPage());
     }
 
 
+    public static Result commonTimeList() {
+        List<TimePair> tp = Event.findWeeklyCommonFreetime(eventUserList, Event.currentDate());
+        List<String> s = Event.timeListToString(tp);
+        return ok(commonTime.render(s));
+    }
 
+    public static Result chooseCommonTime(String slotChosen) {
+        String startTime = slotChosen.substring(0, 16);
+        Long availableHours = Event.getValue(slotChosen.substring(35, 37))
+                - Event.getValue(slotChosen.substring(11, 13));
+        String availableHoursString = availableHours.toString();
+        return ok(createEvent.render(getUnreadNum(), startTime, availableHoursString));
+    }
 
     
     public static Result profile() {
@@ -268,13 +318,24 @@ public class Application extends Controller {
         return ok(profile.render(currentUser));
     }
 
-    public static Result deleteUserFromEvent(String involvedEmail) {
-        /*@helper.form(routes.Application.deleteUserFromEvent(event.involvedEmail)) {
-            <button class="delete">x</button>
-        }*/
-        return ok("To DO");
+    public static Result deleteUserFromEventList(String email) {
+        User u = new User();
+        for(User user : eventUserList) {
+            if(user.getEmail().equals(email)) {
+                u = user;
+            }
+        }
+        eventUserList.remove(u);
+        return ok(eventPage.render(eventUserList, currentTeam.getTeamName()));
     }
 
+
+
+    /*<h2>Event Name: @event.eventName </h2>
+    <h2> Description: @event.content </h2>
+    <h2> Start Time: @event.startTimeString</h2>
+    <h2> End Time: @event.endTimeString</h2>
+    <h2> Created by @event.ownerName</h2>*/
 
 }
 

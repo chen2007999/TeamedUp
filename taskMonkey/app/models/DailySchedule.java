@@ -44,20 +44,15 @@ public class DailySchedule extends Model{
 
     public static Finder<Long, DailySchedule> find = new Finder<>(Long.class, DailySchedule.class);
 
-    public static String newDate(String date) {
-        return date.substring(0, 4) + date.substring(5, 7) +
-                date.substring(8, 10);
-    }
-
     public static List<Event> findDailySchedule(User user) {
        String date = Event.currentTime().toString();
-       String newDate = newDate(date);
+       String newDate = Event.getDate(date);
        return Event.find.where().eq("ownerName", user.getName()).eq("date", Event.getValue(newDate)).findList();
     }
 
     public static void addDailySchedule(User user, Event event) {
         DailySchedule ds = new DailySchedule();
-        ds.setDate(Event.getValue(newDate(event.getStartTimeString())));
+        ds.setDate(Event.getValue(Event.getDate(Event.getDate(event.getStartTime().toString()))));
         ds.setEventId(event.getId());
         ds.setOwnerName(user.getName());
         ds.save();

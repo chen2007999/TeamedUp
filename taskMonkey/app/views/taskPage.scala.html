@@ -12,13 +12,16 @@
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-ui-light.css")">
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/datepicker.css")">
         <script src="@routes.Assets.at("javascripts/modernizr-2.6.2.min.js")"></script>
+                <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.js")"></script>
+        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.min.js")"></script>
+        <script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
         <div class="navbar">
         <div class="navbar-inner">
              
              <div class="row-fluid">
              
                  <div class="span6">
-                    <a class="brand" href="#">Distration Blocker</a>
+                    <a class="brand" href="#">Barbecrew</a>
                      <ul class="nav">
                         <li><a href="/landing">Home</a></li>
                         <li class="active"><a href="#">Main Page</a></li>
@@ -49,28 +52,40 @@
     <h2>Task Name: @task.taskName </h2>
     <h2> Description: @task.content </h2>
     <h2> Status: @task.status </h2>
+    @if(task.status.equals("In Progress")){
+        @helper.form(routes.Application.markTaskAsDone()) {
+          <button type="submit">Complete task</button>  
+        }
+    } else {
+        @helper.form(routes.Application.markTaskAsDoing()) {
+          <button type="submit">In progress</button>  
+        }
+    }
 </div>
 
 
 <div class="container well well-small">
     @for(comment <- comments) {
-
-
-    <h3> <strong>@comment.ownerName:</strong>  @comment.content</h3>
-
+    <div id="comm">
+        <img class="img-circle" src=@User.getImageByEmail(comment.ownerEmail) id="img-comment">
+        <h3 id="comment"> <strong>@comment.ownerName:</strong>  @comment.content</h3>
+    </div>
     }
 
 
     @helper.form(routes.Application.createComment(task.taskId)) {
-    <textarea name="content" cols="40" rows="5" placeholder=""></textarea>
+    <textarea class="messageTextarea" name="content" cols="40" rows="5" placeholder=""></textarea>
     <button type="submit">Comment</button><br>
+
     }
 
 @helper.form(routes.Application.teamPage(teamName)) {
 <button type="submit">Go back</button><br>
 }
+<script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
 </div>
 
+        
 
 
 

@@ -44,11 +44,23 @@ public class User extends Model{
 
     @Column(name = "name")
     public String name;
-
+    
+    @Column(name = "image")
+    public String image;
 
     public String getName() {
         return name;
     }
+    
+    public String getImage() {
+        return image;
+    }
+    
+    public void setImage(String image) {
+        this.image = image;
+        this.save();
+    }
+
 
     public void setName(String name) {
         this.name = name;
@@ -65,6 +77,12 @@ public class User extends Model{
     public static boolean checkUserEmail(User user) {
         return !user.getEmail().equals("") && user.getEmail() != null;
     }
+    
+    public boolean emailFormat(){
+        if(!email.contains("@")) return false;
+        else if(!email.substring(email.indexOf("@")).contains(".")) return false;
+        return true;
+    }
 
     public static boolean checkEmpty(User user) {
         return user.getEmail().equals("") || user.getPassword().equals("")
@@ -77,6 +95,7 @@ public class User extends Model{
     }
 
     public static void createUser(User user) {
+        user.setImage("http://www.filecluster.com/howto/wp-content/uploads/2014/07/User-Default.jpg");
         user.save();
     }
 
@@ -115,8 +134,13 @@ public class User extends Model{
         return Team.find.where().eq("memberEmail", user.getEmail()).findList();
 
     }
+    
     public static User findUser(User user) {
         return find.byId(user.getEmail());
+    }
+    
+    public static String getImageByEmail(String email){
+        return find.byId(email).image;
     }
 
     public static boolean userNotInTheEvent(User user, Event event) {

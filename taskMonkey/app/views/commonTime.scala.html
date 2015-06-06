@@ -1,0 +1,25 @@
+@(commonTimeList : java.util.List[String])
+
+@main("Choose Time") {
+
+<div class="container well" align="center">
+    <h2>Below are the time slots when all the members are free, choose one for your event</h2>
+</div>
+
+@for(slot <- commonTimeList) {
+
+<li class="list-group-item">
+    <button class="list-button" type="submit">
+    </button>
+    @helper.form(routes.Application.chooseCommonTime(slot)) {
+    <button class="delete">@slot</button>
+    }
+</li>
+
+}
+
+@helper.form(routes.Application.eventPage()) {
+<button type="submit">Go back</button><br>
+}
+
+}

@@ -21,7 +21,7 @@
              
              <div class="row-fluid">
                  <div class="span6">
-                    <a class="brand" href="#">Distration Blocker</a>
+                    <a class="brand" href="#">Not Barbecrew</a>
                      <ul class="nav">
                         <li><a href="/landing">Home</a></li>
                         <li class="active"><a href="#">Main Page</a></li>
@@ -50,31 +50,31 @@
 
 
 <div class="metro well well-small teams" id="fill">
-
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Create a new team</h4>
-      </div>
-      <div class="modal-body">
-          <div class="row-fluid">
-                <div class="span4 offset4" align="center">
-                    @helper.form(routes.Application.createTeam()) {
-                        <input type="text" name="teamName" placeholder="team name"><br>
-                        <button type="submit">Create</button><br>
-                    }
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Create a new team</h4>
+          </div>
+          <div class="modal-body">
+              <div class="row-fluid">
+                    <div class="span4 offset4" align="center">
+                        @helper.form(routes.Application.createTeam()) {
+                            <input type="text" name="teamName" placeholder="team name"><br>
+                            <button type="submit">Create</button><br>
+                        }
+                    </div>
                 </div>
-            </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
     
     <button class="win-command orange add-team" type="button" data-toggle="modal" data-target="#myModal" rel="tooltip" title="Add a new team">
         <span class="win-commandimage win-commandring"><img src="@routes.Assets.at("images/plus.png")"></span>

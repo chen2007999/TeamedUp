@@ -25,10 +25,15 @@
                 </div>
             </div>
         </div>
-        
+                <div class="alert">
+          <button type="button" class="close" data-dismiss="alert"><a class="close" data-dismiss="alert" href="#"></a></button>
+          <strong>Warning!</strong> Best check yo self, you're not looking too good.
+        </div>
+        <script>$(".alert").alert()</script>
     </head>
     
     <body>
+        
         <div id="wrapper">
             <div id="sidebar-wrapper">
                 <ul class="sidebar-nav">
@@ -64,6 +69,23 @@
                 <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
             </div>
     
+    
+            <ul class="nav nav-tabs" role="tablist" id="myTab">
+              <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
+              <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
+
+            </ul>
+            
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane fade in active" id="home">Homes</div>
+              <div role="tabpanel" class="tab-pane fade" id="profile">Profile</div>
+            </div>
+            
+            <script>
+              $(function () {
+                $('#myTab a:last').tab('show')
+              })
+            </script>
         </div>
         
             <!-- jQuery -->

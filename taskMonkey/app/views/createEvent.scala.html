@@ -1,4 +1,4 @@
-@(unreadNum : Integer)
+@(unreadNum : Integer, startTime : String, availableHours : String)
 
 @main("Event") {
 <head>
@@ -17,7 +17,7 @@
              <div class="row-fluid">
 
                  <div class="span6">
-                    <a class="brand" href="#">Distration Blocker</a>
+                    <a class="brand" href="#">Barbecrew</a>
                      <ul class="nav">
                         <li><a href="/landing">Home</a></li>
                         <li class="active"><a href="#">Main Page</a></li>
@@ -44,13 +44,11 @@
 
 <h1>Create a new event</h1>
 <ul>
-   @helper.form(routes.Application.createEvent()) {
+   @helper.form(routes.Application.createEvent(startTime, availableHours)) {
                        <input name="eventName" placeholder="event name"><br>
-                       <h4>enter time in the format of yyyy-mm-dd hh:mm</h4>
+                       <h4>enter the duration of the event starts on @startTime, there are @availableHours hour(s) available</h4>
 
-                       <input name="startTimeString" placeholder="start time"><br>
-
-                       <input name="endTimeString" placeholder="end time"><br>
+                       <input name="duration" placeholder="duration(hours)"><br>
 
                        <input name="location" placeholder="location"><br>
                        <textarea name="content" cols="40" rows="5" placeholder="description"></textarea>

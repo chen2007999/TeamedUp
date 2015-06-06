@@ -17,7 +17,7 @@
              <div class="row-fluid">
              
                  <div class="span6">
-                    <a class="brand" href="/landing">Distration Blocker</a>
+                    <a class="brand" href="/landing">Barbecrew</a>
                      <ul class="nav">
                         <li><a href="/landing">Home</a></li>
                         <li><a href="/mainPage">Main Page</a></li>
@@ -49,14 +49,9 @@
 <div class="container" id="fill">
 <h1 align="center">Team: @teamName</h1>
 
-@helper.form(routes.Application.createEventPage()) {
+@helper.form(routes.Application.eventPage()) {
 <button type="submit">Create a new event</button><br>
 }
-
-@helper.form(routes.Application.taskCreationPage()) {
-<button type="submit">Create a new task</button><br>
-}
-
 
 <div class="row-fluid" id="fill">
     <div class="span4 well well-small div-list" style="overflow-y: scroll;" id="fill">
@@ -81,16 +76,77 @@
         </ul>
 
     </div>
-    <div class="span8 metro well well-small" style="overflow-y: scroll;" id="fill">
+    <div class="span8 well well-small" style="overflow-y: scroll;" id="fill">
     
     
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    
+    
+    <button class="win-command orange add-team" type="button" data-toggle="modal" data-target="#myModal" rel="tooltip" title="Add a new team">
+        <span class="win-commandimage win-commandring"><img src="@routes.Assets.at("images/plus.png")"></span>
+    </button>    
+        
+            <ul class="nav nav-tabs" role="tablist" id="myTab">
+              <li role="presentation" class="active">
+                <a id="ontop" href="#tasks" aria-controls="tasks" role="tab" data-toggle="tab">Tasks</a>
+              </li>
+              <li role="presentation">
+                <a id="ontop" href="#posts" aria-controls="posts" role="tab" data-toggle="tab">Posts</a>  
+              </li>
+            </ul>
+            
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane fade in active" id="tasks">
+                <div class="metro">
+                    @for(task <- tasks) {
+                        @defining(if (task.status.equals("In Progress")) "bg-color-green" else "bg-color-blue") { color =>
+                            <a class="tile square text tilesquareblock @color" href="/taskPage/@task.taskName">
+                                <div class="text">@task.taskName</div>
+                                
+                                @defining(if (task.content.length() > 9) task.content.substring(0,8) + "..." else task.content) { cont =>
+                                <div class="text">@cont</div>
+                                }
+                                
+                                <div class="text">Status: @task.status</div>
+                            </a>    
+                        }
+                        
+                    }              
+                </div>
+              </div>
+              <div role="tabpanel" class="tab-pane fade" id="posts">
+                <div class="metro">
+                    @for(post <- posts) {
+                        <a class="tile square text tilesquareblock bg-color-purple" href="/postPage/@post.postName">
+                            <div class="text">Post:</div>
+                            <div class="text">@post.postName</div>
+                            @defining(if (post.content.length() > 9) post.content.substring(0,8) + "..." else post.content) { cont =>
+                                <div class="text">@cont</div>
+                            }
+                        </a>
+                    }
+                </div>
+              </div>
+            </div>
+            
+            <script>
+              $(function () {
+                $('#myTab a:last').tab('show')
+              })
+            </script>
+    
+        
+        
+
+    </div>
+</div>
+
+<!-- Modal -->
+    <div class="modal hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Create a new team</h4>
+            <h4 class="modal-title" id="myModalLabel">Create</h4>
           </div>
           <div class="modal-body">
               <div class="row-fluid">
@@ -114,30 +170,6 @@
         </div>
       </div>
     </div>
-    
-    <button class="win-command orange add-team" type="button" data-toggle="modal" data-target="#myModal" rel="tooltip" title="Add a new team">
-        <span class="win-commandimage win-commandring"><img src="@routes.Assets.at("images/plus.png")"></span>
-    </button>    
-    
-    
-    
-    
-        @for(task <- tasks) {
-            <a class="tile square text tilesquareblock" href="/taskPage/@task.taskName">
-                <div class="text">@task.taskName</div>
-                <div class="text">@task.content</div>
-                <div class="text">Status: @task.status</div>
-            </a>
-        }
-        
-        @for(post <- posts) {
-            <a class="tile square text tilesquareblock" href="/postPage/@post.postName">
-                <div class="text">@post.postName</div>
-                <div class="text">@post.content</div>
-            </a>
-        }
-    </div>
-</div>
 </body>
    
 

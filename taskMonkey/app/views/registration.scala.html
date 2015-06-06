@@ -1,7 +1,5 @@
-@(users: java.util.List[models.User])
+@(users: java.util.List[models.User], error: String)
 <!DOCTYPE html>
-
-@main("Create an account") {
 
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,34 +11,50 @@
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-ui-light.css")">
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/datepicker.css")">
         <script src="@routes.Assets.at("javascripts/modernizr-2.6.2.min.js")"></script>
+        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.js")"></script>
+        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.min.js")"></script>
+        <script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
         <div class="navbar">
-        <div class="navbar-inner">
-             <a class="brand" href="#">Distration Blocker</a>
-             <ul class="nav">
-                <li><a href="/landing">Home</a></li>
-                <li class="active"><a href="#">Register</a></li>
-             </ul>
-          </div>
+            <div class="navbar-inner">
+                 <a class="brand" href="#">Barbecrew</a>
+                 <ul class="nav">
+                    <li><a href="/landing">Home</a></li>
+                    <li class="active"><a href="#">Register</a></li>
+                 </ul>
+            </div>
+            @if(error.length() >0){
+         <div class="alert">
+          <button type="button" class="close" data-dismiss="alert"><a data-dismiss="alert" href="#"></a></button>
+          <strong>Warning!</strong> There must have been an error in your entered details. Please try again. @error
+        </div>
+        <script>
+            $(".alert").alert()     
+        </script>
+        }
+                <script type="text/javascript" src="@routes.Assets.at("javascripts/bootstrap.min.js")"></script> 
        </div>
+       
     </head>
 
 <body>
+
+
     <div class="container">
+
         <h1 align="center">Create a new account</h1>
         <div class="row-fluid" id="login-div">
-            <div class="well well-small span4 offset4" align="center">
-               
-                
+        
+            <div class="well span4 offset4" align="center">
                 
                    @helper.form(routes.Application.createUser()) {
-                       <input name="email" placeholder="email address"><br>
-                       <input name="password" placeholder="password"><br>
-                       <input name="password2" placeholder="comfirm password"><br>
-                       <input name="name" placeholder="name"><br>
-                       <button class="icon-key-2" type="submit"> Create</button>
+                       <input name="email" placeholder="Email address"><br>
+                       <input name="password" placeholder="Password"><br>
+                       <input name="password2" placeholder="Comfirm password"><br>
+                       <input name="name" placeholder="Name"><br>
+                       <button type="submit">Create</button>
                    }
                    @helper.form(routes.Application.landing()) {
-                       <button class="icon-back" type="submit"> Go back</button>
+                       <button type="submit">Go back</button>
                    }
                </div>
            </div>
@@ -57,7 +71,16 @@
                
            </div>
     </div>
+                    <!-- jQuery -->
+        <script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
+    
+        <!-- Bootstrap Core JavaScript -->
+        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.min.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/bootstrap.min.js")"></script>  
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/bootmetro-panorama.js")"></script> 
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/bootmetro-pivot.js")"></script> 
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/bootmetro-charms.js")"></script> 
 </body>
-}
+
 
 </html>

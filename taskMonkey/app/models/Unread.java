@@ -37,7 +37,10 @@ public class Unread extends Model{
 
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
+    }
 
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
     }
 
     public void setTaskId(Long taskId) {
@@ -53,6 +56,13 @@ public class Unread extends Model{
     }
 
     public  static Finder<String, Unread> find = new Finder<>(String.class, Unread.class);
+
+    public static void createUnreadEvent(Event event, User user) {
+        Unread unread = new Unread();
+        unread.setUserEmail(user.getEmail());
+        unread.setEventId(event.getId());
+        unread.save();
+    }
 
     public static void createUnreadTask(Task task, Team team, User user) {
         Unread unread = new Unread();
@@ -123,7 +133,7 @@ public class Unread extends Model{
         unread.delete();
     }
 
-    public static void createUnreadEvent(Event event, User user) {
+    public static void updateUnreadEvent(Event event, User user) {
 
     }
 
