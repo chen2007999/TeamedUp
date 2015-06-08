@@ -1,0 +1,24 @@
+@(event : Event, date : String, startTime : String, endTime : String, events : java.util.List[Event])
+
+@main(event.eventName) {
+
+
+<h2>Event name: @event.eventName</h2>
+<h2>Creator: @event.ownerName</h2>
+<h2>Location: @event.location</h2>
+<h2>Date: @date</h2>
+<h2>Start time: @startTime</h2>
+<h2>End time: @endTime</h2>
+<h2>Description: @event.content</h2>
+
+<h2>Members: </h2>
+@for(e <- events) {
+   <h2>@e.involvedEmail</h2>
+}
+
+
+
+
+
+
+}

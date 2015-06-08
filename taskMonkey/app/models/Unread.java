@@ -123,6 +123,10 @@ public class Unread extends Model{
         return tasks;
     }
 
+    public static List<Event> getUnreadEvents(User user) {
+return null;
+    }
+
     public static void updateUnreadComment(Long commentId) {
         Unread unread = find.where().eq("commentID", commentId).findList().get(0);
         unread.delete();
@@ -136,5 +140,7 @@ public class Unread extends Model{
     public static void updateUnreadEvent(Event event, User user) {
 
     }
+
+
 
 }

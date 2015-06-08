@@ -6,6 +6,6 @@ import java.util.*;
 public class TimeComparator implements Comparator<TimePair> {
     @Override
     public int compare(TimePair a, TimePair b) {
-        return a.getStart().before(b.getStart()) ? 1 : -1;
+        return a.getStart().after(b.getStart()) || a.getStart().equals(b.getStart()) ? 1 : -1;
     }
 }

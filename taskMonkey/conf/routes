@@ -22,7 +22,7 @@ POST   /deleteUser/:email/delete          controllers.Application.deleteUserFrom
 POST   /logIn                             controllers.Application.logIn()
 
 # Take user's registration information and create a new account
-GET    /register                          controllers.Application.register()
+GET    /register                          controllers.Application.register(error:String?="")
 
 # Diaplay the landing page
 GET    /landing                           controllers.Application.landing()
@@ -50,15 +50,29 @@ GET      /unreadPage                         controllers.Application.unreadPage(
 
 GET      /redirectUnreadTask/:taskId          controllers.Application.redirectUnreadTask(taskId : Long)
 GET      /redirectUnreadComment/:commentId    controllers.Application.redirectUnreadComment(commentId : Long)
+GET      /redirectUnreadEvent/:eventId    controllers.Application.redirectUnreadEvent(eventId : Long)
 
-GET      /createEventPage                     controllers.Application.createEventPage()
-POST     /createEvent                         controllers.Application.createEvent()
+POST     /createEvent/:startTime            controllers.Application.createEvent(startTime:String)
 POST     /addUserToEvent                      controllers.Application.addUserToEvent()
+POST     /deleteUserFromEventList/:email  controllers.Application.deleteUserFromEventList(email : String)
+
+GET /test                                       controllers.Application.test()
+
+GET      /eventPage                          controllers.Application.eventPage()
+
+GET /profile                                controllers.Application.profile()
+
+POST    /createPost                       controllers.Application.createPost()
+
+GET      /postPage/:postName              controllers.Application.postPage(postName:String)
+
+POST /updateImage                       controllers.Application.updateImage()
 
 
+GET      /chooseCommonTime/:slot           controllers.Application.chooseCommonTime(slot : String)
 
+GET      /commonTimeList                  controllers.Application.commonTimeList()
 
+GET     /showEventInfo/:eventName         controllers.Application.showEventInfo(eventName:String)
 
-
-
-
+GET     /dailySchedule                     controllers.Application.dailySchedule()

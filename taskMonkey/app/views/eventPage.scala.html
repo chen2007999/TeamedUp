@@ -1,36 +1,87 @@
 @(users : java.util.List[User], teamName : String)
 
-@main("Event") {
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/style.css")" type="text/css">
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-responsive.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-icons.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-ui-light.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/datepicker.css")">
+        <script src="@routes.Assets.at("javascripts/modernizr-2.6.2.min.js")"></script>
+        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.js")"></script>
+        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.min.js")"></script>
+        <script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
+        <div class="navbar">
+        <div class="navbar-inner">
+             
+             <div class="row-fluid">
+                 <div class="span6">
+                    <a class="brand" href="#">TeamedUp</a>
+                     <ul class="nav">
+                        <li><a href="/landing">Home</a></li>
+                        <li class="active"><a href="#">Main Page</a></li>
+                    </ul>
+                 </div>
+                 <div class="span6" align="right">
+                     <div class="btn-group">
+                        <form action="/profile">
+                            <button class="btn" href="/profile">Profile</button>
+                        </form>
+                        <form action="/landing">
+                            <button class="btn" href="/landing">Logout</button> 
+                        </form>
+
+                     </div>
+                </div>
+             </div>
+             
+          </div>
+       </div>
+    </head>
+
+
+
 
 <div class="container well" align="center">
     <h2>Add all users before for the events </h2>
 </div>
 
-@for(user <- users) {
+<div class="row-fluid" id="fill">
+    <div class="span4 well well-small div-list" style="overflow-y: scroll;" id="fill">
+        <ul class="list-group">
+            <li class="list-group-item"><h2>Team members:</h2></li>
+            @for(user <- users) {
+            <li class="list-group-item">
+                <button class="list-button" type="submit">
+                    @user.email
+                </button>
+                @helper.form(routes.Application.deleteUserFromEventList(user.email)) {
+                <button class="delete">x</button>
+                }
+            </li>
+            }
+            @helper.form(routes.Application.addUserToEvent()) {
+            <input name="email" placeholder="email address"><br>
+            <button type="submit">Add</button><br>
+            }
+        </ul>
+        
+    </div>
+    <div class="span8 well well-small">
+        @helper.form(routes.Application.commonTimeList()) {
+        <button type="submit">Create</button><br>
+        }
+        
+        @helper.form(routes.Application.teamPage(teamName)) {
+        <button type="submit">Go back</button><br>
+        }
 
-<li class="list-group-item">
-    <button class="list-button" type="submit">
-        @user.email
-    </button>
-    @helper.form(routes.Application.deleteUserFromEventList(user.email)) {
-    <button class="delete">x</button>
-    }
-</li>
-
-}
+    </div>
+</div>
 
 
-@helper.form(routes.Application.addUserToEvent()) {
-<input name="email" placeholder="email address"><br>
-<button type="submit">Add</button><br>
-}
 
-@helper.form(routes.Application.commonTimeList()) {
-<button type="submit">Create</button><br>
-}
 
-@helper.form(routes.Application.teamPage(teamName)) {
-<button type="submit">Go back</button><br>
-}
 
-}

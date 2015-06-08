@@ -3,6 +3,7 @@ package models;
 import com.avaje.ebean.bean.EntityBeanIntercept;
 import play.db.ebean.Model;
 
+import java.lang.Integer;
 import java.lang.Long;
 import java.sql.Timestamp;
 import java.util.*;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Timer;
 
 @Entity
 public class Event extends Model{
@@ -45,8 +47,11 @@ public class Event extends Model{
     @Column(name = "endTime")
     public Timestamp endTime;
 
-    @Column(name = "duration")
-    public int duration;
+    @Column(name = "slotChosenStart")
+    public String slotChosenStart;
+
+    @Column(name = "slotChosenEnd")
+    public String slotChosenEnd;
 
     @Column(name = "location")
     public String location;
@@ -85,9 +90,6 @@ public class Event extends Model{
         return involvedEmail;
     }
 
-    public int getDuration() {
-        return duration;
-    }
 
     public void setInvolvedEmail(String involvedEmail) {
         this.involvedEmail = involvedEmail;
@@ -97,9 +99,6 @@ public class Event extends Model{
         this.eventName = eventName;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
 
     public void setLocation(String location) {
         this.location = location;
@@ -132,30 +131,35 @@ public class Event extends Model{
         return content;
     }
 
+    public String getSlotChosenStart() {
+        return slotChosenStart;
+    }
+
+    public String getSlotChosenEnd() {
+        return slotChosenEnd;
+    }
+     //2015-11-11 09:11:00.0
     public static void createEvent(Event event, User creator, List<User> user) {
-        /*event.setEndTime(Timestamp.valueOf(event.getEndTimeString() + ":00.0"));
-        event.setStartTime(Timestamp.valueOf(event.getStartTimeString() + ":00.0"));*/
         String start = event.getStartTime().toString();
-        int endHour = Integer.parseInt(start.substring(11, 13)) + event.getDuration();
-        //String endHour = (startHour + event.getDuration()).toString();
-        String end = start.substring(0, 11) + Integer.toString(endHour) + start.substring(13);
-        Timestamp endTs = Timestamp.valueOf(end);
-       // event.setStartTimeString(getDate(event.getStartTimeString()));
-       // event.setEndTimeString(getDate(event.getEndTimeString()));
+        String newStart = start.substring(0, 11) + event.getSlotChosenStart() + ":00:00.0";
+        String newEnd = start.substring(0, 11) + event.getSlotChosenEnd() + ":00:00.0";
+        Timestamp startTs = Timestamp.valueOf(newStart);
+        Timestamp endTs = Timestamp.valueOf(newEnd);
+
         for(User u : user) {
             Event e = new Event();
+            e.setEventName(event.getEventName());
             e.setContent(event.getContent());
             e.setOwnerName(creator.getName());
             e.setLocation(event.getLocation());
-            e.setDuration(event.getDuration());
+
             e.setStartTime(event.getStartTime());
+            e.setStartTime(startTs);
             e.setEndTime(endTs);
             e.setInvolvedEmail(u.getEmail());
             e.save();
             Unread.createUnreadEvent(e, u);
-            /*event.setOwnerName(user.getName());
-            event.setInvolvedEmail(user.getEmail());
-            event.save();*/
+
         }
 
     }
@@ -174,7 +178,7 @@ public class Event extends Model{
     public static String currentDate() {
         return getDate(currentTime().toString());
     }
-/*
+
     public static boolean checkTime(String startTimeString, String endTimeString) {
         if(checkTimeHelper(startTimeString) && checkTimeHelper(endTimeString)) {
             Long startTime = getValue(getNewTimeString(startTimeString));
@@ -217,7 +221,7 @@ public class Event extends Model{
             }
         }
         return true;
-    }*/
+    }
 
     public static String getNewTimeString(String time) {
         return time.substring(0, 4) + time.substring(5, 7) +
@@ -229,14 +233,12 @@ public class Event extends Model{
     }
 
     public static boolean nullEvent(Event event) {
-        return event.getEventName() == null || event.getLocation() == null;
+        return event.getEventName() == null  || event.getLocation() == null;
     }
 
     public static boolean emptyEvent(Event event) {
-                return event.getEventName().equals("") || event.getDuration() != (int)event.getDuration()
-                || event.getLocation().equals("");
-        /*|| event.getStartTimeString().equals("") ||
-                event.getEndTimeString().equals("")*/
+                return event.getEventName().equals("") || event.getLocation().equals("");
+
     }
 
     public static Event getEventWithId(Long id) {
@@ -256,8 +258,6 @@ public class Event extends Model{
         newEvent.setOwnerName(event.getOwnerName());
         newEvent.setEndTime(event.getEndTime());
         newEvent.setStartTime(event.getStartTime());
-        //newEvent.setEndTimeString(event.getEndTimeString());
-        //newEvent.setStartTimeString(event.getStartTimeString());
         newEvent.save();
     }
 
@@ -292,23 +292,16 @@ public class Event extends Model{
         return ym * 100 + d;
     }
 
-
     public static List<TimePair> findWeeklyScheduledTime(User user, String date) {
         List<Event> events = new ArrayList<Event>();
         for(int i=0; i<7; i++) {
-            List<Event> subEvents = find.where().eq("involvedEmail", user.getEmail())/*.eq("startTimeString", date)*/.findList();
-            List<Event> finalEvents = new ArrayList<Event>();
+            List<Event> subEvents = find.where().eq("involvedEmail", user.getEmail()).findList();
             for(Event e : subEvents) {
                 if(getDate(e.getStartTime().toString()).equals(date)) {
-                    finalEvents.add(e);
-                }
-            }
-            if(subEvents != null) {
-                for(Event e : finalEvents) {
                     Long eStartTime = getValue(getNewTimeString(e.getStartTime().toString()));
                     Long eEndTime = getValue(getNewTimeString(e.getEndTime().toString()));
                     Long currentTime = getValue(getNewTimeString(currentTime().toString()));
-                    if(eStartTime >= currentTime || eEndTime > currentTime) {
+                    if(eEndTime > currentTime) {
                         events.add(e);
                     }
                 }
@@ -333,15 +326,16 @@ public class Event extends Model{
         }
         Collections.sort(timeScheduled, new TimeComparator());
         List<TimePair> timeScheduledUnion = new ArrayList<TimePair>();
+
         for(int i=0; i+1<timeScheduled.size(); i++) {
             if(TimePair.contains(timeScheduled.get(i), timeScheduled.get(i+1))) {
-                timeScheduled.set(i+1, timeScheduled.get(i));
-            }
-            if(TimePair.overlapsNotContains(timeScheduled.get(i), timeScheduled.get(i))) {
+                timeScheduled.set(i+1, TimePair.containsResult(timeScheduled.get(i), timeScheduled.get(i + 1)));
+            } else if(TimePair.overlapsNotContains(timeScheduled.get(i), timeScheduled.get(i+1))) {
                 TimePair tp = new TimePair(timeScheduled.get(i).getStart(), timeScheduled.get(i+1).getEnd());
                 timeScheduled.set(i+1, tp);
+            } else {
+                timeScheduledUnion.add(timeScheduled.get(i));
             }
-            timeScheduledUnion.add(timeScheduled.get(i));
         }
         if(timeScheduledUnion != null && timeScheduled.size() > 0) {
             timeScheduledUnion.add(timeScheduled.get(timeScheduled.size() - 1));
@@ -349,37 +343,66 @@ public class Event extends Model{
         return timeScheduledUnion;
     }
 
+    public static List<TimePair> findDailyFreeTP(List<TimePair> dailyScheduledTP) {
+        List<TimePair> result = new ArrayList<TimePair>();
+        String firstEventStartTime = dailyScheduledTP.get(0).getStart().toString();
+        String firstEventStartHour = firstEventStartTime.substring(11, 13) + firstEventStartTime.substring(14, 16);
+        if (getValue(firstEventStartHour) > 800) {
+            Timestamp ts = Timestamp.valueOf(firstEventStartTime.substring(0, 10) + " 08:00:00.0");
+            TimePair tp = new TimePair(ts, dailyScheduledTP.get(0).getStart());
+            result.add(tp);
+        }
+        for(int i=0; i+1<dailyScheduledTP.size(); i++) {
+            if (TimePair.sameDay(dailyScheduledTP.get(i), dailyScheduledTP.get(i + 1))) {
+                TimePair tp = new TimePair(dailyScheduledTP.get(i).getEnd(), dailyScheduledTP.get(i + 1).getStart());
+                result.add(tp);
+            }
+        }
+        String lastEventEndTime = dailyScheduledTP.get(dailyScheduledTP.size()-1).getEnd().toString();
+        String lastEventEndHour = lastEventEndTime.substring(11, 13) + lastEventEndTime.substring(14, 16);
+        if (getValue(lastEventEndHour) < 2100) {
+            Timestamp ts = Timestamp.valueOf(lastEventEndTime.substring(0, 10) + " 21:00:00.0");
+            TimePair tp = new TimePair(dailyScheduledTP.get(dailyScheduledTP.size() - 1).getEnd(), ts);
+            result.add(tp);
+        }
+        return result;
+    }
+
     public static List<TimePair> findWeeklyCommonFreetime(List<User> users, String date) {
         List<TimePair> weeklyCommonFreeTime = new ArrayList<TimePair>();
         List<TimePair> timeScheduledUnion = findWeeklyScheduledTimeUnion(users, date);
         if(timeScheduledUnion != null && timeScheduledUnion.size() > 0) {
-            String firstEventStartTime = timeScheduledUnion.get(0).getStart().toString();
-            String lastEventEndTime = timeScheduledUnion.get(timeScheduledUnion.size() - 1).getEnd().toString();
-            String firstEventStartHour = firstEventStartTime.substring(11, 13) + firstEventStartTime.substring(14, 16);
-            String lastEventEndHour = lastEventEndTime.substring(11, 13) + lastEventEndTime.substring(14, 16);
+            for(int j=0; j<7; j++) {
+                List<TimePair> dailyScheduledTP = new ArrayList<TimePair>();
+                for (int i = 0; i < timeScheduledUnion.size(); i++) {
+                    String elementDate = getDate(timeScheduledUnion.get(i).getStart().toString());
+                    if(elementDate.equals(date)) {
+                          dailyScheduledTP.add(timeScheduledUnion.get(i));
+                    }
+                }
+                if(dailyScheduledTP.size() > 0) {
+                    List<TimePair> dailyFreeTP = findDailyFreeTP(dailyScheduledTP);
 
-            if (getValue(firstEventStartHour) > 800) {
-                Timestamp ts = Timestamp.valueOf(firstEventStartTime.substring(0, 10) + " 08:00:00.0");
-                TimePair tp = new TimePair(ts, timeScheduledUnion.get(0).getStart());
-                weeklyCommonFreeTime.add(tp);
-            }
-            for (int i = 0; i + 1 < timeScheduledUnion.size(); i++) {
-                TimePair tp = new TimePair(timeScheduledUnion.get(i).getEnd(), timeScheduledUnion.get(i + 1).getStart());
-                weeklyCommonFreeTime.add(tp);
-            }
-            if (getValue(lastEventEndHour) < 2100) {
-                Timestamp ts = Timestamp.valueOf(lastEventEndTime.substring(0, 10) + " 21:00:00.0");
-                TimePair tp = new TimePair(ts, timeScheduledUnion.get(timeScheduledUnion.size() - 1).getEnd());
-                weeklyCommonFreeTime.add(tp);
+                    if (dailyFreeTP != null) {
+                        for(TimePair var : dailyFreeTP) {
+                            if(TimePair.tpNotOutDated(var)) {
+                                weeklyCommonFreeTime.add(var);
+                            }
+                        }
+                    }
+                    timeScheduledUnion.removeAll(dailyScheduledTP);
+
+                } else {
+                    TimePair wholeDayFreeTP = createFreeDaySlot(date);
+                    if(TimePair.tpNotOutDated(wholeDayFreeTP)) {
+                        weeklyCommonFreeTime.add(wholeDayFreeTP);
+                    }
+                }
+                date = increaseDate(date, 1);
             }
         } else {
             String curHour = currentTime().toString().substring(11, 13);
             int curHourInt = Integer.parseInt(curHour);
-            //List<Timestamp> tsList = new ArrayList<Timestamp>();
-            /*for(int i=curHourInt+1; i<=21; i++) {
-
-
-                }*/
             if(curHourInt+1 < 21) {
                 String time = "";
                 if (curHourInt + 1 < 10) {
@@ -395,26 +418,43 @@ public class Event extends Model{
                 Timestamp tsStart = Timestamp.valueOf(time);
                 Timestamp tsEnd = Timestamp.valueOf(endToday);
                 TimePair tpToday = new TimePair(tsStart, tsEnd);
-                //tsList.add(timestamp);
 
                 weeklyCommonFreeTime.add(tpToday);
             }
             String dateVar = increaseDate(currentDate(), 1);
             // adding daily slots for the week
             for(int i=0; i<6; i++) {
-                String startDaily = dateVar.substring(0, 4) + "-" + dateVar.substring(4, 6) + "-" + dateVar.substring(6, 8)
-                    + " 08" + ":00:00.0";
-                String endDaily = dateVar.substring(0, 4) + "-" + dateVar.substring(4, 6) + "-" + dateVar.substring(6, 8)
-                        + " 21" + ":00:00.0";
-                Timestamp dailyStart = Timestamp.valueOf(startDaily);
-                Timestamp dailyEnd = Timestamp.valueOf(endDaily);
-                TimePair tpDaily = new TimePair(dailyStart, dailyEnd);
-                weeklyCommonFreeTime.add(tpDaily);
+                weeklyCommonFreeTime.add(createFreeDaySlot(dateVar));
                 dateVar = increaseDate(dateVar, 1);
             }
         }
         return weeklyCommonFreeTime;
     }
+
+    public static TimePair createFreeDaySlot(String dateVar) {
+        String startDaily = dateVar.substring(0, 4) + "-" + dateVar.substring(4, 6) + "-" + dateVar.substring(6, 8)
+                + " 08" + ":00:00.0";
+        String endDaily = dateVar.substring(0, 4) + "-" + dateVar.substring(4, 6) + "-" + dateVar.substring(6, 8)
+                + " 21" + ":00:00.0";
+        Timestamp dailyStart = Timestamp.valueOf(startDaily);
+        Timestamp dailyEnd = Timestamp.valueOf(endDaily);
+        TimePair tpDaily = new TimePair(dailyStart, dailyEnd);
+        return tpDaily;
+    }
+
+    /*private static List<TimePair> hourlyTimeSlots(List<TimePair> unionList) {
+        List<TimePair> result = new ArrayList<TimePair>();
+        for(TimePair tp : unionList) {
+            TimePair var = TimePair.firstHourInTheSlot(tp);
+            result.add(var);
+            for(int i=0; i<TimePair.interval(tp); i++) {
+                var = TimePair.increment(var);
+                result.add(var);
+            }
+
+        }
+        return result;
+    }*/
 
    /* private static List<TimePair> dailyFreeSlots(String date) {
         List<Timestamp> temp = new ArrayList<Timestamp>();
@@ -445,11 +485,21 @@ public class Event extends Model{
     public static List<String> timeListToString(List<TimePair> timeList) {
         List<String> result = new ArrayList<String>();
         for(TimePair tp : timeList) {
-            String s = tp.getStart().toString() + " - " + tp.getEnd().toString();
+            String s = tp.getStart().toString().substring(0, 16) + " - " + tp.getEnd().toString().substring(11, 16);
             result.add(s);
         }
         return result;
     }
 
 
+    public static List<Event> findDailySchedule(User user) {
+        List<Event> events = Event.find.where().eq("involvedEmail", user.getEmail()).findList();
+        List<Event> result = new ArrayList<Event>();
+        for(Event e : events) {
+            if(getDate(e.getStartTime().toString()).equals(currentDate())) {
+                result.add(e);
+            }
+        }
+        return result;
+    }
 }

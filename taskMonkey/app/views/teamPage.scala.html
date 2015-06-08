@@ -17,7 +17,7 @@
              <div class="row-fluid">
              
                  <div class="span6">
-                    <a class="brand" href="/landing">Barbecrew</a>
+                    <a class="brand" href="/landing">TeamedUp</a>
                      <ul class="nav">
                         <li><a href="/landing">Home</a></li>
                         <li><a href="/mainPage">Main Page</a></li>
@@ -26,13 +26,30 @@
                  </div>
                  <div class="span6" align="right">
                      <div class="btn-group">
+                     @helper.form(routes.Application.dailySchedule()) {
+    <button type="submit"><h3>Daily schedule</h3></button><br>
+    }
                         <form action="/profile">
                             <button class="btn" href="/profile">Profile</button>
                         </form>
-                        @helper.form(routes.Application.unreadPage()) {
-                            <button class="btn">@unreadNum unread</button>
-                        }
-
+                            <button class="btn" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" href="#">@unreadNum unread</button>
+                            <ul class="dropdown-menu pull-right unread" role="menu" arie-labelledby="dLabel">
+                            @for(task <- Unread.getUnreadTasks(Application.currentUser)) {
+                                <li>
+                                    @helper.form(routes.Application.redirectUnreadTask(task.taskId)) {
+                                    <button type="submit"><h3> A new task @task.taskName is created</h3></button><br>
+                                    }
+                                </li>
+                            }
+                            @for(comment <- Unread.getUnreadComments(Application.currentUser)) {
+                                <li>
+                                    @helper.form(routes.Application.redirectUnreadComment(comment.id)) {
+                                    <button type="submit"> <h3> <strong>@comment.ownerName:</strong>  @comment.content</h3></button><br>
+                                    }
+                                </li>
+                            }
+                            </ul>
+                        <script>$('.dropdown-toggle').dropdown()</script>
                         @helper.form(routes.Application.landing()) {
                             <button class="btn">Logout</button> 
                         }
@@ -81,9 +98,7 @@
     
     
     
-    <button class="win-command orange add-team" type="button" data-toggle="modal" data-target="#myModal" rel="tooltip" title="Add a new team">
-        <span class="win-commandimage win-commandring"><img src="@routes.Assets.at("images/plus.png")"></span>
-    </button>    
+   
         
             <ul class="nav nav-tabs" role="tablist" id="myTab">
               <li role="presentation" class="active">
@@ -97,16 +112,20 @@
             <div class="tab-content">
               <div role="tabpanel" class="tab-pane fade in active" id="tasks">
                 <div class="metro">
+                       <button class="win-command orange add-team" type="button" data-toggle="modal" data-target="#myModalT" rel="tooltip" title="Add a new task">
+                            <span class="win-commandimage win-commandring"><img src="@routes.Assets.at("images/plus.png")"></span>
+                        </button>  
                     @for(task <- tasks) {
+                    @if(tasks.size() == 0){
+                        <h1>You have no tasks</h1>
+                        <h2>You can add a new task using the button on the right</h2>
+                    }
                         @defining(if (task.status.equals("In Progress")) "bg-color-green" else "bg-color-blue") { color =>
                             <a class="tile square text tilesquareblock @color" href="/taskPage/@task.taskName">
                                 <div class="text">@task.taskName</div>
-                                
                                 @defining(if (task.content.length() > 9) task.content.substring(0,8) + "..." else task.content) { cont =>
                                 <div class="text">@cont</div>
                                 }
-                                
-                                <div class="text">Status: @task.status</div>
                             </a>    
                         }
                         
@@ -115,6 +134,13 @@
               </div>
               <div role="tabpanel" class="tab-pane fade" id="posts">
                 <div class="metro">
+                        <button class="win-command orange add-team" type="button" data-toggle="modal" data-target="#myModalP" rel="tooltip" title="Add a new post">
+                            <span class="win-commandimage win-commandring"><img src="@routes.Assets.at("images/plus.png")"></span>
+                        </button>
+                    @if(posts.size() == 0){
+                        <h1>You have no posts</h1>
+                        <h2>You can add a new post using the button on the right</h2>
+                    }
                     @for(post <- posts) {
                         <a class="tile square text tilesquareblock bg-color-purple" href="/postPage/@post.postName">
                             <div class="text">Post:</div>
@@ -141,11 +167,11 @@
 </div>
 
 <!-- Modal -->
-    <div class="modal hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal hide fade" id="myModalT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
             <h4 class="modal-title" id="myModalLabel">Create</h4>
           </div>
           <div class="modal-body">
@@ -156,6 +182,28 @@
                             <textarea name="content" cols="40" rows="5" placeholder="description" id="text-inmodal"></textarea> <br>
                             <button type="submit">Create</button><br>
                         }
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+
+<!-- Modal -->
+    <div class="modal hide fade" id="myModalP" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+            <h4 class="modal-title" id="myModalLabel">Create</h4>
+          </div>
+          <div class="modal-body">
+              <div class="row-fluid">
+                    <div class="span4 offset4" align="center">
                         @helper.form(routes.Application.createPost()) {
                             <input name="postName" placeholder="post name" id="text-inmodal"><br>
                             <textarea name="content" cols="40" rows="5" placeholder="description" id="text-inmodal"></textarea> <br>

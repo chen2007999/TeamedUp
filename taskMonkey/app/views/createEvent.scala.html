@@ -1,6 +1,5 @@
-@(unreadNum : Integer, startTime : String, availableHours : String)
+@(unreadNum : Integer, startTime : String, status : String)
 
-@main("Event") {
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="@routes.Assets.at("stylesheets/style.css")" type="text/css">
@@ -17,7 +16,7 @@
              <div class="row-fluid">
 
                  <div class="span6">
-                    <a class="brand" href="#">Barbecrew</a>
+                    <a class="brand" href="#">TeamedUp</a>
                      <ul class="nav">
                         <li><a href="/landing">Home</a></li>
                         <li class="active"><a href="#">Main Page</a></li>
@@ -37,37 +36,55 @@
              </div>
 
           </div>
+          
+        @if(status.length() >0){
+        
+        @if(status.equals("success")){
+         <div class="alert alert-success">
+          <button type="button" class="close" data-dismiss="alert"><a data-dismiss="alert" href="#"></a></button>
+          Event is successfully created, waiting for other members to comfirm.
+        </div>
+        } else{
+        <div class="alert alert-danger">
+          <button type="button" class="close" data-dismiss="alert"><a data-dismiss="alert" href="#"></a></button>
+          <strong>Warning!</strong> There must have been an error in your entered details. Please try again.
+        </div>
+        }
+        <script>
+            $(".alert").alert()     
+        </script>
+        }
+                <script type="text/javascript" src="@routes.Assets.at("javascripts/bootstrap.min.js")"></script> 
+          
        </div>
     </head>
 
-
-
-<h1>Create a new event</h1>
-<ul>
-   @helper.form(routes.Application.createEvent(startTime, availableHours)) {
-                       <input name="eventName" placeholder="event name"><br>
-                       <h4>enter the duration of the event starts on @startTime, there are @availableHours hour(s) available</h4>
-
-                       <input name="duration" placeholder="duration(hours)"><br>
-
-                       <input name="location" placeholder="location"><br>
-                       <textarea name="content" cols="40" rows="5" placeholder="description"></textarea>
-
-
-                       <button class="icon-key-2" type="submit"> Create</button><br>
-   }
-
-
-</ul>
-
-
-
-<h1>                     </h1>
-@helper.form(routes.Application.mainPage()) {
-<button type="submit">Main Page</button><br>
-}
-@helper.form(routes.Application.landing()) {
-<button type="submit">Log out</button><br>
-}
-
-}
+<body>
+<div class="container well">
+    <h1>Create a new event</h1>
+    <ul>
+       @helper.form(routes.Application.createEvent(startTime)) {
+                           <input name="eventName" placeholder="event name"><br>
+                           <h4>enter the time interval of the event </h4>
+    
+                           <input name="slotChosenStart" placeholder="The starting hour of your event, 2-digit number smaller than 24"><br>
+                           <input name="slotChosenEnd" placeholder="The finishing hour of your event, 2-digit number smaller than 24"><br>
+                           <input name="location" placeholder="location"><br>
+                           <textarea name="content" cols="40" rows="5" placeholder="description"></textarea>
+    
+                           <button class="icon-key-2" type="submit"> Create</button><br>
+       }
+    
+    
+    </ul>
+</div>
+                    <!-- jQuery -->
+        <script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
+    
+        <!-- Bootstrap Core JavaScript -->
+        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.min.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/bootstrap.min.js")"></script>  
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/bootmetro-panorama.js")"></script> 
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/bootmetro-pivot.js")"></script> 
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/bootmetro-charms.js")"></script> 
+</body>

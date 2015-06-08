@@ -5,6 +5,7 @@ import play.data.*;
 
 import play.mvc.*;
 
+import java.lang.Integer;
 import java.sql.Timestamp;
 import java.util.*;
 import play.mvc.Result;
@@ -16,7 +17,7 @@ import java.lang.String;
 
 public class Application extends Controller {
 
-    private static User currentUser;
+    public static User currentUser;
     private static Team currentTeam;
     private static Task currentTask;
     private static Post currentPost;
@@ -214,11 +215,15 @@ public class Application extends Controller {
     }
 
     public static Result unreadPage() {
-        return ok(unreadPage.render(getUnreadComments(), getUnreadTasks()));
+        return ok(unreadPage.render(getUnreadComments(), getUnreadTasks(), getUnreadEvents()));
     }
     
     public static Result test() {
         return ok(test.render());
+    }
+
+    public static List<Event> getUnreadEvents() {
+        return Unread.getUnreadEvents(currentUser);
     }
 
     public static List<Comment> getUnreadComments() {
@@ -247,27 +252,28 @@ public class Application extends Controller {
         return ok(taskPage.render(task, comments, teamName, getUnreadNum()));
     }
 
-    public static Result createEventPage() {
-        return ok("");
-        //return ok(createEvent.render(getUnreadNum()));
+    public static Result redirectUnreadEvent(Long eventId) {
+        return ok("todo");
     }
 
-    public static Result createEvent(String startTime, String availableHours) {
+    public static Result createEvent(String startTime) {
         play.data.Form<Event> eventForm = play.data.Form.form(Event.class);
         Event event = eventForm.bindFromRequest().get();
-        Timestamp start = Timestamp.valueOf(startTime + ":00.0");
-        event.setStartTime(start);
-        if (!Event.emptyEvent(event) && !Event.nullEvent(event)) {
-            //if (event.checkTime(event.getStartTimeString(), event.getEndTimeString())) {
+
+        if (!Event.nullEvent(event) && !Event.emptyEvent(event)) {
+
+            Timestamp start = Timestamp.valueOf(startTime + "00:00:00.0");
+            event.setStartTime(start);
                 Event.createEvent(event, currentUser, eventUserList);
-                //currentEvent = event;
+
             eventUserList.clear();
             eventUserList.add(currentUser);
-                return ok(popUp.render(currentTeam.getTeamName()));
-            //}
+            return redirect(routes.Application.showEventInfo(event.getEventName()));
+            //return ok(createEvent.render(getUnreadNum(), startTime, "success"));
+
         }
-        return ok(createEvent.render(getUnreadNum(), startTime, availableHours));
-       // return ok("todo");
+        return ok(createEvent.render(getUnreadNum(), startTime, "error"));
+
     }
 
     public static Result eventPage() {
@@ -299,14 +305,17 @@ public class Application extends Controller {
         List<TimePair> tp = Event.findWeeklyCommonFreetime(eventUserList, Event.currentDate());
         List<String> s = Event.timeListToString(tp);
         return ok(commonTime.render(s));
+        /*List < User > users = new ArrayList<User>();
+        users.add(User.find.byId("1@1.com"));
+        users.add(User.find.byId("2@2.com"));
+        List<TimePair>  tp = Event.findWeeklyScheduledTimeUnion(users, Event.currentDate());
+        List<String> r = Event.timeListToString(tp);
+        return ok(testEvent.render(r));*/
     }
 
     public static Result chooseCommonTime(String slotChosen) {
-        String startTime = slotChosen.substring(0, 16);
-        Long availableHours = Event.getValue(slotChosen.substring(35, 37))
-                - Event.getValue(slotChosen.substring(11, 13));
-        String availableHoursString = availableHours.toString();
-        return ok(createEvent.render(getUnreadNum(), startTime, availableHoursString));
+        String startTime = slotChosen.substring(0, 11);
+        return ok(createEvent.render(getUnreadNum(), startTime, ""));
     }
 
     
@@ -327,6 +336,20 @@ public class Application extends Controller {
         }
         eventUserList.remove(u);
         return ok(eventPage.render(eventUserList, currentTeam.getTeamName()));
+    }
+
+    public static Result showEventInfo(String eventName) {
+        Event event = Event.find.where().eq("eventName", eventName).findList().get(0);
+        String date = event.getStartTime().toString().substring(0, 11);
+        String startTime = event.getStartTime().toString().substring(11, 16);
+        String endTime = event.getEndTime().toString().substring(11, 16);
+        List<Event> events = Event.find.where().eq("eventName", eventName).eq("ownerName", event.getOwnerName()).findList();
+        return ok(showEventInfo.render(event, date, startTime, endTime, events));
+    }
+
+    public static Result dailySchedule() {
+        List<Event> events = Event.findDailySchedule(currentUser);
+        return ok(dailySchedule.render(events));
     }
 
 

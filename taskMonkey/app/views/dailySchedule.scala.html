@@ -1,0 +1,26 @@
+@(events : java.util.List[Event])
+
+
+@main("My events") {
+
+
+@for(e <- events) {
+<li>
+    @helper.form(routes.Application.showEventInfo(e.eventName)) {
+    <button type="submit"><h3>
+ Event name: @e.eventName
+Location: @e.location
+Start time: @e.startTime
+End time: @e.endTime
+    </h3></button><br>
+    }
+
+    </li>
+}
+
+
+
+
+
+
+}

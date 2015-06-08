@@ -20,7 +20,7 @@
              
              <div class="row-fluid">
                  <div class="span6">
-                    <a class="brand" href="#">Barbecrew</a>
+                    <a class="brand" href="#">TeamedUp</a>
                      <ul class="nav">
                         <li><a href="/landing">Home</a></li>
                         <li class="active"><a href="#">Main Page</a></li>
@@ -29,6 +29,24 @@
                  <div class="span6" align="right">
                      <div class="btn-group">
                         <button class="btn active" href="#">Profile</button>
+                        <button class="btn" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" href="#">unread</button>
+                            <ul class="dropdown-menu pull-right unread" role="menu" arie-labelledby="dLabel">
+                            @for(task <- Unread.getUnreadTasks(Application.currentUser)) {
+                                <li>
+                                    @helper.form(routes.Application.redirectUnreadTask(task.taskId)) {
+                                    <button type="submit"><h3> A new task @task.taskName is created</h3></button><br>
+                                    }
+                                </li>
+                            }
+                            @for(comment <- Unread.getUnreadComments(Application.currentUser)) {
+                                <li>
+                                    @helper.form(routes.Application.redirectUnreadComment(comment.id)) {
+                                    <button type="submit"> <h3> <strong>@comment.ownerName:</strong>  @comment.content</h3></button><br>
+                                    }
+                                </li>
+                            }
+                            </ul>
+                        <script>$('.dropdown-toggle').dropdown()</script>
                         <form action="/landing">
                             <button class="btn" href="/landing">Logout</button> 
                         </form>

@@ -1,5 +1,5 @@
 @(task : Task, comments : java.util.List[Comment], teamName : String, unreadNum :Integer)
-
+<!DOCTYPE html>
 @main(task.taskName) {
 
     <head>
@@ -13,15 +13,16 @@
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/datepicker.css")">
         <script src="@routes.Assets.at("javascripts/modernizr-2.6.2.min.js")"></script>
                 <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.js")"></script>
-        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.min.js")"></script>
         <script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
+        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.min.js")"></script>
+
         <div class="navbar">
         <div class="navbar-inner">
              
              <div class="row-fluid">
              
                  <div class="span6">
-                    <a class="brand" href="#">Barbecrew</a>
+                    <a class="brand" href="#">TeamedUp</a>
                      <ul class="nav">
                         <li><a href="/landing">Home</a></li>
                         <li class="active"><a href="#">Main Page</a></li>
@@ -32,9 +33,24 @@
                         <form action="/profile">
                             <button class="btn" href="/profile">Profile</button>
                         </form>
-                        @helper.form(routes.Application.unreadPage()) {
-                            <button class="btn">@unreadNum unread</button>
-                        }
+                            <button class="btn" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" href="#">@unreadNum unread</button>
+                            <ul class="dropdown-menu pull-right unread" role="menu" arie-labelledby="dLabel">
+                            @for(task <- Unread.getUnreadTasks(Application.currentUser)) {
+                                <li>
+                                    @helper.form(routes.Application.redirectUnreadTask(task.taskId)) {
+                                    <button type="submit"><h3> A new task @task.taskName is created</h3></button><br>
+                                    }
+                                </li>
+                            }
+                            @for(comment <- Unread.getUnreadComments(Application.currentUser)) {
+                                <li>
+                                    @helper.form(routes.Application.redirectUnreadComment(comment.id)) {
+                                    <button type="submit"> <h3> <strong>@comment.ownerName:</strong>  @comment.content</h3></button><br>
+                                    }
+                                </li>
+                            }
+                            </ul>
+                        <script>$('.dropdown-toggle').dropdown()</script>
                         @helper.form(routes.Application.landing()) {
                             <button class="btn">Logout</button> 
                         }
@@ -47,10 +63,23 @@
           </div>
        </div>
     </head>
+<body onload="description()">
+<script>
+    function description(){
+        var text = "@task.content";
+        var $descr = $("#descr");
+        $("#descr").html(htmlDecode(text));
+    }
+    function htmlDecode(input){
+        var e = document.createElement('div');
+        e.innerHTML = input;
+        return e.childNodes[0].nodeValue;
+    }
+</script>
 
 <div class="container well" align="center">
     <h2>Task Name: @task.taskName </h2>
-    <h2> Description: @task.content </h2>
+    <div class="well well-small" id="descr"></div>
     <h2> Status: @task.status </h2>
     @if(task.status.equals("In Progress")){
         @helper.form(routes.Application.markTaskAsDone()) {
@@ -82,11 +111,14 @@
 @helper.form(routes.Application.teamPage(teamName)) {
 <button type="submit">Go back</button><br>
 }
-<script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
+            <!-- jQuery -->
+        <script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
+    
+        <!-- Bootstrap Core JavaScript -->
+        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.min.js")"></script>
+    
 </div>
-
+</body>
         
-
-
-
 }
+</html>

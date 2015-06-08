@@ -1,10 +1,21 @@
-@(comments: java.util.List[Comment], tasks: java.util.List[Task])
+@(comments: java.util.List[Comment], tasks: java.util.List[Task], events:java.util.List[Event])
 
 @main("Unread") {
 
 <h1>Unread</h1>
+
 <ul>
-    @for(comment <- comments) {
+    @for(event <- events) {
+    <li>
+        @helper.form(routes.Application.redirectUnreadEvent(event.id)) {
+        <button type="submit"> <h3> @event.ownerName created an event @event.eventName </h3></button><br>
+        }
+    </li>
+    }
+</ul>
+
+<ul>
+    @for(comment <- Unread.getUnreadComments(Application.currentUser)) {
     <li>
         @helper.form(routes.Application.redirectUnreadComment(comment.id)) {
         <button type="submit"> <h3> <strong>@comment.ownerName:</strong>  @comment.content</h3></button><br>
