@@ -11,6 +11,8 @@
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-icons.css")">
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-ui-light.css")">
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/datepicker.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootstrap/simple-sidebar.css")">
+        <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
         <script src="@routes.Assets.at("javascripts/modernizr-2.6.2.min.js")"></script>
         <script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
         <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.js")"></script>
@@ -28,9 +30,10 @@
                  </div>
                  <div class="span6" align="right">
                      <div class="btn-group">
+
                      @helper.form(routes.Application.dailySchedule()) {
-    <button type="submit"><h3>Daily schedule</h3></button><br>
-    }
+                            <button class="btn btn-default" href="#menu-toggle" id="menu-toggle" type="submit">Daily schedule</button>
+                     }
                         <form action="/profile">
                             <button class="btn" href="/profile">Profile</button>
                         </form>
@@ -40,6 +43,14 @@
                                 <li>
                                     @helper.form(routes.Application.redirectUnreadTask(task.taskId)) {
                                     <button type="submit"><h3> A new task @task.taskName is created</h3></button><br>
+                                    }
+                                </li>
+                            }
+                            @for(event <- Unread.getUnreadEvents(Application.currentUser)) {
+                                <li>
+                                    Haha
+                                    @helper.form(routes.Application.redirectUnreadEvent(event.id)) {
+                                    <button type="submit"> <h3> <strong>@event.ownerName:</strong>  @event.content</h3></button><br>
                                     }
                                 </li>
                             }
@@ -66,6 +77,35 @@
 
 
 <body>
+        <div id="wrapper" class="toggled">
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav">
+                    @for(e <- Event.findDailySchedule(Application.currentUser)){
+                        <li>    @helper.form(routes.Application.showEventInfo(e.eventName)) {
+                                    <button type="submit"><h3>
+                                 Event name: @e.eventName
+                                Location: @e.location
+                                Start time: @e.startTime
+                                End time: @e.endTime
+                                    </h3></button><br>
+                                    }
+                        </li>
+                    }
+                    
+                </ul>
+            </div>
+
+        </div>
+                <!-- Menu Toggle Script -->
+        <script>
+        $("#menu-toggle").click(function(e) {
+            window.alert("loaded");
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+        </script>
+        
+        
 <div class="metro well well-small teams" id="fill">
     
     <!-- Modal -->
@@ -108,7 +148,9 @@
 </div>
             <!-- jQuery -->
         <script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
-
+                <!-- Bootstrap Core JavaScript -->
+        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.min.js")"></script>
+    
 </body>
 
     
