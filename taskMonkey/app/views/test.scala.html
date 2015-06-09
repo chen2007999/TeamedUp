@@ -1,113 +1,54 @@
-<!DOCTYPE html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Example</title>
-        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/style.css")" type="text/css">
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro.css")">
-        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-responsive.css")">
-        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-icons.css")">
-        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-ui-light.css")">
-        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/datepicker.css")">
-        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootstrap/simple-sidebar.css")">
-        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.js")"></script>
-        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.min.js")"></script>
-        <script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
-        <div id="nav-bar" class="navig" bgcolor="silver">
-            <div class="row">
-                <div class="span9">
-                    <div id="header-container">
-                    <a id="backbutton" class="win-backbutton" href="http://localhost:9000/landing"></a>
-                        <div class="dropdown">
-                            <h1 class="header-dropdown accent-color">Back to landing</h1>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-                <div class="alert">
-          <button type="button" class="close" data-dismiss="alert"><a class="close" data-dismiss="alert" href="#"></a></button>
-          <strong>Warning!</strong> Best check yo self, you're not looking too good.
-        </div>
-        <script>$(".alert").alert()</script>
-    </head>
-    
-    <body>
-        
-        <div id="wrapper">
-            <div id="sidebar-wrapper">
-                <ul class="sidebar-nav">
-                    <li class="sidebar-brand">
-                        <a href="#">
-                            Start Bootstrap
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">Dashboard</a>
-                    </li>
-                    <li>
-                        <a href="#">Shortcuts</a>
-                    </li>
-                    <li>
-                        <a href="#">Overview</a>
-                    </li>
-                    <li>
-                        <a href="#">Events</a>
-                    </li>
-                    <li>
-                        <a href="#">About</a>
-                    </li>
-                    <li>
-                        <a href="#">Services</a>
-                    </li>
-                    <li>
-                        <a href="#">Contact</a>
-                    </li>
-                </ul>
-            </div>
-            <div id="page-content-wrapper">
-                <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
-            </div>
-    
-    
-            <ul class="nav nav-tabs" role="tablist" id="myTab">
-              <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
-              <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>jQuery Mouse Parallax Plugin Demo</title>
+<link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+<link href="@routes.Assets.at("javascripts/parallax/mouseparallax.css")" rel="stylesheet" type="text/css">
 
-            </ul>
-            
-            <div class="tab-content">
-              <div role="tabpanel" class="tab-pane fade in active" id="home">Homes</div>
-              <div role="tabpanel" class="tab-pane fade" id="profile">Profile</div>
-            </div>
-            
-            <script>
-              $(function () {
-                $('#myTab a:last').tab('show')
-              })
-            </script>
-        </div>
-        
-            <!-- jQuery -->
-        <script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
-    
-        <!-- Bootstrap Core JavaScript -->
-        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.min.js")"></script>
-    
-        <!-- Menu Toggle Script -->
-        <script>
-        $("#menu-toggle").click(function(e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
-        });
-        </script>
-        
-    
+<style>
+body, html {
+height: 100%;
+}
+.mouse-bg {
+left: 0;
+right: 0;
+bottom: 0;
+top: 0;
+position: fixed;
+}
+#background {
+background-image: url('http://subtlepatterns.com/patterns/giftly.png');
+}
+#foreground {
+background-image: url('http://visitsandpoint.com/wp-content/themes/visitsandpointtheme/images/instagram.png');
+}
+#fore-foreground {
+background-image: url('https://lh5.ggpht.com/En6hYdfOjgUHvRdOsGeNvtrmSbtI_TyrfFJJIYUsE0uGDMA8jQ8W8bKSR_NRNpLRCio=w300');
+}
+#fore-fore-foreground {
+background-image: url('http://www.clker.com/cliparts/W/i/K/w/1/D/glossy-orange-circle-icon-hi.png');
+}
+</style>
+</head>
 
-        <script type="text/javascript" src="@routes.Assets.at("javascripts/bootstrap.min.js")"></script>  
-        <script type="text/javascript" src="@routes.Assets.at("javascripts/bootmetro-panorama.js")"></script> 
-        <script type="text/javascript" src="@routes.Assets.at("javascripts/bootmetro-pivot.js")"></script> 
-        <script type="text/javascript" src="@routes.Assets.at("javascripts/bootmetro-charms.js")"></script> 
+<body>
+<div id="background" class="mouse-bg"></div>
+<div id="foreground" class="mouse-bg"></div>
+<div id="fore-foreground"  class="mouse-bg"></div>
+<div id="fore-fore-foreground"  class="mouse-bg"></div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="@routes.Assets.at("javascripts/parallax/mouse.parallax.js")"></script>
+<script>
+$(document).ready(function() {
+				$('#background').mouseParallax({ moveFactor: 5 });
+				$('#foreground').mouseParallax({ moveFactor: 10 });
+				$('#fore-foreground').mouseParallax({ moveFactor: 15 });
+				$('#fore-fore-foreground').mouseParallax({ moveFactor: 20 });
+				
+				$('body').height(3000);
+			});
+</script>
 
-    </body>
+</body>
 </html>
