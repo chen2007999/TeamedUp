@@ -35,7 +35,7 @@ textarea{overflow:auto;vertical-align:top;}
 .metro a:hover,.metro .link:hover{color:#44d1da;}
 .metro a:active,.metro .link:active{color:#52ecff;}
 .metro h1,.metro h2,.metro h3,.metro h4,.metro h5,.metro p{margin-bottom:10px;}
-.metro h1{color:#ffffff;font-size:42pt;font-weight:400;font-family:"Segoe UI Light",Tahoma,Arial,Verdana,sans-serif;}
+.metro h1{color:#000000;font-size:42pt;font-weight:400;font-family:"Segoe UI Light",Tahoma,Arial,Verdana,sans-serif;}
 .metro h2{font-size:20pt;font-weight:400;color:#a5a5a5;font-family:"Segoe UI Light",Tahoma,Arial,Verdana,sans-serif;}
 .metro h3{color:#ffffff;font-size:18pt;font-weight:600;font-family:"Segoe UI Light",Tahoma,Arial,Verdana,sans-serif;}
 .metro h4{font-size:11pt;font-weight:600;color:#a5a5a5;}
@@ -365,10 +365,8 @@ html, body {
 
     
 body {
-    background: transparent url(../img/wallpapers/windows8_metro_green_1920_1080.jpg);
     position: relative;
     /*padding-top: 90px;*/
-    background-color: #fff;
     background-repeat: repeat;    
     }
 
@@ -536,7 +534,7 @@ cursor: move;
 ::-webkit-scrollbar-button:end:increment {
 height: 1px;
 display: block;
-/*background-color: #353535;*/
+/*background-color: #353535;
 }
 
 ::-webkit-scrollbar-button:horizontal:start:decrement,
@@ -547,7 +545,7 @@ display: block;
 }
 
 ::-webkit-scrollbar-track-piece {
-background-color: #353535;
+background-color: white;
 cursor: move;
 }
 

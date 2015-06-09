@@ -5,7 +5,7 @@
 html,
 body {
   color: #333;
-  background-color: #FFF;
+  background-color: #eaeff4;
 }
 
 .navig {
@@ -132,7 +132,7 @@ input[type=file]::-ms-browse:hover {
 button[type=submit],
 input[type=submit] {
   color: #FFF;
-  background-color: #4617b4;
+  background-color: #3e7aab;
   border-color: transparent;
   background-clip: border-box;
 }
@@ -158,16 +158,16 @@ button[aria-selected=true]:active .win-commandicon {
 }
 
 .btn {
-  color: #000;
+  color: #FFFFFF;
   text-shadow: none;
-  background-color: rgba(182, 182, 182, 0.7);
+  background-color: rgba(182, 182, 182, 0.1);
   background-image: none;
   background-repeat: no-repeat;
-  border: 2px solid #cccccc;
+  border: 1px solid #cccccc;
   border-color: rgba(0, 0, 0, 0.2);
-  -webkit-border-radius: 0;
-     -moz-border-radius: 0;
-          border-radius: 0;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
   filter: none;
   -webkit-box-shadow: none;
      -moz-box-shadow: none;
@@ -311,7 +311,7 @@ input:hover:active::-ms-check {
 button[type=submit]:hover,
 input[type=submit]:hover {
   color: #FFF;
-  background-color: #5f37be;
+  background-color: #366b96;
   border-color: transparent;
   background-clip: border-box;
 }
