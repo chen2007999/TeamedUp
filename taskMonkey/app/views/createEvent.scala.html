@@ -60,27 +60,22 @@
     </head>
 
 <body>
-<div class="container well">
+<div class="container well" align="center" id="fill">
     <h1>Create a new event</h1>
-    <ul>
+
        @helper.form(routes.Application.createEvent(startTime)) {
                            <input name="eventName" placeholder="event name"><br>
                            <h4>enter the time interval of the event </h4>
-    
                            <input name="slotChosenStart" placeholder="The starting hour of your event, 2-digit number smaller than 24"><br>
                            <input name="slotChosenEnd" placeholder="The finishing hour of your event, 2-digit number smaller than 24"><br>
                            <input name="location" placeholder="location"><br>
-                           <textarea name="content" cols="40" rows="5" placeholder="description"></textarea>
-    
-                           <button class="icon-key-2" type="submit"> Create</button><br>
+                           <textarea name="content" cols="40" rows="5" placeholder="description"></textarea><br>
+                           <button type="submit">Create</button><br>
        }
-    
-    
-    </ul>
+
 </div>
                     <!-- jQuery -->
         <script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
-    
         <!-- Bootstrap Core JavaScript -->
         <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.min.js")"></script>
         <script type="text/javascript" src="@routes.Assets.at("javascripts/bootstrap.min.js")"></script>  

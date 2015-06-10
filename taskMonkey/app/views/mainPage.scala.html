@@ -31,9 +31,8 @@
                  <div class="span6" align="right">
                      <div class="btn-group">
 
-                     @helper.form(routes.Application.dailySchedule()) {
-                            <button class="btn btn-default" href="#menu-toggle" id="menu-toggle" type="submit">Daily schedule</button>
-                     }
+                            <button class="btn" href="#menu-toggle" id="menu-toggle">Daily schedule</button>
+
                         <form action="/profile">
                             <button class="btn" href="/profile">Profile</button>
                         </form>
@@ -80,18 +79,23 @@
         <div id="wrapper" class="toggled">
             <div id="sidebar-wrapper">
                 <ul class="sidebar-nav">
+                   <div class="container">
+                   <hr>
                     @for(e <- Event.findDailySchedule(Application.currentUser)){
-                        <li>    @helper.form(routes.Application.showEventInfo(e.eventName)) {
-                                    <button type="submit"><h3>
-                                 Event name: @e.eventName
-                                Location: @e.location
-                                Start time: @e.startTime
-                                End time: @e.endTime
-                                    </h3></button><br>
-                                    }
+                        <li>    
+                            
+                            @helper.form(routes.Application.showEventInfo(e.eventName)) {
+                                <ul style="color: white;">
+                                <a href="#" style="color: white; text-decoration: underline;" onclick="$(this).closest('form').submit()"><h3>@e.eventName</h3></a>
+                                <li id="li-event">At @e.location</li>
+                                <li id="li-event">Start: @e.startTime</li>
+                                <li id="li-event">End: @e.endTime</li>
+                                </ul>
+                            }
+                            <hr>
                         </li>
                     }
-                    
+                    </div>
                 </ul>
             </div>
 
@@ -99,8 +103,6 @@
                 <!-- Menu Toggle Script -->
         <script>
         $("#menu-toggle").click(function(e) {
-            window.alert("loaded");
-            e.preventDefault();
             $("#wrapper").toggleClass("toggled");
         });
         </script>
