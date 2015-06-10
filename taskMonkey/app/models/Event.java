@@ -502,4 +502,8 @@ public class Event extends Model{
         }
         return result;
     }
+    
+        public static Event getEventById(Long eventId) {
+        return find.byId(eventId);
+    }
 }

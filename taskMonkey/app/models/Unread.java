@@ -54,6 +54,10 @@ public class Unread extends Model{
     public Long getTaskId() {
         return taskId;
     }
+    
+    public Long getEventId() {
+        return taskId;
+    }
 
     public  static Finder<String, Unread> find = new Finder<>(String.class, Unread.class);
 
@@ -124,7 +128,15 @@ public class Unread extends Model{
     }
 
     public static List<Event> getUnreadEvents(User user) {
-return null;
+        List<Unread> unreads = getUnread(user);
+        List<Event> events = new ArrayList<Event>();
+        for(Unread unread : unreads) {
+            Long eventId = unread.getEventId();
+            if(eventId != null){
+                events.add(Event.getEventById(eventId));
+            }
+        }
+        return events;
     }
 
     public static void updateUnreadComment(Long commentId) {

@@ -40,47 +40,77 @@
           </div>
        </div>
     </head>
-
-
-
-
-<div class="container well" align="center">
-    <h2>Add all users before for the events </h2>
-</div>
-
-<div class="row-fluid" id="fill">
-    <div class="span4 well well-small div-list" style="overflow-y: scroll;" id="fill">
-        <ul class="list-group">
-            <li class="list-group-item"><h2>Team members:</h2></li>
-            @for(user <- users) {
-            <li class="list-group-item">
-                <button class="list-button" type="submit">
-                    @user.email
-                </button>
-                @helper.form(routes.Application.deleteUserFromEventList(user.email)) {
-                <button class="delete">x</button>
+<body>
+    <div class="container" id="fill" align="center">
+        <h2>Add all users before for the events </h2>
+    <div class="row-fluid well well-small" id="fill">
+        <div class="span4 div-list" style="overflow-y: scroll;" id="fill">
+            <ul class="list-group">
+                <li class="list-group-item"><h2>Team members:</h2></li>
+                @for(user <- users) {
+                <li class="list-group-item">
+                    <button class="list-button" type="submit">
+                        @user.email
+                    </button>
+                    @helper.form(routes.Application.deleteUserFromEventList(user.email)) {
+                    <button class="delete">x</button>
+                    }
+                </li>
                 }
-            </li>
-            }
-            @helper.form(routes.Application.addUserToEvent()) {
-            <input name="email" placeholder="email address"><br>
-            <button type="submit">Add</button><br>
-            }
-        </ul>
-        
-    </div>
-    <div class="span8 well well-small">
-        @helper.form(routes.Application.commonTimeList()) {
-        <button type="submit">Create</button><br>
-        }
-        
-        @helper.form(routes.Application.teamPage(teamName)) {
-        <button type="submit">Go back</button><br>
-        }
+                @helper.form(routes.Application.addUserToEvent()) {
+                <input name="email" placeholder="email address"><br>
+                <button type="submit">Add</button><br>
+                }
+            </ul>
+            
+        </div>
+        <div class="span8" id="fill">
 
+            <button onclick="common()" type="submit">Create</button><br>
+            
+            @helper.form(routes.Application.teamPage(teamName)) {
+            <button type="submit">Go back</button><br>
+            }
+            <div class="content" id="content">
+                
+            </div>
+    
+        </div>
     </div>
-</div>
-
+    </div>
+    <script>
+        function common(){
+            var html = "<div class='container-fluid' id='fill' align='center'>"
+                     + "<h2>Below are the time slots when all the members are free, choose one for your event</h2>"
+                     + "<div class='row-fluid' id='fill'>"
+                     + "<div class='span8 offset2 well' style='overflow-y: scroll;'>"
+                     + "<ul class='list-group'>"
+                     + "@for(slot <- Event.timeListToString(Event.findWeeklyCommonFreetime(Application.eventUserList, Event.currentDate()))) {"
+                     + "<li class='list-group-item'>"
+                     + "<form action='/chooseCommonTime/@slot' method='GET'>"
+                     + "<button class='list-button-time' type='submit'>@slot</button>"
+                     + "</form>"
+                     + "</li>"
+                     + "}"
+                     + "</ul"
+                     + "</div>"
+                     + "</div>"
+                     + "</div>";
+            $("#content").html(html);
+        }
+    </script>
+    <script>
+        function slot(){
+            var html = "<h1> HAHAH </h1>";
+            $("#content").load('@routes.Assets.at("t.scala.html")');
+        }
+    </script>
+            <!-- jQuery -->
+        <script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
+    
+        <!-- Bootstrap Core JavaScript -->
+        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.min.js")"></script>
+</body>
 
 
 

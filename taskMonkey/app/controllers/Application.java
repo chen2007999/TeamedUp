@@ -22,7 +22,7 @@ public class Application extends Controller {
     private static Task currentTask;
     private static Post currentPost;
     private static Event currentEvent;
-    private static List<User> eventUserList = new ArrayList<User>();
+    public static List<User> eventUserList = new ArrayList<User>();
     
     
     
@@ -304,7 +304,8 @@ public class Application extends Controller {
     public static Result commonTimeList() {
         List<TimePair> tp = Event.findWeeklyCommonFreetime(eventUserList, Event.currentDate());
         List<String> s = Event.timeListToString(tp);
-        return ok(commonTime.render(s));
+        return ok(commonTime.render());
+        //return ok(commonTime.render(s));
         /*List < User > users = new ArrayList<User>();
         users.add(User.find.byId("1@1.com"));
         users.add(User.find.byId("2@2.com"));
