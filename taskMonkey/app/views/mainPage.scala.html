@@ -139,8 +139,7 @@
         <span class="win-commandimage win-commandring"><img src="@routes.Assets.at("images/plus.png")"></span>
     </button>
     @for(team <- teams) {
-        <a class="tile wide text" href="/teamPage/@team.teamName">
-        
+        <a class="tile wide text @Team.color()" href="/teamPage/@team.teamName">
                 <div class="text-header">
                     @team.teamName
                 </div>

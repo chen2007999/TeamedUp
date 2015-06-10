@@ -65,4 +65,13 @@ public class Team extends Model{
     public static boolean teamNameEmpty(Team team) {
         return team.getTeamName().equals("");
     }
+    
+    public static String color(){
+        String[] array = new String[]{"bg-color-orange", "bg-color-purple", "bg-color-green", "bg-color-greenDark",
+                                        "bg-color-blue", "bg-color-blueDark", "bg-color-red", "bg-color-yellow", "bg-color-darken",
+                                        "bg-color-gray", "bg-color-grayLight" };
+        int i = (new Random()).nextInt(array.length);
+        return array[i];
+    }
+    
 }

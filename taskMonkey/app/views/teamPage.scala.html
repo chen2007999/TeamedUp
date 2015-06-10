@@ -108,12 +108,13 @@
                 <div class="metro">
                        <button class="win-command orange add-team" type="button" data-toggle="modal" data-target="#myModalT" rel="tooltip" title="Add a new task">
                             <span class="win-commandimage win-commandring"><img src="@routes.Assets.at("images/plus.png")"></span>
-                        </button>  
-                    @for(task <- tasks) {
+                        </button> 
                     @if(tasks.size() == 0){
                         <h1>You have no tasks</h1>
                         <h2>You can add a new task using the button on the right</h2>
                     }
+                    @for(task <- tasks) {
+
                         @defining(if (task.status.equals("In Progress")) "bg-color-green" else "bg-color-blue") { color =>
                             <a class="tile square text tilesquareblock @color" href="/taskPage/@task.taskName">
                                 <div class="text">@task.taskName</div>
