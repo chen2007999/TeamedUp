@@ -268,8 +268,8 @@ public class Application extends Controller {
 
             eventUserList.clear();
             eventUserList.add(currentUser);
-            return redirect(routes.Application.showEventInfo(event.getEventName()));
-            //return ok(createEvent.render(getUnreadNum(), startTime, "success"));
+            //return redirect(routes.Application.showEventInfo(event.getEventName()));
+            return ok(createEvent.render(getUnreadNum(), startTime, "success"));
 
         }
         return ok(createEvent.render(getUnreadNum(), startTime, "error"));
@@ -277,7 +277,7 @@ public class Application extends Controller {
     }
 
     public static Result eventPage() {
-        return ok(eventPage.render(eventUserList, currentTeam.getTeamName()));
+        return ok(eventPage.render(eventUserList, currentTeam.getTeamName(),getUnreadNum()));
     }
 
     private static boolean userNotInTheEventList(User user) {
@@ -336,7 +336,7 @@ public class Application extends Controller {
             }
         }
         eventUserList.remove(u);
-        return ok(eventPage.render(eventUserList, currentTeam.getTeamName()));
+        return ok(eventPage.render(eventUserList, currentTeam.getTeamName(), getUnreadNum()));
     }
 
     public static Result showEventInfo(String eventName) {
