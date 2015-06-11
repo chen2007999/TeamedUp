@@ -1,0 +1,130 @@
+@(unreadNum : Integer, startTime : String, status : String)
+
+<head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-responsive.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-icons.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-ui-light.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootstrap/simple-sidebar.css")">
+        <script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
+        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.js")"></script>
+        <div class="navbar">
+        <div class="navbar-inner">
+             <div class="row-fluid">
+                 <div class="span6">
+                    <a class="brand" href="#">TeamedUp</a>
+                     <ul class="nav">
+                        <li><a href="/landing">Home</a></li>
+                        <li class="active"><a href="#">Main Page</a></li>
+                    </ul>
+                 </div>
+                 <div class="span6" align="right">
+                     <div class="btn-group">
+                        <button class="btn" href="#menu-toggle" id="menu-toggle">Daily schedule</button>
+                        <form action="/profile">
+                            <button class="btn" href="/profile">Profile</button>
+                        </form>
+                            <button class="btn" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" href="#"><span class="badge">@unreadNum</span> unread</button>
+                            <ul class="dropdown-menu pull-right unread" role="menu" arie-labelledby="dLabel">
+                            @for(task <- Unread.getUnreadTasks(Application.currentClient)) {
+                                <li>
+                                    @helper.form(routes.Application.redirectUnreadTask(task.taskId)) {
+                                    <button type="submit"><h3> A new task @task.taskName is created</h3></button><br>
+                                    }
+                                </li>
+                            }
+                            @for(event <- Unread.getUnreadEvents(Application.currentClient)) {
+                                <li>
+                                    Haha
+                                    @helper.form(routes.Application.redirectUnreadEvent(event.id)) {
+                                    <button type="submit"> <h3> <strong>@event.ownerName:</strong>  @event.content</h3></button><br>
+                                    }
+                                </li>
+                            }
+                            @for(comment <- Unread.getUnreadComments(Application.currentClient)) {
+                                <li>
+                                    @helper.form(routes.Application.redirectUnreadComment(comment.id)) {
+                                    <button type="submit"> <h3> <strong>@comment.ownerName:</strong>  @comment.content</h3></button><br>
+                                    }
+                                </li>
+                            }
+                            </ul>
+                        
+                        <form action="/landing">
+                            <button class="btn" href="/landing">Logout</button> 
+                        </form>
+                     </div>
+                </div>
+             </div>
+          </div>
+        @if(status.length() >0){
+        
+        @if(status.equals("success")){
+         <div class="alert alert-success">
+          <button type="button" class="close" data-dismiss="alert"><a data-dismiss="alert" href="#"></a></button>
+          Event is successfully created, waiting for other members to comfirm.
+        </div>
+        } else{
+        <div class="alert alert-danger">
+          <button type="button" class="close" data-dismiss="alert"><a data-dismiss="alert" href="#"></a></button>
+          <strong>Warning!</strong> There must have been an error in your entered details. Please try again.
+        </div>
+        }
+        <script>
+            $(".alert").alert()     
+        </script>
+        }
+                <script type="text/javascript" src="@routes.Assets.at("javascripts/bootstrap.min.js")"></script> 
+          
+       </div>
+    </head>
+
+<body>
+        <div id="wrapper" class="toggled">
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav">
+                   <div class="container">
+                   <hr>
+                    @for(e <- Event.findDailySchedule(Application.currentClient)){
+                        <li>    
+                            
+                            @helper.form(routes.Application.showEventInfo(e.eventName)) {
+                                <ul style="color: white;">
+                                <a href="#" style="color: white; text-decoration: underline;" onclick="$(this).closest('form').submit()"><h3>@e.eventName</h3></a>
+                                <li id="li-event">At @e.location</li>
+                                <li id="li-event">Start: @e.startTime</li>
+                                <li id="li-event">End: @e.endTime</li>
+                                </ul>
+                            }
+                            <hr>
+                        </li>
+                    }
+                    </div>
+                </ul>
+            </div>
+        </div>
+<div class="container well" align="center" id="fill">
+    <h1>Create a new event</h1>
+
+       @helper.form(routes.Application.createEvent(startTime)) {
+                           <input name="eventName" placeholder="event name"><br>
+                           <h4>enter the time interval of the event </h4>
+                           <input name="slotChosenStart" placeholder="The starting hour of your event, 2-digit number smaller than 24"><br>
+                           <input name="slotChosenEnd" placeholder="The finishing hour of your event, 2-digit number smaller than 24"><br>
+                           <input name="location" placeholder="location"><br>
+                           <textarea name="content" cols="40" rows="5" placeholder="description"></textarea><br>
+                           <button type="submit">Create</button><br>
+       }
+
+</div>
+                <!-- Menu Toggle Script -->
+        <script>
+        $("#menu-toggle").click(function(e) {
+            $("#wrapper").toggleClass("toggled");
+        });
+        </script>
+        <!-- DropDown -->
+        <script>$('.dropdown-toggle').dropdown()</script>
+</body>

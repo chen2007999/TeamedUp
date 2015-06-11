@@ -1,0 +1,16 @@
++--------------------+
+| sbt-heroku details |
++--------------------+-----------------------------------------------
+| baseDirectory -> /Users/apple/Desktop/tmdUp 
+| targetDir     -> /Users/apple/Desktop/tmdUp/target 
+| jdkVersion    -> 1.7 
+| jdkUrl        -> null 
+| appName       ->  
+| stack         -> cedar-14 
+| includePaths  -> 
++--------------------------------------------------------------------
+
+---> Packaging application...
+     - app: 
+     - including: ./target/universal/stage/
+(compile:deployHeroku) Could not find app ''. Check that herokuAppName setting is correct.

@@ -1,0 +1,15 @@
+[0m[[0mdebug[0m] [0m+--------------------+[0m
+[0m[[0mdebug[0m] [0m| sbt-heroku details |[0m
+[0m[[0mdebug[0m] [0m+--------------------+-----------------------------------------------[0m
+[0m[[0mdebug[0m] [0m| baseDirectory -> /Users/apple/Desktop/tmdUp [0m
+[0m[[0mdebug[0m] [0m| targetDir     -> /Users/apple/Desktop/tmdUp/target [0m
+[0m[[0mdebug[0m] [0m| jdkVersion    -> 1.7 [0m
+[0m[[0mdebug[0m] [0m| jdkUrl        -> null [0m
+[0m[[0mdebug[0m] [0m| appName       ->  [0m
+[0m[[0mdebug[0m] [0m| stack         -> cedar-14 [0m
+[0m[[0mdebug[0m] [0m| includePaths  -> [0m
+[0m[[0mdebug[0m] [0m+--------------------------------------------------------------------[0m
+[0m[[0minfo[0m] [0m---> Packaging application...[0m
+[0m[[0minfo[0m] [0m     - app: [0m
+[0m[[0minfo[0m] [0m     - including: ./target/universal/stage/[0m
+[0m[[31merror[0m] [0m(compile:[31mdeployHeroku[0m) Could not find app ''. Check that herokuAppName setting is correct.[0m

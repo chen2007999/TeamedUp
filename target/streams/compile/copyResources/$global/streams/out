@@ -1,0 +1,6 @@
+[0m[[0mdebug[0m] [0mCopy resource mappings: [0m
+[0m[[0mdebug[0m] [0m	(/Users/apple/Desktop/tmdUp/conf/application.conf,/Users/apple/Desktop/tmdUp/target/scala-2.11/classes/application.conf)[0m
+[0m[[0mdebug[0m] [0m	(/Users/apple/Desktop/tmdUp/conf/evolutions,/Users/apple/Desktop/tmdUp/target/scala-2.11/classes/evolutions)[0m
+[0m[[0mdebug[0m] [0m	(/Users/apple/Desktop/tmdUp/conf/routes,/Users/apple/Desktop/tmdUp/target/scala-2.11/classes/routes)[0m
+[0m[[0mdebug[0m] [0m	(/Users/apple/Desktop/tmdUp/conf/evolutions/default,/Users/apple/Desktop/tmdUp/target/scala-2.11/classes/evolutions/default)[0m
+[0m[[0mdebug[0m] [0m	(/Users/apple/Desktop/tmdUp/conf/evolutions/default/1.sql,/Users/apple/Desktop/tmdUp/target/scala-2.11/classes/evolutions/default/1.sql)[0m
