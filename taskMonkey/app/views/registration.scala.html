@@ -10,10 +10,25 @@
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-icons.css")">
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-ui-light.css")">
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/datepicker.css")">
-        <script src="@routes.Assets.at("javascripts/modernizr-2.6.2.min.js")"></script>
-        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.js")"></script>
-        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.min.js")"></script>
         <script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
+                <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.js")"></script>
+        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.min.js")"></script>
+
+        <style>
+            body, html {
+            height: 100%;
+            }
+            .mouse-bg {
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 0;
+            position: fixed;
+            }
+            #background {
+            background-image: url('http://localhost:9000/assets/stylesheets/new.jpg');
+            }
+        </style>
         <div class="navbar">
             <div class="navbar-inner">
                  <a class="brand" href="#">TeamedUp</a>
@@ -31,20 +46,27 @@
             $(".alert").alert()     
         </script>
         }
-                <script type="text/javascript" src="@routes.Assets.at("javascripts/bootstrap.min.js")"></script> 
        </div>
        
     </head>
 
-<body>
+<body class="body-landing">
 
-
+    <div id="background" class="mouse-bg"></div>
+        <script src="@routes.Assets.at("javascripts/parallax/mouse.parallax.js")"></script>
+    <script>
+    $(document).ready(function() {
+    				$('#background').mouseParallax({ moveFactor: 5 });
+    
+    				$('body').height(3000);
+    			});
+    </script>
     <div class="container">
 
         <h1 align="center">Create a new account</h1>
         <div class="row-fluid" id="login-div">
         
-            <div class="well span4 offset4" align="center">
+            <div class="well span4 offset4" style="background: rgba(234, 239, 244, .5);" align="center">
                 
                    @helper.form(routes.Application.createUser()) {
                        <input name="email" placeholder="Email address"><br>
@@ -71,15 +93,7 @@
                
            </div>
     </div>
-                    <!-- jQuery -->
-        <script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
-    
-        <!-- Bootstrap Core JavaScript -->
-        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.min.js")"></script>
-        <script type="text/javascript" src="@routes.Assets.at("javascripts/bootstrap.min.js")"></script>  
-        <script type="text/javascript" src="@routes.Assets.at("javascripts/bootmetro-panorama.js")"></script> 
-        <script type="text/javascript" src="@routes.Assets.at("javascripts/bootmetro-pivot.js")"></script> 
-        <script type="text/javascript" src="@routes.Assets.at("javascripts/bootmetro-charms.js")"></script> 
+ 
 </body>
 
 

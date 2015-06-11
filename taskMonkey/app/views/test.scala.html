@@ -1,40 +1,39 @@
 <!doctype html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>jQuery Mouse Parallax Plugin Demo</title>
-<link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
-<link href="@routes.Assets.at("javascripts/parallax/mouseparallax.css")" rel="stylesheet" type="text/css">
-
-<style>
-body, html {
-height: 100%;
-}
-.mouse-bg {
-left: 0;
-right: 0;
-bottom: 0;
-top: 0;
-position: fixed;
-}
-#background {
-background-image: url('http://localhost:9000/assets/stylesheets/new.jpg');
-}
-</style>
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootstrap/simple-sidebar.css")">
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro.css")">
+    <script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
+    <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.js")"></script>
 </head>
 
 <body>
-<div id="background" class="mouse-bg"></div>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="@routes.Assets.at("javascripts/parallax/mouse.parallax.js")"></script>
-<script>
-$(document).ready(function() {
-				$('#background').mouseParallax({ moveFactor: 10 });
+                            <button class="btn" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" href="#"><span class="badge">2</span> unread</button>
+                            <ul class="dropdown-menu pull-right unread" role="menu" arie-labelledby="dLabel">
 
-				$('body').height(3000);
-			});
-</script>
+                            </ul>
+        <button class="btn" href="#menu-toggle" id="menu-toggle">Daily schedule</button>
+            <div id="wrapper" class="toggled">
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav">
+                   <div class="container">
+              <hr>
 
+                    </div>
+                </ul>
+            </div>
+        </div>
+                        <!-- Menu Toggle Script -->
+        <script>
+        $("#menu-toggle").click(function(e) {
+            $("#wrapper").toggleClass("toggled");
+        });
+        </script>
+                    <script>
+            function drop(){
+                $('.dropdown-toggle').dropdown();                
+            }
+            </script>
 </body>
 </html>

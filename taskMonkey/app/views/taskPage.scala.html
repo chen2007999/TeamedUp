@@ -4,21 +4,17 @@
 
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/style.css")" type="text/css">
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro.css")">
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-responsive.css")">
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-icons.css")">
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-ui-light.css")">
-        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/datepicker.css")">
-        <script src="@routes.Assets.at("javascripts/modernizr-2.6.2.min.js")"></script>
-                <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.js")"></script>
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootstrap/simple-sidebar.css")">
         <script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
-        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.min.js")"></script>
+        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.js")"></script>
         <div class="navbar">
         <div class="navbar-inner">
              <div class="row-fluid">
-             
                  <div class="span6">
                     <a class="brand" href="#">TeamedUp</a>
                      <ul class="nav">
@@ -28,15 +24,24 @@
                  </div>
                  <div class="span6" align="right">
                      <div class="btn-group">
+                        <button class="btn" href="#menu-toggle" id="menu-toggle">Daily schedule</button>
                         <form action="/profile">
                             <button class="btn" href="/profile">Profile</button>
                         </form>
-                            <button class="btn" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" href="#">@unreadNum unread</button>
+                            <button class="btn" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" href="#"><span class="badge">@unreadNum</span> unread</button>
                             <ul class="dropdown-menu pull-right unread" role="menu" arie-labelledby="dLabel">
                             @for(task <- Unread.getUnreadTasks(Application.currentUser)) {
                                 <li>
                                     @helper.form(routes.Application.redirectUnreadTask(task.taskId)) {
                                     <button type="submit"><h3> A new task @task.taskName is created</h3></button><br>
+                                    }
+                                </li>
+                            }
+                            @for(event <- Unread.getUnreadEvents(Application.currentUser)) {
+                                <li>
+                                    Haha
+                                    @helper.form(routes.Application.redirectUnreadEvent(event.id)) {
+                                    <button type="submit"> <h3> <strong>@event.ownerName:</strong>  @event.content</h3></button><br>
                                     }
                                 </li>
                             }
@@ -48,20 +53,41 @@
                                 </li>
                             }
                             </ul>
-                        <script>$('.dropdown-toggle').dropdown()</script>
-                        @helper.form(routes.Application.landing()) {
-                            <button class="btn">Logout</button> 
-                        }
                         
-                        
+                        <form action="/landing">
+                            <button class="btn" href="/landing">Logout</button> 
+                        </form>
                      </div>
                 </div>
              </div>
-             
           </div>
        </div>
     </head>
+    
 <body onload="description()">
+        <div id="wrapper" class="toggled">
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav">
+                   <div class="container">
+                   <hr>
+                    @for(e <- Event.findDailySchedule(Application.currentUser)){
+                        <li>    
+                            
+                            @helper.form(routes.Application.showEventInfo(e.eventName)) {
+                                <ul style="color: white;">
+                                <a href="#" style="color: white; text-decoration: underline;" onclick="$(this).closest('form').submit()"><h3>@e.eventName</h3></a>
+                                <li id="li-event">At @e.location</li>
+                                <li id="li-event">Start: @e.startTime</li>
+                                <li id="li-event">End: @e.endTime</li>
+                                </ul>
+                            }
+                            <hr>
+                        </li>
+                    }
+                    </div>
+                </ul>
+            </div>
+        </div>
 <script>
     function description(){
         var text = "@task.content";
@@ -75,7 +101,7 @@
     }
 </script>
 
-<div class="container well" align="center">
+<div class="container well" style="margin-top: 20px;" align="center">
     <h2>Task Name: @task.taskName </h2>
     <div class="well well-small" id="descr"></div>
     <h2> Status: @task.status </h2>
@@ -109,13 +135,16 @@
 @helper.form(routes.Application.teamPage(teamName)) {
 <button type="submit">Go back</button><br>
 }
-            <!-- jQuery -->
-        <script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
-    
-        <!-- Bootstrap Core JavaScript -->
-        <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.min.js")"></script>
     
 </div>
+                <!-- Menu Toggle Script -->
+        <script>
+        $("#menu-toggle").click(function(e) {
+            $("#wrapper").toggleClass("toggled");
+        });
+        </script>
+        <!-- DropDown -->
+        <script>$('.dropdown-toggle').dropdown()</script>
 </body>
         
 }
