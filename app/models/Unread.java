@@ -54,7 +54,7 @@ public class Unread extends Model{
     }
     
     public Long getEventId() {
-        return taskId;
+        return eventId;
     }
 
     public  static Finder<String, Unread> find = new Finder<String, Unread>(String.class, Unread.class);
@@ -147,8 +147,9 @@ public class Unread extends Model{
         unread.delete();
     }
 
-    public static void updateUnreadEvent(Event event, Client client) {
-
+    public static void updateUnreadEvent(Long eventId, Client client) {
+        Unread unread = find.where().eq("eventId", eventId).eq("userEmail", client.getEmail()).findList().get(0);
+        unread.delete();
     }
 
 

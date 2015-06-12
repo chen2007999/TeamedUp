@@ -29,14 +29,6 @@
             background-image: url('http://chrisdent.co.uk/wp-content/uploads/2013/10/new-york-skyline-personal-project-chris-dent.jpg');
             }
         </style>
-        <div class="navbar">
-            <div class="navbar-inner">
-                 <a class="brand" href="#">TeamedUp</a>
-                 <ul class="nav">
-                    <li><a href="/landing">Home</a></li>
-                    <li class="active"><a href="#">Register</a></li>
-                 </ul>
-            </div>
             @if(error.length() >0){
          <div class="alert">
           <button type="button" class="close" data-dismiss="alert"><a data-dismiss="alert" href="#"></a></button>
@@ -79,18 +71,6 @@
                        <button type="submit">Go back</button>
                    }
                </div>
-           </div>
-           <div class="row metro">
-                @for(client <- clients) {
-                    @helper.form(routes.Application.deleteUserFromDB(client.email)) {
-                        <button class="tile square text" type="submit">
-                            <div class="text">@client.email</div>
-                            <div class="text">@client.name</div>
-                            <div class="text">@client.password</div>
-                        </button>
-                    }
-                }
-               
            </div>
     </div>
  

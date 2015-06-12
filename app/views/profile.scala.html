@@ -17,8 +17,7 @@
                  <div class="span6">
                     <a class="brand" href="#">TeamedUp</a>
                      <ul class="nav">
-                        <li><a href="/landing">Home</a></li>
-                        <li class="active"><a href="#">Main Page</a></li>
+
                     </ul>
                  </div>
                  <div class="span6" align="right">
@@ -38,16 +37,15 @@
                             }
                             @for(event <- Unread.getUnreadEvents(Application.currentClient)) {
                                 <li>
-                                    Haha
                                     @helper.form(routes.Application.redirectUnreadEvent(event.id)) {
-                                    <button type="submit"> <h3> <strong>@event.ownerName:</strong>  @event.content</h3></button><br>
+                                    <button type="submit"> <h3> @event.ownerName created event @event.eventName</h3></button><br>
                                     }
                                 </li>
                             }
                             @for(comment <- Unread.getUnreadComments(Application.currentClient)) {
                                 <li>
                                     @helper.form(routes.Application.redirectUnreadComment(comment.id)) {
-                                    <button type="submit"> <h3> <strong>@comment.ownerName:</strong>  @comment.content</h3></button><br>
+                                    <button type="submit"> <h3> <strong>@comment.ownerName commented:</strong>  @comment.content</h3></button><br>
                                     }
                                 </li>
                             }

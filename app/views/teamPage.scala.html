@@ -18,8 +18,7 @@
                  <div class="span6">
                     <a class="brand" href="#">TeamedUp</a>
                      <ul class="nav">
-                        <li><a href="/landing">Home</a></li>
-                        <li class="active"><a href="#">Main Page</a></li>
+
                     </ul>
                  </div>
                  <div class="span6" align="right">
@@ -39,16 +38,15 @@
                             }
                             @for(event <- Unread.getUnreadEvents(Application.currentClient)) {
                                 <li>
-                                    Haha
                                     @helper.form(routes.Application.redirectUnreadEvent(event.id)) {
-                                    <button type="submit"> <h3> <strong>@event.ownerName:</strong>  @event.content</h3></button><br>
+                                    <button type="submit"> <h3> @event.ownerName created event @event.eventName</h3></button><br>
                                     }
                                 </li>
                             }
                             @for(comment <- Unread.getUnreadComments(Application.currentClient)) {
                                 <li>
                                     @helper.form(routes.Application.redirectUnreadComment(comment.id)) {
-                                    <button type="submit"> <h3> <strong>@comment.ownerName:</strong>  @comment.content</h3></button><br>
+                                    <button type="submit"> <h3> <strong>@comment.ownerName commented:</strong>  @comment.content</h3></button><br>
                                     }
                                 </li>
                             }
@@ -134,7 +132,7 @@
                             <span class="win-commandimage win-commandring"><img src="@routes.Assets.at("images/plus.png")"></span>
                         </button> 
                     @if(tasks.size() == 0){
-                        <h1>You have no tasks</h1>
+                        <h1>You have no task</h1>
                         <h2>You can add a new task using the button on the right</h2>
                     }
                     @for(task <- tasks) {
@@ -156,7 +154,7 @@
                             <span class="win-commandimage win-commandring"><img src="@routes.Assets.at("images/plus.png")"></span>
                         </button>
                     @if(posts.size() == 0){
-                        <h1>You have no posts</h1>
+                        <h1>You have no post</h1>
                         <h2>You can add a new post using the button on the right</h2>
                     }
                     @for(post <- posts) {

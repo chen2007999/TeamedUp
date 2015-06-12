@@ -21,8 +21,6 @@ public class Application extends Controller {
     private static Event currentEvent;
     public static List<Client> eventClientList = new ArrayList<Client>();
     
-    
-    
 
     // index to landing page by default
     public static Result index() {
@@ -54,7 +52,8 @@ public class Application extends Controller {
             return redirect(routes.Application.register("Client with email " + client.email + " already exists"));
         }
         Client.createUser(client);
-        return redirect(routes.Application.displayAllUsersFromDB());
+        currentClient = client;
+        return ok(mainPage.render(Client.getTeams(currentClient), getUnreadNum()));
     }
 
     public static  Result deleteUserFromDB(String email) {
@@ -250,23 +249,23 @@ public class Application extends Controller {
     }
 
     public static Result redirectUnreadEvent(Long eventId) {
-        return ok("todo");
+        Event event = Event.getEventWithId(eventId);
+        Unread.updateUnreadEvent(eventId, currentClient);
+        return redirect(routes.Application.showEventInfo(event.getEventName()));
     }
 
     public static Result createEvent(String startTime) {
         play.data.Form<Event> eventForm = play.data.Form.form(Event.class);
         Event event = eventForm.bindFromRequest().get();
-
         if (!Event.nullEvent(event) && !Event.emptyEvent(event)) {
-
             Timestamp start = Timestamp.valueOf(startTime + "00:00:00.0");
             event.setStartTime(start);
-                Event.createEvent(event, currentClient, eventClientList);
+            Event.createEvent(event, currentClient, eventClientList);
 
             eventClientList.clear();
             eventClientList.add(currentClient);
-            //return redirect(routes.Application.showEventInfo(event.getEventName()));
-            return ok(createEvent.render(getUnreadNum(), startTime, "success"));
+            return redirect(routes.Application.showEventInfo(event.getEventName()));
+            //return ok(createEvent.render(getUnreadNum(), startTime, "success"));
 
         }
         return ok(createEvent.render(getUnreadNum(), startTime, "error"));

@@ -8,7 +8,7 @@
     @for(event <- events) {
     <li>
         @helper.form(routes.Application.redirectUnreadEvent(event.id)) {
-        <button type="submit"> <h3> @event.ownerName created an event @event.eventName </h3></button><br>
+        <button type="submit"> <h3> @event.ownerName:  @event.eventName </h3></button><br>
         }
     </li>
     }
