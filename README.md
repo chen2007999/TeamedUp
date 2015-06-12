@@ -1,6 +1,7 @@
-# TeamedUp is a web app designed to help people work in teams.
+#  TeamedUp is a web app designed to help people work in teams.
+## URL: www.tmdup.com
 
-Main features:
+###Main features:
 
      1. Creating teams and adding/deleting other users to/from the team.
      2. Creating tasks and posts within the team.
