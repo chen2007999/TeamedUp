@@ -18,7 +18,6 @@ public class Application extends Controller {
     private static Team currentTeam;
     private static Task currentTask;
     private static Post currentPost;
-    private static Event currentEvent;
     public static List<Client> eventClientList = new ArrayList<Client>();
     
 
@@ -135,7 +134,8 @@ public class Application extends Controller {
             newimg = "http://tmdup.com/assets/images/default.jpg";
         }
         Client.updateImage(currentClient, newimg);
-        return redirect(routes.Application.profile(currentClient.email));
+        //return redirect(routes.Application.profile(currentClient.getEmail()));
+        return ok(profile.render(currentClient));
     }
 
     public static Result addUserToTeam(String teamName) {
@@ -278,8 +278,6 @@ public class Application extends Controller {
             eventClientList.clear();
             eventClientList.add(currentClient);
             return redirect(routes.Application.showEventInfo(event.getEventName()));
-            //return ok(createEvent.render(getUnreadNum(), startTime, "success"));
-
         }
         return ok(createEvent.render(getUnreadNum(), startTime, "error"));
 
@@ -362,8 +360,18 @@ public class Application extends Controller {
         String date = event.getStartTime().toString().substring(0, 11);
         String startTime = event.getStartTime().toString().substring(11, 16);
         String endTime = event.getEndTime().toString().substring(11, 16);
+        List<Integer> startHours = new ArrayList<Integer>();
+        List<Integer> endHours = new ArrayList<Integer>();
+        int startHour = Integer.parseInt(event.getStartTime().toString().substring(11, 13));
+        int endHour = Integer.parseInt(event.getEndTime().toString().substring(11, 13));
+        for(int i=startHour; i<endHour; i++) {
+            startHours.add(i);
+        }
+        for(int i=startHour+1; i<=endHour; i++) {
+            endHours.add(i);
+        }
         List<Event> events = Event.find.where().eq("eventName", eventName).eq("ownerName", event.getOwnerName()).findList();
-        return ok(showEventInfo.render(event, date, startTime, endTime, events));
+        return ok(showEventInfo.render(event, date, startTime, endTime, events, startHours, endHours));
     }
 
     public static Result dailySchedule() {
@@ -373,11 +381,6 @@ public class Application extends Controller {
 
 
 
-    /*<h2>Event Name: @event.eventName </h2>
-    <h2> Description: @event.content </h2>
-    <h2> Start Time: @event.startTimeString</h2>
-    <h2> End Time: @event.endTimeString</h2>
-    <h2> Created by @event.ownerName</h2>*/
 
 }
 

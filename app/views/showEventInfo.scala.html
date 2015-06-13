@@ -1,4 +1,4 @@
-@(event : Event, date : String, startTime : String, endTime : String, events : java.util.List[Event])
+@(event : Event, date : String, startTime : String, endTime : String, events : java.util.List[Event], startHours : java.util.List[Integer], endHours : java.util.List[Integer])
 
 @main(event.eventName) {
     <head>
@@ -112,6 +112,9 @@
             </div>
         </div>
     </div>
+        @helper.form(routes.Application.mainPage()) {
+        <button type="submit">Go back</button><br>
+        }
                 <!-- Menu Toggle Script -->
         <script>
         $("#menu-toggle").click(function(e) {
