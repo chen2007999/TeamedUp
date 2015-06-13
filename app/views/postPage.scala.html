@@ -12,7 +12,7 @@
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootstrap/simple-sidebar.css")">
         <script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
         <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.js")"></script>
-        <div class="navbar">
+        <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
              <div class="row-fluid">
                  <div class="span6">
@@ -24,7 +24,7 @@
                  <div class="span6" align="right">
                      <div class="btn-group">
                         <button class="btn" href="#menu-toggle" id="menu-toggle">Daily schedule</button>
-                        <form action="/profile">
+                        <form action="/profile/@Application.currentClient.email">
                             <button class="btn" href="/profile">Profile</button>
                         </form>
                             <button class="btn" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" href="#"><span class="badge">@unreadNum</span> unread</button>
@@ -32,21 +32,23 @@
                             @for(task <- Unread.getUnreadTasks(Application.currentClient)) {
                                 <li>
                                     @helper.form(routes.Application.redirectUnreadTask(task.taskId)) {
-                                    <button type="submit"><h3> A new task @task.taskName is created</h3></button><br>
+                                    <a href="#" onclick="$(this).closest('form').submit()">A new task: @task.taskName</a><br>
                                     }
                                 </li>
-                            }
+                            }<hr>
                             @for(event <- Unread.getUnreadEvents(Application.currentClient)) {
                                 <li>
                                     @helper.form(routes.Application.redirectUnreadEvent(event.id)) {
-                                    <button type="submit"> <h3> @event.ownerName created event @event.eventName</h3></button><br>
+                                    <a href="#" onclick="$(this).closest('form').submit()">@event.ownerName created event @event.eventName</a><br>
                                     }
                                 </li>
-                            }
+                            }<hr>
                             @for(comment <- Unread.getUnreadComments(Application.currentClient)) {
                                 <li>
                                     @helper.form(routes.Application.redirectUnreadComment(comment.id)) {
-                                    <button type="submit"> <h3> <strong>@comment.ownerName commented:</strong>  @comment.content</h3></button><br>
+                                    @defining(if (comment.content.length() > 20) comment.content.substring(0,20) + "..." else comment.content) { cont =>
+                                        <a href="#" onclick="$(this).closest('form').submit()">@comment.ownerName commented:</strong>  @cont</a><br>
+                                    }
                                     }
                                 </li>
                             }
@@ -63,9 +65,14 @@
     </head>
 
 <body onload="description()">
-            <div id="wrapper" class="toggled">
+            <div id="wrapper" class="toggled"  style="padding-top: 40px;">
             <div id="sidebar-wrapper">
                 <ul class="sidebar-nav">
+                    <div align="center">
+                        @helper.form(routes.Application.eventPage()) {
+                            <button id="not-shit-text" style="padding: 2px 2px; background-color: #366b96; color: white; margin-top: 8px;" type="submit">Create a new event</button><br>
+                        }   
+                    </div> 
                    <div class="container">
                    <hr>
                     @for(e <- Event.findDailySchedule(Application.currentClient)){
@@ -88,7 +95,7 @@
         </div>
 <script>
     function description(){
-        var text = "@post.content";
+        var text = "@post.jsContent()";
         var $descr = $("#descr");
         $("#descr").html(htmlDecode(text));
     }
@@ -98,7 +105,7 @@
         return e.childNodes[0].nodeValue;
     }
 </script>
-<div class="container well" style="margin-top: 20px;" align="center">
+<div class="container well" style="padding-top: 70px; margin-top: 20px;" align="center">
     <h2>Post Name: @post.postName </h2>
     <div class="well well-small" id="descr"></div>
 </div>

@@ -137,4 +137,9 @@ public class Task extends Model{
     public static Task getTaskById(Long taskId) {
         return find.byId(taskId);
     }
+
+    public String jsContent(){
+        String replacer = "<hr style='margin:0px; height:0pt; visibility:hidden;' />";
+        return content.replaceAll("\r", replacer).replaceAll("\n", replacer).replaceAll("\r\n", replacer).replaceAll("<img", "<img style='max-width: 300px;'");
+    }
 }

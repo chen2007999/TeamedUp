@@ -24,29 +24,31 @@
                  <div class="span6" align="right">
                      <div class="btn-group">
                         <button class="btn" href="#menu-toggle" id="menu-toggle">Daily schedule</button>
-                        <form action="/profile">
-                            <button class="btn" href="/profile">Profile</button>
+                        <form action="/profile/@Application.currentClient.email">
+                            <button class="btn">Profile</button>
                         </form>
                             <button class="btn" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" href="#"><span class="badge">@unreadNum</span> unread</button>
                             <ul class="dropdown-menu pull-right unread" role="menu" arie-labelledby="dLabel">
                             @for(task <- Unread.getUnreadTasks(Application.currentClient)) {
                                 <li>
                                     @helper.form(routes.Application.redirectUnreadTask(task.taskId)) {
-                                    <button type="submit"><h3> A new task @task.taskName is created</h3></button><br>
+                                    <a href="#" onclick="$(this).closest('form').submit()">A new task: @task.taskName</a><br>
                                     }
                                 </li>
-                            }
+                            }<hr>
                             @for(event <- Unread.getUnreadEvents(Application.currentClient)) {
                                 <li>
                                     @helper.form(routes.Application.redirectUnreadEvent(event.id)) {
-                                    <button type="submit"> <h3> @event.ownerName created event @event.eventName</h3></button><br>
+                                    <a href="#" onclick="$(this).closest('form').submit()">@event.ownerName created event @event.eventName</a><br>
                                     }
                                 </li>
-                            }
+                            }<hr>
                             @for(comment <- Unread.getUnreadComments(Application.currentClient)) {
                                 <li>
                                     @helper.form(routes.Application.redirectUnreadComment(comment.id)) {
-                                    <button type="submit"> <h3> <strong>@comment.ownerName commented:</strong>  @comment.content</button><br>
+                                    @defining(if (comment.content.length() > 20) comment.content.substring(0,20) + "..." else comment.content) { cont =>
+                                        <a href="#" onclick="$(this).closest('form').submit()">@comment.ownerName commented:</strong>  @cont</a><br>
+                                    }
                                     }
                                 </li>
                             }

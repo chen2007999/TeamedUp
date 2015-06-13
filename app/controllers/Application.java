@@ -94,11 +94,17 @@ public class Application extends Controller {
 
    // methods deal with teams
     public static Result mainPage() {
+        if(currentClient == null){
+            return redirect(routes.Application.landing());
+        }
         currentTeam = null;
         return ok(mainPage.render(Client.getTeams(currentClient), getUnreadNum()));
     }
 
     public static Result teamPage(String teamName) {
+        if(currentClient == null){
+            return redirect(routes.Application.landing());
+        }
         eventClientList.clear();
         eventClientList.add(currentClient);
         List<Team> teams = Team.findTeams(teamName);
@@ -122,13 +128,14 @@ public class Application extends Controller {
     }
     
     public static Result updateImage(){
-        play.data.Form<String> userForm = play.data.Form.form(String.class);
-        String newimg = userForm.bindFromRequest().get();
-        if(newimg == null){
-            newimg = "http://www.filecluster.com/howto/wp-content/uploads/2014/07/Client-Default.jpg";
+        play.data.Form<Image> userForm = play.data.Form.form(Image.class);
+        Image img = userForm.bindFromRequest().get();
+        String newimg = img.url;
+        if(newimg == null || newimg.length() <= 0){
+            newimg = "http://tmdup.com/assets/images/default.jpg";
         }
-        currentClient.setImage(newimg);
-        return redirect(routes.Application.profile());
+        Client.updateImage(currentClient, newimg);
+        return redirect(routes.Application.profile(currentClient.email));
     }
 
     public static Result addUserToTeam(String teamName) {
@@ -172,6 +179,9 @@ public class Application extends Controller {
     }
 
     public static Result taskPage(String taskName) {
+        if(currentClient == null){
+            return redirect(routes.Application.landing());
+        }
         List<Task> tasks = Task.getTasksWithTaskName(taskName);
         currentTask = tasks.get(0);
         List<Comment> comments = Comment.findComments(taskName);
@@ -179,6 +189,9 @@ public class Application extends Controller {
     }
     
     public static Result postPage(String postName) {
+        if(currentClient == null){
+            return redirect(routes.Application.landing());
+        }
         List<Post> posts = Post.getPostsWithPostName(postName);
         currentPost = posts.get(0);
         List<Comment> comments = Comment.findComments(postName);
@@ -273,6 +286,9 @@ public class Application extends Controller {
     }
 
     public static Result eventPage() {
+        if(currentClient == null){
+            return redirect(routes.Application.landing());
+        }
         return ok(eventPage.render(eventClientList, currentTeam.getTeamName(),getUnreadNum()));
     }
 
@@ -298,6 +314,9 @@ public class Application extends Controller {
 
 
     public static Result commonTimeList() {
+        if(currentClient == null){
+            return redirect(routes.Application.landing());
+        }
         List<TimePair> tp = Event.findWeeklyCommonFreetime(eventClientList, Event.currentDate());
         List<String> s = Event.timeListToString(tp);
         return ok(commonTime.render());
@@ -316,12 +335,12 @@ public class Application extends Controller {
     }
 
     
-    public static Result profile() {
-        Client client = getUser();
-        if(Client.validate(client)) {
-            currentClient = Client.findUser(client);
+    public static Result profile(String email) {
+        if(currentClient == null){
+            return redirect(routes.Application.landing());
         }
-        return ok(profile.render(currentClient));
+        Client client = Client.findUserByEmail(email);
+        return ok(profile.render(client));
     }
 
     public static Result deleteUserFromEventList(String email) {
@@ -336,6 +355,9 @@ public class Application extends Controller {
     }
 
     public static Result showEventInfo(String eventName) {
+        if(currentClient == null){
+            return redirect(routes.Application.landing());
+        }
         Event event = Event.find.where().eq("eventName", eventName).findList().get(0);
         String date = event.getStartTime().toString().substring(0, 11);
         String startTime = event.getStartTime().toString().substring(11, 16);

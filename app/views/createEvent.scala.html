@@ -29,21 +29,21 @@
                             @for(task <- Unread.getUnreadTasks(Application.currentClient)) {
                                 <li>
                                     @helper.form(routes.Application.redirectUnreadTask(task.taskId)) {
-                                    <button type="submit"><h3> A new task @task.taskName is created</h3></button><br>
+                                    <a href="#" onclick="$(this).closest('form').submit()">A new task: @task.taskName</a><br>
                                     }
                                 </li>
-                            }
+                            }<hr>
                             @for(event <- Unread.getUnreadEvents(Application.currentClient)) {
                                 <li>
                                     @helper.form(routes.Application.redirectUnreadEvent(event.id)) {
-                                    <button type="submit"> <h3> @event.ownerName created event @event.eventName</h3></button><br>
+                                    <a href="#" onclick="$(this).closest('form').submit()">@event.ownerName created event @event.eventName</a><br>
                                     }
                                 </li>
-                            }
+                            }<hr>
                             @for(comment <- Unread.getUnreadComments(Application.currentClient)) {
                                 <li>
                                     @helper.form(routes.Application.redirectUnreadComment(comment.id)) {
-                                    <button type="submit"> <h3> <strong>@comment.ownerName commented:</strong>  @comment.content</h3></button><br>
+                                    <a href="#" onclick="$(this).closest('form').submit()">@comment.ownerName commented:</strong>  @comment.content</a><br>
                                     }
                                 </li>
                             }
@@ -82,6 +82,11 @@
         <div id="wrapper" class="toggled">
             <div id="sidebar-wrapper">
                 <ul class="sidebar-nav">
+                    <div align="center">
+                        @helper.form(routes.Application.eventPage()) {
+                            <button id="not-shit-text" style="padding: 2px 2px; background-color: #366b96; color: white; margin-top: 8px;" type="submit">Create a new event</button><br>
+                        }   
+                    </div> 
                    <div class="container">
                    <hr>
                     @for(e <- Event.findDailySchedule(Application.currentClient)){

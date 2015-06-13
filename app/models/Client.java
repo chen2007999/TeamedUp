@@ -53,9 +53,14 @@ public class Client extends Model{
     
     public void setImage(String image) {
         this.image = image;
-        this.save();
     }
-
+    
+    public static void updateImage(Client client, String image) {
+        if(image.length() > 0){
+            client.setImage(image);
+            client.update();
+        }
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -90,7 +95,7 @@ public class Client extends Model{
     }
 
     public static void createUser(Client client) {
-        client.setImage("http://www.filecluster.com/howto/wp-content/uploads/2014/07/Client-Default.jpg");
+        client.setImage("http://tmdup.com/assets/images/default.jpg");
         client.save();
     }
 
@@ -132,6 +137,10 @@ public class Client extends Model{
     
     public static Client findUser(Client client) {
         return find.byId(client.getEmail());
+    }
+    
+    public static Client findUserByEmail(String email) {
+        return find.byId(email);
     }
     
     public static String getImageByEmail(String email){

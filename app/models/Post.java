@@ -120,4 +120,9 @@ public class Post extends Model{
     public static Post getPostById(Long postId) {
         return find.byId(postId);
     }
+    
+    public String jsContent(){
+        String replacer = "<hr style='margin:0px; height:0pt; visibility:hidden;' />";
+        return content.replaceAll("\r", replacer).replaceAll("\n", replacer).replaceAll("\r\n", replacer).replaceAll("<img", "<img style='max-width: 300px;'");
+    }
 }

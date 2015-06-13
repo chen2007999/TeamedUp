@@ -26,7 +26,7 @@
             position: fixed;
             }
             #background {
-            background-image: url('http://chrisdent.co.uk/wp-content/uploads/2013/10/new-york-skyline-personal-project-chris-dent.jpg');
+            background-image: url('http://tmdup.com/assets/images/new.jpg');
             }
         </style>
 
@@ -37,8 +37,6 @@
     <script>
     $(document).ready(function() {
     				$('#background').mouseParallax({ moveFactor: 5 });
-    
-    				$('body').height(3000);
     			});
     </script>
     <div class="container">
@@ -48,7 +46,7 @@
             <div class="well span4 offset4"  style="background: rgba(234, 239, 244, .5);" align="center">
             @helper.form(routes.Application.logIn()) {
                <input class="stretch" name="email" placeholder="Email Address"> <br>
-               <input class="stretch" name="password" placeholder="Password">  <br>
+               <input class="stretch" type="password" name="password" placeholder="Password">  <br>
                <button class="btstretch" type="submit">Log in</button>
             }
             @helper.form(routes.Application.register("")) {

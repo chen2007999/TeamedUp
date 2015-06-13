@@ -7,7 +7,10 @@
  *
  */
 
-
+#not-shit-text{
+  font-family: "Open Sans", Arial, Sans-Serif;
+  font-style: normal;
+}
 
 .badge-bs {
   display: inline-block;
@@ -132,6 +135,12 @@ a.badge-bs:focus {
   min-height: 90%;
   height: 90%;
   max-height: 90%;
+}
+
+#fill-two{
+ min-height: 90%;
+  height: 90%;
+  max-height: 90%; 
 }
 
 .clearfix {
@@ -924,7 +933,7 @@ h4,
 h5,
 h6 {
   margin: 10px 0;
-  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, Sans-Serif;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica,  Sans-Serif;
   font-weight: 300;
   line-height: 20px;
   color: inherit;
@@ -1871,7 +1880,7 @@ select:focus:invalid:focus {
 
 .help-block,
 .help-inline {
-  color: #595959;
+  color: red;
 }
 
 .help-block {
@@ -2534,10 +2543,10 @@ table th[class*="span"],
   display: none;
   float: left;
   min-width: 160px;
-  padding: 5px 0;
+  padding: 5px 5px;
   margin: 2px 0 0;
   list-style: none;
-  background-color: #ffffff;
+  background: rgba(234, 239, 244, .9);
   border: 1px solid #ccc;
   border: 1px solid rgba(0, 0, 0, 0.2);
   *border-right-width: 2px;
@@ -2794,7 +2803,7 @@ table th[class*="span"],
 .close {
   float: right;
   font-size: 20px;
-  font-weight: bold;
+  font-weight: normal;
   line-height: 20px;
   color: #000000;
   text-shadow: 0 1px 0 #ffffff;
@@ -3617,7 +3626,7 @@ input[type="submit"].btn.btn-mini {
   display: block;
   padding: 3px 15px;
   font-size: 11px;
-  font-weight: bold;
+  font-weight: normal;
   line-height: 20px;
   color: #999999;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
@@ -6740,13 +6749,13 @@ h2 {
 
 h3 {
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 26px;
 }
 
 h4 {
   font-size: 15px;
-  font-weight: 400;
+  font-weight: 300;
   line-height: 20px;
 }
 
@@ -6908,7 +6917,7 @@ input[type=reset],
 input[type=submit] {
   padding: 4px 8px;
   margin: 0 0 2px;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.3636;
   border: 2px solid #cccccc;
   background-clip: padding-box;
