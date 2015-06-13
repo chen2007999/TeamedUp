@@ -1,5 +1,5 @@
-##  TeamedUp is a web app designed to help people work in teams.
-##### URL: www.tmdup.com
+#  TeamedUp is a web app designed to help people work in teams.
+### URL: www.tmdup.com
 
 ####Main features:
 
