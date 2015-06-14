@@ -12,6 +12,13 @@
   font-style: normal;
 }
 
+.clouds{
+  background-image: url('http://tmdup.com/assets/images/clouds.gif'); 
+  background-position: right bottom; 
+  background-repeat: no-repeat;
+}
+
+
 .badge-bs {
   display: inline-block;
   min-width: 10px;
