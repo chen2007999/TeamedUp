@@ -1,4 +1,4 @@
-@(unreadNum : Integer, startTime : String, status : String)
+@(unreadNum : Integer, startTime : String, status : String, startHours : java.util.List[Integer], endHours : java.util.List[Integer], slotChosen:String)
 
 <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,8 +8,11 @@
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-icons.css")">
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootmetro-ui-light.css")">
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootstrap/simple-sidebar.css")">
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("formvalidation/formValidation.css")">
         <script src="@routes.Assets.at("javascripts/bootstrap/jquery.js")"></script>
         <script src="@routes.Assets.at("javascripts/bootstrap/bootstrap.js")"></script>
+        <script src="@routes.Assets.at("formvalidation/formValidation.js")"></script>
+        <script src="@routes.Assets.at("formvalidation/bootstrap.js")"></script>
         <div class="navbar">
         <div class="navbar-inner">
              <div class="row-fluid">
@@ -21,7 +24,7 @@
                  <div class="span6" align="right">
                      <div class="btn-group">
                         <button class="btn" href="#menu-toggle" id="menu-toggle">Daily schedule</button>
-                        <form action="/profile">
+                        <form action="/profile/@Application.currentClient.email">
                             <button class="btn" href="/profile">Profile</button>
                         </form>
                             <button class="btn" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" href="#"><span class="badge">@unreadNum</span> unread</button>
@@ -49,9 +52,9 @@
                             }
                             </ul>
                         
-                        <form action="/landing">
+                        @helper.form(routes.Application.logout()) {
                             <button class="btn" href="/landing">Logout</button> 
-                        </form>
+                        }
                      </div>
                 </div>
              </div>
@@ -109,18 +112,57 @@
         </div>
 <div class="container well" align="center" id="fill">
     <h1>Create a new event</h1>
-
-       @helper.form(routes.Application.createEvent(startTime)) {
-                           <input name="eventName" placeholder="event name"><br>
-                           <h4>enter the time interval of the event </h4>
-                           <input name="slotChosenStart" placeholder="The starting hour of your event, 2-digit number smaller than 24"><br>
-                           <input name="slotChosenEnd" placeholder="The finishing hour of your event, 2-digit number smaller than 24"><br>
-                           <input name="location" placeholder="location"><br>
-                           <textarea name="content" cols="40" rows="5" placeholder="description"></textarea><br>
+       <form id="defaultForm" action="/createEvent/@startTime/@slotChosen" method="POST">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Event Name</label>
+                                <div class="col-sm-4">
+                                <input style="margin-bottom: 0px;" type="text" class="form-control" name="eventName" placeholder="event name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Starts</label>
+                                <div class="col-sm-4">
+                                <select name="slotChosenStart" class="form-control" id="st" onchange="check()">
+                                    @for(stH <- startHours){
+                                        <option value="@stH">@stH</option>
+                                    }
+                                </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Ends</label>
+                                <div class="col-sm-4">
+                                    <select name="slotChosenEnd" class="form-control" id="en" onchange="check()">
+                                        @for(end <- endHours){
+                                            <option value="@end">@end</option>
+                                        }
+                                    </select>    
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Location</label>
+                                <div class="col-sm-4">
+                                <input style="margin-bottom: 0px;" type="text" class="form-control" name="location" placeholder="location"><br>
+                                </div>
+                            </div>            
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Description</label>
+                                <div class="col-sm-4">
+                                <textarea type="text" class="form-control" name="content" cols="40" rows="5" placeholder="description"></textarea><br>
+                                </div>
+                            </div> 
                            <button type="submit">Create</button><br>
-       }
+       </form>
 
 </div>
+        <script>
+            function check(){
+                if(document.getElementById("en").value - 1 < document.getElementById("st").value - 1){
+                    console.error(document.getElementById("en").value + " " + document.getElementById("st").value);
+                    document.getElementById("en").value = parseInt(document.getElementById("st").value) + 1;
+                }                
+            }
+        </script>
                 <!-- Menu Toggle Script -->
         <script>
         $("#menu-toggle").click(function(e) {
@@ -129,4 +171,33 @@
         </script>
         <!-- DropDown -->
         <script>$('.dropdown-toggle').dropdown()</script>
+            <script type="text/javascript">
+            $(document).ready(function() {
+                $('#defaultForm').formValidation({
+                    message: 'This value is not valid',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        eventName: {
+                            row: '.col-sm-4',
+                            validators: {
+                                notEmpty: {
+                                    message: 'Name is required'
+                                }
+                            }
+                        },
+                        location: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Location is required'
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+            </script>
 </body>

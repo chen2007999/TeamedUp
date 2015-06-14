@@ -54,9 +54,9 @@
                             }
                             </ul>
                         
-                        <form action="/landing">
+                        @helper.form(routes.Application.logout()) {
                             <button class="btn" href="/landing">Logout</button> 
-                        </form>
+                        }
                      </div>
                 </div>
              </div>
@@ -107,7 +107,31 @@
 </script>
 
 <div class="container well" style="padding-top: 70px; margin-top: 20px;" align="center">
+                        <!-- Modal -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                           <button type="button" class="close" data-dismiss="modal"></button>
+                            <h3 class="modal-title" id="myModalLabel">Update task description</h4>
+                          </div>
+                          <div class="modal-body">
+                              <div class="row-fluid">
+                                    <div class="span4 offset4" align="center">
+                                    @helper.form(routes.Application.updateTask()) {
+                                    <textarea name="descr" cols="40" rows="5">@task.content</textarea>
+                                    <button type="submit">Update</button><br>
+                                    }
+                                    </div>
+                                </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
     <h2>Task Name: @task.taskName </h2>
+    <h3>Created by @task.involvedEmail</h3>
     <div class="well well-small" id="descr"></div>
     <h2> Status: @task.status </h2>
     @if(task.status.equals("In Progress")){
@@ -118,6 +142,13 @@
         @helper.form(routes.Application.markTaskAsDoing()) {
           <button type="submit">In progress</button>  
         }
+    }
+    
+    @if(task.involvedEmail.equals(Application.currentClient.email)){
+    <button type="submit" data-toggle="modal" data-target="#myModal">Update description</button> <br>
+    @helper.form(routes.Application.deleteTask(task.taskId)) {
+        <button class="btn btn-danger" type="submit">delete</button><br>
+    }
     }
 </div>
 

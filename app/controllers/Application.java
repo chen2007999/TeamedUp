@@ -19,7 +19,6 @@ public class Application extends Controller {
     private static Task currentTask;
     private static Post currentPost;
     public static List<Client> eventClientList = new ArrayList<Client>();
-    
 
     // index to landing page by default
     public static Result index() {
@@ -59,6 +58,17 @@ public class Application extends Controller {
         Client.deleteUser(email);
         return redirect(routes.Application.displayAllUsersFromDB());
     }
+    
+    public static Result deletePost(Long id){
+        Post.deletePost(id);
+        return redirect(routes.Application.teamPage(currentTeam.teamName));
+    }
+
+    public static Result deleteTask(Long id){
+        Task.deleteTask(id);
+        return redirect(routes.Application.teamPage(currentTeam.teamName));
+    }
+
 
     public static  Result displayAllUsersFromDB() {
         return ok(registration.render(Client.find.findList(), ""));
@@ -93,17 +103,11 @@ public class Application extends Controller {
 
    // methods deal with teams
     public static Result mainPage() {
-        if(currentClient == null){
-            return redirect(routes.Application.landing());
-        }
         currentTeam = null;
         return ok(mainPage.render(Client.getTeams(currentClient), getUnreadNum()));
     }
 
     public static Result teamPage(String teamName) {
-        if(currentClient == null){
-            return redirect(routes.Application.landing());
-        }
         eventClientList.clear();
         eventClientList.add(currentClient);
         List<Team> teams = Team.findTeams(teamName);
@@ -136,6 +140,26 @@ public class Application extends Controller {
         Client.updateImage(currentClient, newimg);
         //return redirect(routes.Application.profile(currentClient.getEmail()));
         return ok(profile.render(currentClient));
+    }
+    
+    public static Result updateTask(){
+        play.data.Form<Description> userForm = play.data.Form.form(Description.class);
+        Description description = userForm.bindFromRequest().get();
+        String descr = description.descr;
+        if(descr.length() > 0){
+            Task.updateContent(currentTask, descr);    
+        }
+        return redirect(routes.Application.taskPage(currentTask.taskName));
+    }
+    
+    public static Result updatePost(){
+        play.data.Form<Description> userForm = play.data.Form.form(Description.class);
+        Description description = userForm.bindFromRequest().get();
+        String descr = description.descr;
+        if(descr.length() > 0){
+            Post.updateContent(currentPost, descr);    
+        }
+        return postPage(currentPost.postName);
     }
 
     public static Result addUserToTeam(String teamName) {
@@ -179,9 +203,6 @@ public class Application extends Controller {
     }
 
     public static Result taskPage(String taskName) {
-        if(currentClient == null){
-            return redirect(routes.Application.landing());
-        }
         List<Task> tasks = Task.getTasksWithTaskName(taskName);
         currentTask = tasks.get(0);
         List<Comment> comments = Comment.findComments(taskName);
@@ -189,9 +210,6 @@ public class Application extends Controller {
     }
     
     public static Result postPage(String postName) {
-        if(currentClient == null){
-            return redirect(routes.Application.landing());
-        }
         List<Post> posts = Post.getPostsWithPostName(postName);
         currentPost = posts.get(0);
         List<Comment> comments = Comment.findComments(postName);
@@ -267,7 +285,7 @@ public class Application extends Controller {
         return redirect(routes.Application.showEventInfo(event.getEventName()));
     }
 
-    public static Result createEvent(String startTime) {
+    public static Result createEvent(String startTime, String slotChosen) {
         play.data.Form<Event> eventForm = play.data.Form.form(Event.class);
         Event event = eventForm.bindFromRequest().get();
         if (!Event.nullEvent(event) && !Event.emptyEvent(event)) {
@@ -279,14 +297,21 @@ public class Application extends Controller {
             eventClientList.add(currentClient);
             return redirect(routes.Application.showEventInfo(event.getEventName()));
         }
-        return ok(createEvent.render(getUnreadNum(), startTime, "error"));
+        int startHour = Integer.parseInt(slotChosen.substring(11, 13));
+        int endHour = Integer.parseInt(slotChosen.substring(19, 21));
+        List<Integer> startHours = new ArrayList<Integer>();
+        List<Integer> endHours = new ArrayList<Integer>();
+        for(int i=startHour; i<endHour; i++) {
+            startHours.add(i);
+        }
+        for(int i=startHour+1; i<=endHour; i++) {
+            endHours.add(i);
+        }
+        return ok(createEvent.render(getUnreadNum(), startTime, "error", startHours, endHours, slotChosen));
 
     }
 
     public static Result eventPage() {
-        if(currentClient == null){
-            return redirect(routes.Application.landing());
-        }
         return ok(eventPage.render(eventClientList, currentTeam.getTeamName(),getUnreadNum()));
     }
 
@@ -312,9 +337,6 @@ public class Application extends Controller {
 
 
     public static Result commonTimeList() {
-        if(currentClient == null){
-            return redirect(routes.Application.landing());
-        }
         List<TimePair> tp = Event.findWeeklyCommonFreetime(eventClientList, Event.currentDate());
         List<String> s = Event.timeListToString(tp);
         return ok(commonTime.render());
@@ -329,14 +351,21 @@ public class Application extends Controller {
 
     public static Result chooseCommonTime(String slotChosen) {
         String startTime = slotChosen.substring(0, 11);
-        return ok(createEvent.render(getUnreadNum(), startTime, ""));
+        int startHour = Integer.parseInt(slotChosen.substring(11, 13));
+        int endHour = Integer.parseInt(slotChosen.substring(19, 21));
+        List<Integer> startHours = new ArrayList<Integer>();
+        List<Integer> endHours = new ArrayList<Integer>();
+        for(int i=startHour; i<endHour; i++) {
+            startHours.add(i);
+        }
+        for(int i=startHour+1; i<=endHour; i++) {
+            endHours.add(i);
+        }
+        return ok(createEvent.render(getUnreadNum(), startTime, "", startHours, endHours, slotChosen));
     }
 
     
     public static Result profile(String email) {
-        if(currentClient == null){
-            return redirect(routes.Application.landing());
-        }
         Client client = Client.findUserByEmail(email);
         return ok(profile.render(client));
     }
@@ -353,38 +382,20 @@ public class Application extends Controller {
     }
 
     public static Result showEventInfo(String eventName) {
-        if(currentClient == null){
-            return redirect(routes.Application.landing());
-        }
         Event event = Event.find.where().eq("eventName", eventName).findList().get(0);
         String date = event.getStartTime().toString().substring(0, 11);
         String startTime = event.getStartTime().toString().substring(11, 16);
         String endTime = event.getEndTime().toString().substring(11, 16);
-        List<Integer> startHours = new ArrayList<Integer>();
-        List<Integer> endHours = new ArrayList<Integer>();
-        int startHour = Integer.parseInt(event.getStartTime().toString().substring(11, 13));
-        int endHour = Integer.parseInt(event.getEndTime().toString().substring(11, 13));
-        for(int i=startHour; i<endHour; i++) {
-            startHours.add(i);
-        }
-        for(int i=startHour+1; i<=endHour; i++) {
-            endHours.add(i);
-        }
         List<Event> events = Event.find.where().eq("eventName", eventName).eq("ownerName", event.getOwnerName()).findList();
-        return ok(showEventInfo.render(event, date, startTime, endTime, events, startHours, endHours));
+        return ok(showEventInfo.render(event, date, startTime, endTime, events));
     }
 
     public static Result dailySchedule() {
         List<Event> events = Event.findDailySchedule(currentClient);
         return ok(dailySchedule.render(events));
     }
-
-
-
-
+    
+    public static Result logout() {
+        return redirect(routes.Application.landing());
+    }
 }
-
-
-
-
-

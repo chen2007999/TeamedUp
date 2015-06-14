@@ -67,11 +67,6 @@
             <div id="wrapper" class="toggled">
             <div id="sidebar-wrapper">
                 <ul class="sidebar-nav">
-                    <div align="center">
-                        @helper.form(routes.Application.eventPage()) {
-                            <button id="not-shit-text" style="padding: 2px 2px; background-color: #366b96; color: white; margin-top: 8px;" type="submit">Create a new event</button><br>
-                        }   
-                    </div> 
                    <div class="container">
                    <hr>
                     @for(e <- Event.findDailySchedule(Application.currentClient)){
@@ -96,7 +91,6 @@
         <div class="row-fluid" id="fill">
             <br>
             <div class="span4 offset4 well well-small">
-                <img src="@routes.Assets.at("images/default.jpg")">
                 <img src=@client.image height="200" width="200" class="img-circle">
                     <!-- Modal -->
                     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

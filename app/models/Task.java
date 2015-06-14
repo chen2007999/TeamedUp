@@ -62,6 +62,11 @@ public class Task extends Model{
     public void setContent(String content) {
         this.content = content;
     }
+    
+    public static void updateContent(Task task, String content) {
+        task.setContent(content);
+        task.update();
+    }
 
     @Column(name = "status")
     public String status;
@@ -86,6 +91,10 @@ public class Task extends Model{
         task.setInvolvedEmail(client.getEmail());
         task.setStatus("In Progress");
         task.save();
+    }
+    
+    public static void deleteTask(Long id) {
+        find.ref(id).delete();
     }
 
     public static void addTask (Task task, Team team, Client client) {

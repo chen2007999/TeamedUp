@@ -54,9 +54,9 @@
                             }
                             </ul>
                         
-                        <form action="/landing">
+                        @helper.form(routes.Application.logout()) {
                             <button class="btn" href="/landing">Logout</button> 
-                        </form>
+                        }
                      </div>
                 </div>
              </div>
@@ -91,7 +91,7 @@
 
         
         
-<div class="metro well well-small teams" id="fill">
+<div class="metro well well-small teams clouds" id="fill">
     
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

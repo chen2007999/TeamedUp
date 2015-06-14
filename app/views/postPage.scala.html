@@ -54,9 +54,9 @@
                             }
                             </ul>
                         
-                        <form action="/landing">
+                        @helper.form(routes.Application.logout()) {
                             <button class="btn" href="/landing">Logout</button> 
-                        </form>
+                        }
                      </div>
                 </div>
              </div>
@@ -106,8 +106,37 @@
     }
 </script>
 <div class="container well" style="padding-top: 70px; margin-top: 20px;" align="center">
+                        <!-- Modal -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                           <button type="button" class="close" data-dismiss="modal"></button>
+                            <h3 class="modal-title" id="myModalLabel">Update post description</h4>
+                          </div>
+                          <div class="modal-body">
+                              <div class="row-fluid">
+                                    <div class="span4 offset4" align="center">
+                                    @helper.form(routes.Application.updatePost()) {
+                                    <textarea name="descr" cols="40" rows="5">@post.content</textarea>
+                                    <button type="submit">Update</button><br>
+                                    }
+                                    </div>
+                                </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
     <h2>Post Name: @post.postName </h2>
+    <h3>Created by @post.involvedEmail</h3>
     <div class="well well-small" id="descr"></div>
+    @if(post.involvedEmail.equals(Application.currentClient.email)){
+        <button type="submit" data-toggle="modal" data-target="#myModal">Update description</button> <br>
+        @helper.form(routes.Application.deletePost(post.postId)) {
+            <button class="btn btn-danger" type="submit">delete</button><br>
+        }
+    }
+    
 </div>
 
 

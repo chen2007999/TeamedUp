@@ -344,7 +344,20 @@ public class Event extends Model{
         List<TimePair> result = new ArrayList<TimePair>();
         String firstEventStartTime = dailyScheduledTP.get(0).getStart().toString();
         String firstEventStartHour = firstEventStartTime.substring(11, 13) + firstEventStartTime.substring(14, 16);
-        if (getValue(firstEventStartHour) > 800) {
+
+        if(getDate(dailyScheduledTP.get(0).getStart().toString()).equals(currentDate())) {
+
+            int currentHour = Integer.parseInt(currentTime().toString().substring(11, 13)) + 2;
+
+            if(getValue(firstEventStartTime.substring(11, 13)) > currentHour) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("");
+                sb.append(currentHour);
+                Timestamp ts = Timestamp.valueOf(firstEventStartTime.substring(0, 11) + sb.toString() + ":00:00.0");
+                TimePair tp = new TimePair(ts, dailyScheduledTP.get(0).getStart());
+                result.add(tp);
+            }
+        } else if (getValue(firstEventStartHour) > 800) {
             Timestamp ts = Timestamp.valueOf(firstEventStartTime.substring(0, 10) + " 08:00:00.0");
             TimePair tp = new TimePair(ts, dailyScheduledTP.get(0).getStart());
             result.add(tp);
@@ -407,7 +420,7 @@ public class Event extends Model{
                             + " " + "0" + Integer.toString(curHourInt + 1) + ":00:00.0";
                 } else {
                     time = date.substring(0, 4) + "-" + date.substring(4, 6) + "-" + date.substring(6, 8)
-                            + " " + Integer.toString(curHourInt + 1) + ":00:00.0";
+                            + " " + Integer.toString(curHourInt + 2) + ":00:00.0";
                 }
                 String endToday = date.substring(0, 4) + "-" + date.substring(4, 6) + "-" + date.substring(6, 8)
                         + " 21" + ":00:00.0";

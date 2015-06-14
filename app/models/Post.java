@@ -63,6 +63,10 @@ public class Post extends Model{
         this.content = content;
     }
 
+    public static void updateContent(Post post, String content) {
+        post.setContent(content);
+        post.update();
+    }
 
     public static Finder<Long, Post> find = new Finder<Long, Post>(Long.class, Post.class);
 
@@ -70,6 +74,10 @@ public class Post extends Model{
         post.setTeamName(team.getTeamName());
         post.setInvolvedEmail(client.getEmail());
         post.save();
+    }
+    
+    public static void deletePost(Long id) {
+        find.ref(id).delete();
     }
 
     public static void addPost (Post post, Team team, Client client) {

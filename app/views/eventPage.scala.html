@@ -51,9 +51,9 @@
                             }
                             </ul>
                         
-                        <form action="/landing">
+                        @helper.form(routes.Application.logout()) {
                             <button class="btn" href="/landing">Logout</button> 
-                        </form>
+                        }
                      </div>
                 </div>
              </div>
@@ -114,7 +114,7 @@
             </ul>
             
         </div>
-        <div class="span8" id="fill">
+        <div class="span8 clouds" id="fill">
 
             <button onclick="common()" type="submit">Create</button><br>
             <div class="content" id="content">
