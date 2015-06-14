@@ -17,6 +17,8 @@ POST   /createUser                        controllers.Application.createUser()
 # Delete a registered client from database
 POST   /deleteUser/:email/delete          controllers.Application.deleteUserFromDB(email:String)
 
+POST   /deletePost/:id/delete          controllers.Application.deletePost(id:Long)
+POST   /deleteTask/:id/delete          controllers.Application.deleteTask(id:Long)
 
 # Check client's login information and determines success or failure
 POST   /logIn                             controllers.Application.logIn()
@@ -27,6 +29,8 @@ GET    /register                          controllers.Application.register(error
 # Diaplay the landing page
 GET    /landing                           controllers.Application.landing()
 GET    /mainPage                          controllers.Application.mainPage()
+
+POST /logout                             controllers.Application.logout()
 
 #POST    /resetPassword                   controllers.Application.resetPassword()
 #POST    /resetName                       controllers.Application.resetName()
@@ -52,7 +56,9 @@ GET      /redirectUnreadTask/:taskId          controllers.Application.redirectUn
 GET      /redirectUnreadComment/:commentId    controllers.Application.redirectUnreadComment(commentId : Long)
 GET      /redirectUnreadEvent/:eventId    controllers.Application.redirectUnreadEvent(eventId : Long)
 
-POST     /createEvent/:startTime            controllers.Application.createEvent(startTime:String)
+POST /createEvent/:startTime/:slotChosen controllers.Application.createEvent(startTime:String, slotChosen:String)
+
+
 POST     /addUserToEvent                      controllers.Application.addUserToEvent()
 POST     /deleteUserFromEventList/:email  controllers.Application.deleteUserFromEventList(email : String)
 
@@ -60,7 +66,7 @@ GET /test                                       controllers.Application.test()
 
 GET      /eventPage                          controllers.Application.eventPage()
 
-GET /profile                                controllers.Application.profile()
+GET       /profile/:email                  controllers.Application.profile(email : String)
 
 POST    /createPost                       controllers.Application.createPost()
 
@@ -68,6 +74,8 @@ GET      /postPage/:postName              controllers.Application.postPage(postN
 
 POST /updateImage                       controllers.Application.updateImage()
 
+POST /updateTask                       controllers.Application.updateTask()
+POST /updatePost                      controllers.Application.updatePost()
 
 GET      /chooseCommonTime/:slot           controllers.Application.chooseCommonTime(slot : String)
 
