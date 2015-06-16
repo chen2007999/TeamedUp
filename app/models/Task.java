@@ -87,10 +87,12 @@ public class Task extends Model{
     public static Finder<Long, Task> find = new Finder<Long, Task>(Long.class, Task.class);
 
     public static void createTask(Task task, Team team, Client client) {
-        task.setTeamName(team.getTeamName());
-        task.setInvolvedEmail(client.getEmail());
-        task.setStatus("In Progress");
-        task.save();
+        if(getTasksWithTaskName(task.taskName).size() == 0){
+            task.setTeamName(team.getTeamName());
+            task.setInvolvedEmail(client.getEmail());
+            task.setStatus("In Progress");
+            task.save();
+        }
     }
     
     public static void deleteTask(Long id) {

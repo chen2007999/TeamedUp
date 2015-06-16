@@ -17,7 +17,11 @@
                  <div class="span6">
                     <a class="brand" href="#">TeamedUp</a>
                      <ul class="nav">
-
+                        <li><a href="/mainPage">Main Page</a></li>
+                        @if(Application.currentTeam != null){
+                        <li><a href="/teamPage/@Application.currentTeam.teamName">Team @Application.currentTeam.teamName</a></li>                        
+                        }
+                        <li class="active"><a href="#">Event @event.eventName</a></li>
                     </ul>
                  </div>
                  <div class="span6" align="right">
@@ -76,7 +80,6 @@
                    <hr>
                     @for(e <- Event.findDailySchedule(Application.currentClient)){
                         <li>    
-                            
                             @helper.form(routes.Application.showEventInfo(e.eventName)) {
                                 <ul style="color: white;">
                                 <a href="#" style="color: white; text-decoration: underline;" onclick="$(this).closest('form').submit()"><h3>@e.eventName</h3></a>
@@ -93,28 +96,34 @@
             </div>
         </div>
     <div class="container">
+        
+    
         <div class="row-fluid" id="fill">
             <br>
-            <div class="span4 offset4 well well-small">
-                <h1 align="center">@event.eventName</h2>
-                <h2 align="center">At @event.location</h2>
-                <hr>
-                <h3 align="center">Date: @date</h2>
-                <h3 align="center">From @startTime to @endTime</h2>
-                <h4>Description: @event.content</h2>
-                <h4>Creator: @event.ownerName</h2>
-                <hr>
-                <h3>Members: </h3>
-                @for(e <- events) {
-                
-                   <h3>@e.involvedEmail</h3>
-                } 
+            <div class="span4 offset4 well well-small" style="display:inline;">
+                @helper.form(routes.Application.mainPage()) {
+                    <button class="win-command" style="float:left; position:absolute; background-color:transparent;" type="submit" rel="tooltip" title="Go back">
+                        <span class="win-commandicon win-commandring icon-arrow-left-2"></span>
+                    </button> 
+                }
+                <div id="container">
+                    <h1 align="center">@event.eventName</h2>
+                    <h2 align="center">At @event.location</h2>
+                    <hr>
+                    <h3 align="center">Date: @date</h2>
+                    <h3 align="center">From @startTime to @endTime</h2>
+                    <h4>Description: @event.content</h2>
+                    <h4>Created by: @event.ownerName</h2>
+                    <hr>
+                    <h4>Members: </h4>
+                    @for(e <- events) {
+                       <h4>@e.involvedEmail</h4>
+                    }
+                </div>
             </div>
         </div>
     </div>
-        @helper.form(routes.Application.mainPage()) {
-        <button type="submit">Go back</button><br>
-        }
+
                 <!-- Menu Toggle Script -->
         <script>
         $("#menu-toggle").click(function(e) {

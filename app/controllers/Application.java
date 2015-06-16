@@ -15,7 +15,7 @@ import java.lang.String;
 public class Application extends Controller {
 
     public static Client currentClient;
-    private static Team currentTeam;
+    public static Team currentTeam;
     private static Task currentTask;
     private static Post currentPost;
     public static List<Client> eventClientList = new ArrayList<Client>();
@@ -103,11 +103,17 @@ public class Application extends Controller {
 
    // methods deal with teams
     public static Result mainPage() {
+        if(currentClient == null){
+            return redirect(routes.Application.landing());
+        }
         currentTeam = null;
         return ok(mainPage.render(Client.getTeams(currentClient), getUnreadNum()));
     }
 
     public static Result teamPage(String teamName) {
+        if(currentClient == null){
+            return redirect(routes.Application.landing());
+        }
         eventClientList.clear();
         eventClientList.add(currentClient);
         List<Team> teams = Team.findTeams(teamName);
@@ -122,6 +128,9 @@ public class Application extends Controller {
     }
 
     public static Result createTeam() {
+        if(currentClient == null){
+            return redirect(routes.Application.landing());
+        }
         play.data.Form<Team> teamForm = play.data.Form.form(Team.class);
         Team team = teamForm.bindFromRequest().get();
         if(!Team.teamNameEmpty(team)) {
@@ -131,6 +140,9 @@ public class Application extends Controller {
     }
     
     public static Result updateImage(){
+        if(currentClient == null){
+            return redirect(routes.Application.landing());
+        }
         play.data.Form<Image> userForm = play.data.Form.form(Image.class);
         Image img = userForm.bindFromRequest().get();
         String newimg = img.url;
@@ -203,6 +215,12 @@ public class Application extends Controller {
     }
 
     public static Result taskPage(String taskName) {
+        if(currentClient == null){
+            return redirect(routes.Application.landing());
+        }
+        if(currentTeam == null){
+            return redirect(routes.Application.mainPage());
+        }
         List<Task> tasks = Task.getTasksWithTaskName(taskName);
         currentTask = tasks.get(0);
         List<Comment> comments = Comment.findComments(taskName);
@@ -210,6 +228,12 @@ public class Application extends Controller {
     }
     
     public static Result postPage(String postName) {
+        if(currentClient == null){
+            return redirect(routes.Application.landing());
+        }
+        if(currentTeam == null){
+            return redirect(routes.Application.mainPage());
+        }
         List<Post> posts = Post.getPostsWithPostName(postName);
         currentPost = posts.get(0);
         List<Comment> comments = Comment.findComments(postName);
@@ -217,11 +241,17 @@ public class Application extends Controller {
     }
 
         public static Result markTaskAsDone() {
+            if(currentTeam == null){
+                return redirect(routes.Application.mainPage());
+            }
             Task.updateStatus(currentTask, "Complete");
             return redirect(routes.Application.teamPage(currentTeam.getTeamName()));
         }
 
         public static Result markTaskAsDoing() {
+            if(currentTeam == null){
+                return redirect(routes.Application.mainPage());
+            }
             Task.updateStatus(currentTask, "In Progress");
             return redirect(routes.Application.taskPage(currentTask.getTaskName()));
         }
@@ -286,6 +316,9 @@ public class Application extends Controller {
     }
 
     public static Result createEvent(String startTime, String slotChosen) {
+        if(currentClient == null){
+            return redirect(routes.Application.landing());
+        }
         play.data.Form<Event> eventForm = play.data.Form.form(Event.class);
         Event event = eventForm.bindFromRequest().get();
         if (!Event.nullEvent(event) && !Event.emptyEvent(event)) {
@@ -312,6 +345,12 @@ public class Application extends Controller {
     }
 
     public static Result eventPage() {
+        if(currentClient == null){
+            return redirect(routes.Application.landing());
+        }
+        if(currentTeam == null){
+            return redirect(routes.Application.mainPage());
+        }
         return ok(eventPage.render(eventClientList, currentTeam.getTeamName(),getUnreadNum()));
     }
 
@@ -391,6 +430,9 @@ public class Application extends Controller {
     }
 
     public static Result dailySchedule() {
+        if(currentClient == null){
+            return redirect(routes.Application.landing());
+        }
         List<Event> events = Event.findDailySchedule(currentClient);
         return ok(dailySchedule.render(events));
     }

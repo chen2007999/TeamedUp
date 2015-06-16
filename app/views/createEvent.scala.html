@@ -19,6 +19,11 @@
                  <div class="span6">
                     <a class="brand" href="#">TeamedUp</a>
                      <ul class="nav">
+                        <li><a href="/mainPage">Main Page</a></li>
+                        @if(Application.currentTeam != null){
+                        <li><a href="/teamPage/@Application.currentTeam.teamName">Team @Application.currentTeam.teamName</a></li>                        
+                        }
+                        <li class="active"><a href="#">Time slots</a></li>
                     </ul>
                  </div>
                  <div class="span6" align="right">
@@ -110,8 +115,9 @@
                 </ul>
             </div>
         </div>
-<div class="container well" align="center" id="fill">
+<div class="container" align="center">
     <h1>Create a new event</h1>
+    <div class="container well" align="center">
        <form id="defaultForm" action="/createEvent/@startTime/@slotChosen" method="POST">
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Event Name</label>
@@ -153,7 +159,7 @@
                             </div> 
                            <button type="submit">Create</button><br>
        </form>
-
+   </div>
 </div>
         <script>
             function check(){

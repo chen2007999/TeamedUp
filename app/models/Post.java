@@ -71,9 +71,11 @@ public class Post extends Model{
     public static Finder<Long, Post> find = new Finder<Long, Post>(Long.class, Post.class);
 
     public static void createPost(Post post, Team team, Client client) {
+        if(getPostsWithPostName(post.postName).size() == 0){
         post.setTeamName(team.getTeamName());
         post.setInvolvedEmail(client.getEmail());
         post.save();
+        }
     }
     
     public static void deletePost(Long id) {

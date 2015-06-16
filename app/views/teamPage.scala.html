@@ -16,9 +16,10 @@
         <div class="navbar-inner">
              <div class="row-fluid">
                  <div class="span6">
-                    <a class="brand" href="#">TeamedUp</a>
+                    <a class="brand" href="/landing">TeamedUp</a>
                      <ul class="nav">
-                         
+                        <li><a href="/mainPage">Main Page</a></li>
+                        <li class="active"><a href="#">Team @teamName</a></li>
                     </ul>
                  </div>
                  <div class="span6" align="right">
@@ -94,7 +95,7 @@
 
 <div class="container" id="fill">
 <h1>Team: @teamName</h1>
-<div class="row-fluid" id="fill" style="margin-top:0px;">
+<div class="row-fluid" id="fill" style="margin-top:-20px;">
     <div class="span4 well well-small div-list" style="overflow-y: scroll;" id="fill">
         <ul class="list-group">
             <li class="list-group-item"><h2>Team members:</h2></li>
@@ -130,12 +131,9 @@
             <div class="tab-content">
               <div role="tabpanel" class="tab-pane fade in active" id="tasks">
                 <div class="metro">
-                       <button class="win-command orange add-team" type="button" data-toggle="modal" data-target="#myModalT" rel="tooltip" title="Add a new task">
-                            <span class="win-commandimage win-commandring"><img src="@routes.Assets.at("images/plus.png")"></span>
-                        </button> 
                     @if(tasks.size() == 0){
-                        <h1>You have no task</h1>
-                        <h2>You can add a new task using the button on the right</h2>
+                        <h1>You have no tasks</h1>
+                        <h2>You can add a new task using the button below</h2>
                     }
                     @for(task <- tasks) {
 
@@ -147,17 +145,17 @@
                                 }
                             </a>    
                         }
-                    }              
+                    }  
+                        <a class="tile square image" href="#" data-toggle="modal" data-target="#myModalT" rel="tooltip" title="Add a new task" style="background: transparent;">
+                            <img src="@routes.Assets.at("images/add_task.png")">
+                        </a>
                 </div>
               </div>
               <div role="tabpanel" class="tab-pane fade" id="posts">
                 <div class="metro">
-                        <button class="win-command orange add-team" type="button" data-toggle="modal" data-target="#myModalP" rel="tooltip" title="Add a new post">
-                            <span class="win-commandimage win-commandring"><img src="@routes.Assets.at("images/plus.png")"></span>
-                        </button>
                     @if(posts.size() == 0){
-                        <h1>You have no post</h1>
-                        <h2>You can add a new post using the button on the right</h2>
+                        <h1>You have no posts</h1>
+                        <h2>You can add a new post using the button below</h2>
                     }
                     @for(post <- posts) {
                         <a class="tile square text tilesquareblock bg-color-purple" href="/postPage/@post.postName">
@@ -168,6 +166,9 @@
                             }
                         </a>
                     }
+                        <a class="tile square image" href="#" data-toggle="modal" data-target="#myModalP" rel="tooltip" title="Add a new task" style="background: transparent;">
+                            <img src="@routes.Assets.at("images/add_task.png")">
+                        </a>
                 </div>
               </div>
             </div>
@@ -226,10 +227,6 @@
         </div>
       </div>
     </div>
-    @helper.form(routes.Application.mainPage()) {
-    <button type="submit">Go back</button><br>
-    }
-    
             <!-- Menu Toggle Script -->
             <script>
             $("#menu-toggle").click(function(e) {

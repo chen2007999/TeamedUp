@@ -18,7 +18,7 @@
                  <div class="span6">
                     <a class="brand" href="#">TeamedUp</a>
                      <ul class="nav">
-
+                        <li class="active"><a href="#">Main Page</a></li>
                     </ul>
                  </div>
                  <div class="span6" align="right">
@@ -90,9 +90,8 @@
         </div>
 
         
-        
-<div class="metro well well-small teams clouds" id="fill">
-    
+<div class="container well well-small teams clouds" id="fill" style="display:inline-block; position:relative; overflow-y: scroll; height:83%;min-height:83%;max-height:83%;">        
+<div class="metro">
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
@@ -118,12 +117,10 @@
       </div>
     </div>
     
-    <button class="win-command orange add-team" type="button" data-toggle="modal" data-target="#myModal" rel="tooltip" title="Add a new team">
-        <span class="win-commandimage win-commandring"><img src="@routes.Assets.at("images/plus.png")"></span>
-    </button>
+
     @if(teams.size() == 0){
-    <h1>You have no team</h1>
-    <h2>You can add a new team using the button on the right</h2>
+    <h1>You have no teams yet</h1>
+    <h2>You can add a new team using the button</h2>
     }
     @for(team <- teams) {
         <a class="tile wide text @Team.color()" href="/teamPage/@team.teamName">
@@ -133,6 +130,10 @@
             
         </a>
     }
+            <a class="tile wide image" href="#" data-toggle="modal" data-target="#myModal" rel="tooltip" title="Add a new team" style="background: transparent;">
+                <img src="@routes.Assets.at("images/add_team.png")">
+            </a>
+</div>
 </div>
                 <!-- Menu Toggle Script -->
         <script>

@@ -18,7 +18,9 @@
                  <div class="span6">
                     <a class="brand" href="#">TeamedUp</a>
                      <ul class="nav">
-
+                        <li><a href="/mainPage">Main Page</a></li>
+                        <li><a href="/teamPage/@teamName">Team @teamName</a></li>
+                        <li class="active"><a href="#">Task @task.taskName</a></li>
                     </ul>
                  </div>
                  <div class="span6" align="right">
@@ -106,7 +108,7 @@
     }
 </script>
 
-<div class="container well" style="padding-top: 70px; margin-top: 20px;" align="center">
+<div class="container well" style="padding-top: 70px; margin-top: 20px;">
                         <!-- Modal -->
                     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                       <div class="modal-dialog">
@@ -130,26 +132,26 @@
                     </div>
 
 
-    <h2>Task Name: @task.taskName </h2>
-    <h3>Created by @task.involvedEmail</h3>
+    <h2 align="center">Task Name: @task.taskName </h2>
+    <h3 align="center">Created by @task.involvedEmail</h3>
     <div class="well well-small" id="descr"></div>
-    <h2> Status: @task.status </h2>
-    @if(task.status.equals("In Progress")){
-        @helper.form(routes.Application.markTaskAsDone()) {
-          <button type="submit">Complete task</button>  
+    <h2 align="center"> Status: @task.status </h2>
+    <div class="container" align="center">
+        @if(task.status.equals("In Progress")){
+            @helper.form(routes.Application.markTaskAsDone()) {
+              <button type="submit">Complete task</button>  
+            }
+        } else {
+            @helper.form(routes.Application.markTaskAsDoing()) {
+              <button type="submit">In progress</button>  
+            }
         }
-    } else {
-        @helper.form(routes.Application.markTaskAsDoing()) {
-          <button type="submit">In progress</button>  
+        
+        <button type="submit" data-toggle="modal" data-target="#myModal">Update description</button> <br>
+        @helper.form(routes.Application.deleteTask(task.taskId)) {
+            <button class="btn btn-danger" type="submit">delete</button><br>
         }
-    }
-    
-    @if(task.involvedEmail.equals(Application.currentClient.email)){
-    <button type="submit" data-toggle="modal" data-target="#myModal">Update description</button> <br>
-    @helper.form(routes.Application.deleteTask(task.taskId)) {
-        <button class="btn btn-danger" type="submit">delete</button><br>
-    }
-    }
+    </div>
 </div>
 
 
@@ -160,18 +162,14 @@
         <h3 id="comment"> <strong>@comment.ownerName:</strong>  @comment.content</h3>
     </div>
     }
-
-
+    <hr>
+    <div class="container" align="center">
     @helper.form(routes.Application.createComment(task.taskId)) {
-    <textarea class="messageTextarea" name="content" cols="40" rows="5" placeholder=""></textarea>
+    <textarea class="messageTextarea" name="content" cols="40" rows="5" placeholder=""></textarea><br>
     <button type="submit">Comment</button><br>
 
     }
-
-@helper.form(routes.Application.teamPage(teamName)) {
-<button type="submit">Go back</button><br>
-}
-    
+    </div>
 </div>
                 <!-- Menu Toggle Script -->
         <script>

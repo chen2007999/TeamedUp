@@ -17,7 +17,11 @@
                  <div class="span6">
                     <a class="brand" href="#">TeamedUp</a>
                      <ul class="nav">
-
+                        <li><a href="/mainPage">Main Page</a></li>
+                        @if(Application.currentTeam != null){
+                        <li><a href="/teamPage/@Application.currentTeam.teamName">Team @Application.currentTeam.teamName</a></li>                        
+                        }
+                        <li class="active"><a href="#">Profile: @client.name</a></li>
                     </ul>
                  </div>
                  <div class="span6" align="right">
@@ -61,6 +65,21 @@
              </div>
           </div>
        </div>
+       
+        <style>
+           #img_container {
+                position:relative;
+                display:inline-block;
+                text-align:center;
+            }
+            
+            .inpic {
+                position:absolute;
+                top:1px;
+                right:0px;
+            }
+       </style>
+       
     </head>
     
     <body class="fill">
@@ -90,8 +109,12 @@
     <div class="container">
         <div class="row-fluid" id="fill">
             <br>
-            <div class="span4 offset4 well well-small">
-                <img src=@client.image height="200" width="200" class="img-circle">
+            <div class="span4 offset4 well well-small" style="display:inline;">
+                @helper.form(routes.Application.mainPage()) {
+                    <button class="win-command" style="float:left; position:absolute; background-color:transparent;" type="submit" rel="tooltip" title="Go back">
+                        <span class="win-commandicon win-commandring icon-arrow-left-2"></span>
+                    </button> 
+                }
                     <!-- Modal -->
                     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                       <div class="modal-dialog">
@@ -116,18 +139,24 @@
                         </div>
                       </div>
                     </div>
-                @if(client.email.equals(Application.currentClient.email)){
-                    <button data-toggle="modal" data-target="#myModal">Update picture</button>
-                }
-                <h1 align="center">@client.name </h1>
-                <h2>E-mail: @client.email</h2>
+                    
+            <div id="container" align="center">
+                <div  id="img_container">
+                    <img src=@client.image height="200" width="200" class="img-circle">
+                    @if(client.email.equals(Application.currentClient.email)){
+                    <button class="win-command inpic"  data-toggle="modal" data-target="#myModal" type="button"rel="tooltip" title="Update profile picture">
+                        <span class="win-commandicon icon-cog-4" style="color: #3e7aab;"></span>
+                    </button> 
+                    }
+                </div>
+                <hr>
+                <h3>@client.email</h3>
+                <h1>@client.name </h1>
+            </div>
+            
             </div>
         </div>
     </div>
-            @helper.form(routes.Application.mainPage()) {
-            <button type="submit">Go back</button><br>
-            }
-
             <!-- Menu Toggle Script -->
         <script>
         $("#menu-toggle").click(function(e) {

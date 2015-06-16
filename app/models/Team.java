@@ -46,8 +46,11 @@ public class Team extends Model{
     }
 
     public static void createTeam(Team team, Client client) {
-        team.setMemberEmail(client.getEmail());
-        team.save();
+        if(findTeams(team.teamName).size() == 0){
+            team.setMemberEmail(client.getEmail());
+            team.save();    
+        }
+        
     }
 
     public static void addUser(Client client, String teamName) {

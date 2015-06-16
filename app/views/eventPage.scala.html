@@ -16,6 +16,11 @@
                  <div class="span6">
                     <a class="brand" href="#">TeamedUp</a>
                      <ul class="nav">
+                        <li><a href="/mainPage">Main Page</a></li>
+                        @if(Application.currentTeam != null){
+                        <li><a href="/teamPage/@Application.currentTeam.teamName">Team @Application.currentTeam.teamName</a></li>                        
+                        }
+                        <li class="active"><a href="#">Event creation</a></li>
                     </ul>
                  </div>
                  <div class="span6" align="right">

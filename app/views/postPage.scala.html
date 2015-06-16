@@ -18,7 +18,9 @@
                  <div class="span6">
                     <a class="brand" href="#">TeamedUp</a>
                      <ul class="nav">
-
+                        <li><a href="/mainPage">Main Page</a></li>
+                        <li><a href="/teamPage/@teamName">Team @teamName</a></li>
+                        <li class="active"><a href="#">Post @post.postName</a></li>
                     </ul>
                  </div>
                  <div class="span6" align="right">
@@ -137,14 +139,6 @@
         }
     }
     
-</div>
-
-
-<div class="container well well-small">
-
-@helper.form(routes.Application.teamPage(teamName)) {
-<button type="submit">Go back</button><br>
-}
 </div>
                 <!-- Menu Toggle Script -->
         <script>
