@@ -9,7 +9,7 @@ GET     /                                 controllers.Application.index()
 GET     /assets/*file                     controllers.Assets.at(path="/public", file)
 
 # Display all clients in the database
-GET    /clients                             controllers.Application.displayAllUsersFromDB()
+GET    /clients                           controllers.Application.displayAllUsersFromDB()
 
 # Add a new client to database
 POST   /createUser                        controllers.Application.createUser()
@@ -17,7 +17,9 @@ POST   /createUser                        controllers.Application.createUser()
 # Delete a registered client from database
 POST   /deleteUser/:email/delete          controllers.Application.deleteUserFromDB(email:String)
 
+# Delete a post
 POST   /deletePost/:id/delete          controllers.Application.deletePost(id:Long)
+# Delete a task
 POST   /deleteTask/:id/delete          controllers.Application.deleteTask(id:Long)
 
 # Check client's login information and determines success or failure
@@ -29,8 +31,8 @@ GET    /register                          controllers.Application.register(error
 # Diaplay the landing page
 GET    /landing                           controllers.Application.landing()
 GET    /mainPage                          controllers.Application.mainPage()
-
-POST /logout                             controllers.Application.logout()
+  
+POST    /logout                           controllers.Application.logout()
 
 #POST    /resetPassword                   controllers.Application.resetPassword()
 #POST    /resetName                       controllers.Application.resetName()
