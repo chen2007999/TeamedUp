@@ -32,12 +32,6 @@ public class Event extends Model{
     @Column(name = "involvedEmail")
     public String involvedEmail;
 
-/*    @Column(name = "startTimeString")
-    public String startTimeString;
-
-    @Column(name = "endTimeString")
-    public String endTimeString;*/
-
     @Column(name = "startTime")
     public Timestamp startTime;
 
@@ -58,14 +52,6 @@ public class Event extends Model{
 
     // setters and getters for Event attributes
     public  static Finder<Long, Event> find = new Finder<Long, Event>(Long.class, Event.class);
-
-   /* public String getStartTimeString() {
-        return startTimeString;
-    }
-
-    public String getEndTimeString() {
-        return endTimeString;
-    }*/
 
     public String getEventName() {
         return eventName;
@@ -100,13 +86,6 @@ public class Event extends Model{
     public void setLocation(String location) {
         this.location = location;
     }
-    /*  public void setStartTimeString(String startTimeString) {
-        this.startTimeString = startTimeString;
-    }
-
-    public void setEndTimeString(String endTimeString) {
-        this.endTimeString = endTimeString;
-    }*/
 
     public void setContent(String content) {
         this.content = content;
@@ -135,7 +114,7 @@ public class Event extends Model{
     public String getSlotChosenEnd() {
         return slotChosenEnd;
     }
-     //2015-11-11 09:11:00.0
+    
     public static void createEvent(Event event, Client creator, List<Client> client) {
         String start = event.getStartTime().toString();
         String newStart = start.substring(0, 11) + event.getSlotChosenStart() + ":00:00.0";
