@@ -94,13 +94,6 @@ public class Application extends Controller {
         return ok("Not done yet");
     }
 
-   /* public static Result resetName() {
-        play.data.Form<Client> userForm = play.data.Form.form(Client.class);
-        Client user = userForm.bindFromRequest().get();
-        Client.setName(user.getName());
-    }*/
-
-
    // methods deal with teams
     public static Result mainPage() {
         if(currentClient == null){
@@ -150,7 +143,6 @@ public class Application extends Controller {
             newimg = "http://tmdup.com/assets/images/default.jpg";
         }
         Client.updateImage(currentClient, newimg);
-        //return redirect(routes.Application.profile(currentClient.getEmail()));
         return ok(profile.render(currentClient));
     }
     
@@ -379,13 +371,6 @@ public class Application extends Controller {
         List<TimePair> tp = Event.findWeeklyCommonFreetime(eventClientList, Event.currentDate());
         List<String> s = Event.timeListToString(tp);
         return ok(commonTime.render());
-        //return ok(commonTime.render(s));
-        /*List < Client > users = new ArrayList<Client>();
-        users.add(Client.find.byId("1@1.com"));
-        users.add(Client.find.byId("2@2.com"));
-        List<TimePair>  tp = Event.findWeeklyScheduledTimeUnion(users, Event.currentDate());
-        List<String> r = Event.timeListToString(tp);
-        return ok(testEvent.render(r));*/
     }
 
     public static Result chooseCommonTime(String slotChosen) {
