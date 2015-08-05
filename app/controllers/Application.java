@@ -14,6 +14,16 @@ import java.lang.String;
 
 public class Application extends Controller {
 
+    /* All these current variables are for the early stage (prototype) showcase purpose.
+       They should all be saved as IDs in a session of each user in order to achieve multi-user activities.
+
+       This project was coded in a rush and wasn't designed to be launched. 
+       Apologies for not adding session code here.
+
+       To add an ID to client's session:  session().put("clientEmail", client.getEmail());
+       To retrieve the ID from the session:    session().get("clientEmail");
+       To discard the session:  session().clear();
+    */
     public static Client currentClient;
     public static Team currentTeam;
     private static Task currentTask;
