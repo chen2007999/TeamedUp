@@ -20,9 +20,9 @@ public class Application extends Controller {
        This project was coded in a rush and wasn't designed to be launched. 
        Apologies for not adding session code here.
 
-       To add an ID to client's session:  session().put("clientEmail", client.getEmail());
-       To retrieve the ID from the session:    session().get("clientEmail");
-       To discard the session:  session().clear();
+       To add an ID to client's session:        session().put("clientEmail", client.getEmail());
+       To retrieve the ID from the session:     session().get("clientEmail");
+       To discard the session:                  session().clear();
     */
     public static Client currentClient;
     public static Team currentTeam;
